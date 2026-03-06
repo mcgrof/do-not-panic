@@ -1,0 +1,1619 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta
+            name="description"
+            content="How INTELLECT-1 and INTELLECT-2 train frontier models across globally distributed GPU swarms using DiLoCo and async GRPO, slashing bandwidth 400x."
+        />
+        <meta name="paper-arxiv" content="2412.01152" />
+        <meta name="paper-arxiv" content="2505.07291" />
+        <title>INTELLECT-1 & INTELLECT-2 — Decentralized Training</title>
+        <link
+            href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&display=swap"
+            rel="stylesheet"
+        />
+        <style>
+            :root {
+                --bg: #0a0c10;
+                --bg2: #0f1218;
+                --bg3: #141820;
+                --card: #161b26;
+                --border: #1e2840;
+                --border2: #2a3550;
+                --accent: #4f9cf9;
+                --accent2: #7ec8e3;
+                --accent3: #a78bfa;
+                --green: #34d399;
+                --yellow: #fbbf24;
+                --red: #f87171;
+                --orange: #fb923c;
+                --text: #e2e8f0;
+                --text2: #94a3b8;
+                --text3: #64748b;
+                --mono: "JetBrains Mono", monospace;
+                --sans: "Inter", sans-serif;
+            }
+
+            * {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+
+            body {
+                background: var(--bg);
+                color: var(--text);
+                font-family: var(--sans);
+                min-height: 100vh;
+                overflow-x: hidden;
+            }
+
+            /* Grid background */
+            body::before {
+                content: "";
+                position: fixed;
+                inset: 0;
+                background-image:
+                    linear-gradient(rgba(79, 156, 249, 0.03) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(79, 156, 249, 0.03) 1px, transparent 1px);
+                background-size: 40px 40px;
+                pointer-events: none;
+                z-index: 0;
+            }
+
+            .container {
+                position: relative;
+                z-index: 1;
+                max-width: 1100px;
+                margin: 0 auto;
+                padding: 0 20px;
+            }
+
+            /* Header */
+            header {
+                padding: 48px 0 32px;
+                border-bottom: 1px solid var(--border);
+            }
+
+            .header-badge {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                font-family: var(--mono);
+                font-size: 11px;
+                color: var(--accent);
+                background: rgba(79, 156, 249, 0.08);
+                border: 1px solid rgba(79, 156, 249, 0.2);
+                border-radius: 4px;
+                padding: 4px 10px;
+                letter-spacing: 0.08em;
+                text-transform: uppercase;
+                margin-bottom: 16px;
+            }
+
+            .header-badge::before {
+                content: "▸";
+            }
+
+            h1 {
+                font-family: var(--mono);
+                font-size: clamp(22px, 4vw, 34px);
+                font-weight: 700;
+                color: var(--text);
+                line-height: 1.2;
+                letter-spacing: -0.02em;
+            }
+
+            h1 span {
+                color: var(--accent);
+            }
+
+            .header-sub {
+                margin-top: 10px;
+                font-size: 14px;
+                color: var(--text2);
+                font-family: var(--mono);
+                font-weight: 300;
+            }
+
+            .paper-links {
+                display: flex;
+                gap: 12px;
+                margin-top: 20px;
+                flex-wrap: wrap;
+            }
+
+            .paper-link {
+                font-family: var(--mono);
+                font-size: 11px;
+                color: var(--accent);
+                text-decoration: none;
+                border: 1px solid rgba(79, 156, 249, 0.25);
+                padding: 5px 12px;
+                border-radius: 4px;
+                background: rgba(79, 156, 249, 0.05);
+                transition: all 0.2s;
+                letter-spacing: 0.04em;
+            }
+            .paper-link:hover {
+                background: rgba(79, 156, 249, 0.12);
+                border-color: var(--accent);
+            }
+
+            /* Tabs */
+            .tabs {
+                display: flex;
+                gap: 0;
+                margin: 32px 0 0;
+                border-bottom: 1px solid var(--border);
+            }
+
+            .tab {
+                font-family: var(--mono);
+                font-size: 13px;
+                font-weight: 500;
+                padding: 12px 24px;
+                cursor: pointer;
+                color: var(--text3);
+                border-bottom: 2px solid transparent;
+                transition: all 0.2s;
+                user-select: none;
+                white-space: nowrap;
+            }
+
+            .tab:hover {
+                color: var(--text2);
+            }
+            .tab.active {
+                color: var(--accent);
+                border-bottom-color: var(--accent);
+            }
+
+            .tab-content {
+                display: none;
+            }
+            .tab-content.active {
+                display: block;
+            }
+
+            /* Section headings */
+            .section {
+                padding: 40px 0;
+            }
+
+            .section-label {
+                font-family: var(--mono);
+                font-size: 10px;
+                letter-spacing: 0.15em;
+                text-transform: uppercase;
+                color: var(--text3);
+                margin-bottom: 8px;
+            }
+
+            h2 {
+                font-size: 20px;
+                font-weight: 600;
+                color: var(--text);
+                margin-bottom: 6px;
+            }
+
+            h3 {
+                font-size: 14px;
+                font-weight: 600;
+                color: var(--text);
+                margin-bottom: 8px;
+                font-family: var(--mono);
+            }
+
+            /* Key insight banner */
+            .insight-banner {
+                background: linear-gradient(135deg, rgba(79, 156, 249, 0.08) 0%, rgba(167, 139, 250, 0.06) 100%);
+                border: 1px solid rgba(79, 156, 249, 0.2);
+                border-left: 3px solid var(--accent);
+                border-radius: 6px;
+                padding: 18px 20px;
+                margin-bottom: 28px;
+            }
+
+            .insight-banner .label {
+                font-family: var(--mono);
+                font-size: 10px;
+                letter-spacing: 0.12em;
+                text-transform: uppercase;
+                color: var(--accent);
+                margin-bottom: 6px;
+            }
+
+            .insight-banner p {
+                font-size: 14px;
+                color: var(--text2);
+                line-height: 1.6;
+            }
+
+            .insight-banner strong {
+                color: var(--text);
+            }
+
+            /* Stats grid */
+            .stats-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+                gap: 12px;
+                margin-bottom: 32px;
+            }
+
+            .stat-card {
+                background: var(--card);
+                border: 1px solid var(--border);
+                border-radius: 8px;
+                padding: 16px;
+                transition: border-color 0.2s;
+            }
+
+            .stat-card:hover {
+                border-color: var(--border2);
+            }
+
+            .stat-value {
+                font-family: var(--mono);
+                font-size: 26px;
+                font-weight: 700;
+                color: var(--accent);
+                line-height: 1;
+                margin-bottom: 4px;
+            }
+
+            .stat-value.green {
+                color: var(--green);
+            }
+            .stat-value.purple {
+                color: var(--accent3);
+            }
+            .stat-value.yellow {
+                color: var(--yellow);
+            }
+            .stat-value.orange {
+                color: var(--orange);
+            }
+
+            .stat-label {
+                font-size: 11px;
+                color: var(--text3);
+                font-family: var(--mono);
+                line-height: 1.4;
+            }
+
+            /* Cards grid */
+            .cards-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 16px;
+                margin-bottom: 32px;
+            }
+
+            .card {
+                background: var(--card);
+                border: 1px solid var(--border);
+                border-radius: 8px;
+                padding: 20px;
+                transition:
+                    border-color 0.2s,
+                    transform 0.2s;
+            }
+
+            .card:hover {
+                border-color: var(--border2);
+                transform: translateY(-1px);
+            }
+
+            .card-header {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                margin-bottom: 12px;
+            }
+
+            .card-icon {
+                width: 28px;
+                height: 28px;
+                border-radius: 6px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 13px;
+                flex-shrink: 0;
+            }
+
+            .card-icon.blue {
+                background: rgba(79, 156, 249, 0.15);
+                color: var(--accent);
+            }
+            .card-icon.green {
+                background: rgba(52, 211, 153, 0.15);
+                color: var(--green);
+            }
+            .card-icon.purple {
+                background: rgba(167, 139, 250, 0.15);
+                color: var(--accent3);
+            }
+            .card-icon.yellow {
+                background: rgba(251, 191, 36, 0.15);
+                color: var(--yellow);
+            }
+            .card-icon.orange {
+                background: rgba(251, 146, 60, 0.15);
+                color: var(--orange);
+            }
+
+            .card p {
+                font-size: 13px;
+                color: var(--text2);
+                line-height: 1.65;
+            }
+
+            .code-line {
+                font-family: var(--mono);
+                font-size: 11px;
+                color: var(--green);
+                background: rgba(52, 211, 153, 0.06);
+                border: 1px solid rgba(52, 211, 153, 0.12);
+                border-radius: 4px;
+                padding: 6px 10px;
+                margin-top: 10px;
+                display: inline-block;
+            }
+
+            /* Architecture diagram */
+            .arch-diagram {
+                background: var(--bg2);
+                border: 1px solid var(--border);
+                border-radius: 10px;
+                padding: 28px;
+                margin-bottom: 32px;
+                overflow-x: auto;
+            }
+
+            .arch-title {
+                font-family: var(--mono);
+                font-size: 11px;
+                letter-spacing: 0.1em;
+                text-transform: uppercase;
+                color: var(--text3);
+                margin-bottom: 24px;
+            }
+
+            /* DiLoCo Flow */
+            .diloco-flow {
+                display: flex;
+                align-items: center;
+                gap: 0;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .flow-node {
+                background: var(--card);
+                border: 1px solid var(--border2);
+                border-radius: 8px;
+                padding: 12px 16px;
+                text-align: center;
+                min-width: 110px;
+                flex-shrink: 0;
+            }
+
+            .flow-node .fn-label {
+                font-family: var(--mono);
+                font-size: 11px;
+                color: var(--text2);
+                margin-bottom: 4px;
+            }
+
+            .flow-node .fn-value {
+                font-family: var(--mono);
+                font-size: 13px;
+                font-weight: 700;
+                color: var(--accent);
+            }
+
+            .flow-arrow {
+                font-size: 18px;
+                color: var(--border2);
+                padding: 0 8px;
+                flex-shrink: 0;
+            }
+
+            /* Bandwidth comparison */
+            .bw-compare {
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+                margin-bottom: 24px;
+            }
+
+            .bw-row {
+                display: flex;
+                flex-direction: column;
+                gap: 4px;
+            }
+
+            .bw-label {
+                font-family: var(--mono);
+                font-size: 11px;
+                color: var(--text2);
+                display: flex;
+                justify-content: space-between;
+            }
+
+            .bw-bar-bg {
+                background: rgba(255, 255, 255, 0.05);
+                border-radius: 3px;
+                height: 10px;
+                overflow: hidden;
+            }
+
+            .bw-bar-fill {
+                height: 100%;
+                border-radius: 3px;
+                transition: width 1s ease-out;
+            }
+
+            /* Table */
+            .data-table {
+                width: 100%;
+                border-collapse: collapse;
+                font-size: 13px;
+                margin-bottom: 24px;
+            }
+
+            .data-table th {
+                font-family: var(--mono);
+                font-size: 10px;
+                letter-spacing: 0.1em;
+                text-transform: uppercase;
+                color: var(--text3);
+                padding: 10px 12px;
+                text-align: left;
+                border-bottom: 1px solid var(--border);
+            }
+
+            .data-table td {
+                padding: 10px 12px;
+                border-bottom: 1px solid rgba(30, 40, 64, 0.5);
+                color: var(--text2);
+                font-family: var(--mono);
+                font-size: 12px;
+            }
+
+            .data-table tr:hover td {
+                background: rgba(255, 255, 255, 0.02);
+            }
+            .data-table .highlight {
+                color: var(--green);
+                font-weight: 600;
+            }
+            .data-table .tag {
+                display: inline-flex;
+                font-size: 10px;
+                padding: 2px 7px;
+                border-radius: 3px;
+                letter-spacing: 0.04em;
+            }
+
+            /* Topology viz */
+            .topo-container {
+                position: relative;
+                width: 100%;
+                min-height: 340px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .topo-svg {
+                max-width: 100%;
+                height: auto;
+            }
+
+            /* Node types */
+            .node-box {
+                display: inline-flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 4px;
+            }
+
+            .node-dot {
+                width: 36px;
+                height: 36px;
+                border-radius: 8px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 15px;
+                border: 1px solid;
+            }
+
+            /* RL Pipeline */
+            .rl-pipeline {
+                display: flex;
+                flex-direction: column;
+                gap: 0;
+                align-items: stretch;
+                max-width: 680px;
+                margin: 0 auto;
+            }
+
+            .rl-stage {
+                display: flex;
+                gap: 12px;
+                align-items: flex-start;
+                padding: 16px 0;
+                border-left: 2px solid var(--border2);
+                margin-left: 20px;
+                padding-left: 24px;
+                position: relative;
+            }
+
+            .rl-stage::before {
+                content: "";
+                position: absolute;
+                left: -7px;
+                top: 20px;
+                width: 12px;
+                height: 12px;
+                border-radius: 50%;
+                background: var(--card);
+                border: 2px solid var(--accent);
+            }
+
+            .rl-stage:first-child {
+                border-top-left-radius: 0;
+            }
+
+            .rl-stage-content {
+                flex: 1;
+            }
+
+            .rl-stage-title {
+                font-family: var(--mono);
+                font-size: 13px;
+                font-weight: 600;
+                color: var(--text);
+                margin-bottom: 4px;
+            }
+
+            .rl-stage-desc {
+                font-size: 12px;
+                color: var(--text2);
+                line-height: 1.5;
+            }
+
+            .rl-badge {
+                font-family: var(--mono);
+                font-size: 10px;
+                padding: 3px 8px;
+                border-radius: 3px;
+                letter-spacing: 0.04em;
+                white-space: nowrap;
+                flex-shrink: 0;
+            }
+
+            .badge-blue {
+                background: rgba(79, 156, 249, 0.12);
+                color: var(--accent);
+                border: 1px solid rgba(79, 156, 249, 0.2);
+            }
+            .badge-green {
+                background: rgba(52, 211, 153, 0.12);
+                color: var(--green);
+                border: 1px solid rgba(52, 211, 153, 0.2);
+            }
+            .badge-purple {
+                background: rgba(167, 139, 250, 0.12);
+                color: var(--accent3);
+                border: 1px solid rgba(167, 139, 250, 0.2);
+            }
+            .badge-yellow {
+                background: rgba(251, 191, 36, 0.12);
+                color: var(--yellow);
+                border: 1px solid rgba(251, 191, 36, 0.2);
+            }
+            .badge-orange {
+                background: rgba(251, 146, 60, 0.12);
+                color: var(--orange);
+                border: 1px solid rgba(251, 146, 60, 0.2);
+            }
+
+            /* Comparison */
+            .compare-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 16px;
+                margin-bottom: 32px;
+            }
+
+            @media (max-width: 600px) {
+                .compare-grid {
+                    grid-template-columns: 1fr;
+                }
+                .diloco-flow {
+                    flex-direction: column;
+                }
+                .flow-arrow {
+                    transform: rotate(90deg);
+                }
+            }
+
+            .compare-col {
+                background: var(--card);
+                border: 1px solid var(--border);
+                border-radius: 8px;
+                padding: 20px;
+            }
+
+            .compare-col.v1 {
+                border-top: 2px solid var(--accent);
+            }
+            .compare-col.v2 {
+                border-top: 2px solid var(--accent3);
+            }
+
+            .compare-col-title {
+                font-family: var(--mono);
+                font-size: 13px;
+                font-weight: 700;
+                margin-bottom: 14px;
+            }
+
+            .compare-col.v1 .compare-col-title {
+                color: var(--accent);
+            }
+            .compare-col.v2 .compare-col-title {
+                color: var(--accent3);
+            }
+
+            .compare-row {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 7px 0;
+                border-bottom: 1px solid rgba(30, 40, 64, 0.5);
+                font-size: 12px;
+            }
+
+            .compare-row:last-child {
+                border-bottom: none;
+            }
+
+            .compare-row .key {
+                color: var(--text3);
+                font-family: var(--mono);
+            }
+            .compare-row .val {
+                color: var(--text);
+                font-family: var(--mono);
+                font-weight: 500;
+            }
+
+            /* TOPLOC section */
+            .toploc-grid {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 12px;
+                margin-bottom: 24px;
+            }
+
+            @media (max-width: 680px) {
+                .toploc-grid {
+                    grid-template-columns: 1fr;
+                }
+            }
+
+            /* Divider */
+            .divider {
+                height: 1px;
+                background: linear-gradient(90deg, transparent, var(--border), transparent);
+                margin: 32px 0;
+            }
+
+            /* Footer */
+            footer {
+                padding: 28px 0;
+                border-top: 1px solid var(--border);
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                flex-wrap: gap;
+                gap: 12px;
+                font-family: var(--mono);
+                font-size: 11px;
+                color: var(--text3);
+            }
+
+            footer a {
+                color: var(--accent);
+                text-decoration: none;
+            }
+            footer a:hover {
+                text-decoration: underline;
+            }
+
+            /* Animated pulse */
+            @keyframes pulse-dot {
+                0%,
+                100% {
+                    opacity: 1;
+                }
+                50% {
+                    opacity: 0.3;
+                }
+            }
+
+            .live-dot {
+                display: inline-block;
+                width: 6px;
+                height: 6px;
+                background: var(--green);
+                border-radius: 50%;
+                margin-right: 6px;
+                animation: pulse-dot 2s ease infinite;
+            }
+
+            /* Scroll reveal */
+            @keyframes fadeUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(16px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            .fade-up {
+                animation: fadeUp 0.5s ease forwards;
+            }
+
+            .section > * {
+                animation: fadeUp 0.4s ease both;
+            }
+
+            /* Bandwidth animation */
+            @keyframes fillBar {
+                from {
+                    width: 0;
+                }
+            }
+
+            .bw-bar-fill {
+                animation: fillBar 1.2s ease-out forwards;
+            }
+
+            /* Geo nodes */
+            .geo-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+                gap: 8px;
+                margin-bottom: 24px;
+            }
+
+            .geo-node {
+                background: var(--card);
+                border: 1px solid var(--border);
+                border-radius: 6px;
+                padding: 10px 12px;
+                font-family: var(--mono);
+                font-size: 11px;
+            }
+
+            .geo-node .flag {
+                font-size: 16px;
+                margin-bottom: 4px;
+                display: block;
+            }
+            .geo-node .loc {
+                color: var(--text2);
+            }
+            .geo-node .role {
+                color: var(--text3);
+                font-size: 10px;
+                margin-top: 2px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <!-- Header -->
+            <header>
+                <div class="header-badge">Prime Intellect Research</div>
+                <h1>
+                    INTELLECT-
+                    <span>1</span>
+                    &amp; INTELLECT-
+                    <span>2</span>
+                </h1>
+                <div class="header-sub">// Decentralized training across globally distributed GPU swarms</div>
+                <div class="paper-links">
+                    <a class="paper-link" href="https://arxiv.org/abs/2412.01152" target="_blank">
+                        arXiv:2412.01152 — INTELLECT-1
+                    </a>
+                    <a class="paper-link" href="https://arxiv.org/abs/2505.07291" target="_blank">
+                        arXiv:2505.07291 — INTELLECT-2
+                    </a>
+                    <a class="paper-link" href="https://github.com/PrimeIntellect-ai/prime" target="_blank">
+                        github: PRIME
+                    </a>
+                    <a class="paper-link" href="https://github.com/PrimeIntellect-ai/prime-rl" target="_blank">
+                        github: PRIME-RL
+                    </a>
+                </div>
+            </header>
+
+            <!-- Tabs -->
+            <div class="tabs">
+                <div class="tab active" onclick="switchTab('overview')">Overview</div>
+                <div class="tab" onclick="switchTab('intellect1')">INTELLECT-1: Pre-training</div>
+                <div class="tab" onclick="switchTab('intellect2')">INTELLECT-2: RL</div>
+                <div class="tab" onclick="switchTab('compare')">Comparison</div>
+            </div>
+
+            <!-- OVERVIEW TAB -->
+            <div id="tab-overview" class="tab-content active">
+                <div class="section">
+                    <div class="insight-banner">
+                        <div class="label">⚡ Key Discovery</div>
+                        <p>
+                            Both papers prove that
+                            <strong>frontier AI training no longer requires a giant centralized datacenter</strong>
+                            . INTELLECT-1 trains a 10B model across 3 continents via DiLoCo. INTELLECT-2 pushes further:
+                            <strong>asynchronous RL is a natural fit for decentralized compute</strong>
+                            , enabling a 32B reasoning model trained across a permissionless swarm of heterogeneous
+                            GPUs.
+                        </p>
+                    </div>
+
+                    <!-- Big stats -->
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-value">10B</div>
+                            <div class="stat-label">
+                                INTELLECT-1
+                                <br />
+                                parameters
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">1T</div>
+                            <div class="stat-label">
+                                pre-training
+                                <br />
+                                tokens
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value green">32B</div>
+                            <div class="stat-label">
+                                INTELLECT-2
+                                <br />
+                                parameters
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value yellow">400×</div>
+                            <div class="stat-label">
+                                bandwidth reduction
+                                <br />
+                                vs data-parallel
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value orange">30</div>
+                            <div class="stat-label">
+                                independent compute
+                                <br />
+                                contributors
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value purple">96%</div>
+                            <div class="stat-label">
+                                compute utilization
+                                <br />
+                                (US-only setup)
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Two papers side by side -->
+                    <div class="compare-grid">
+                        <div class="compare-col v1">
+                            <div class="compare-col-title">INTELLECT-1 (Dec 2024)</div>
+                            <div class="compare-row">
+                                <span class="key">task</span>
+                                <span class="val">pre-training (SFT)</span>
+                            </div>
+                            <div class="compare-row">
+                                <span class="key">model</span>
+                                <span class="val">Llama-3 10B</span>
+                            </div>
+                            <div class="compare-row">
+                                <span class="key">algo</span>
+                                <span class="val">DiLoCo + FSDP2</span>
+                            </div>
+                            <div class="compare-row">
+                                <span class="key">sync</span>
+                                <span class="val">every 100 steps (~38 min)</span>
+                            </div>
+                            <div class="compare-row">
+                                <span class="key">comm</span>
+                                <span class="val">int8 pseudo-gradients</span>
+                            </div>
+                            <div class="compare-row">
+                                <span class="key">nodes</span>
+                                <span class="val">up to 14 concurrent</span>
+                            </div>
+                            <div class="compare-row">
+                                <span class="key">framework</span>
+                                <span class="val">PRIME</span>
+                            </div>
+                        </div>
+                        <div class="compare-col v2">
+                            <div class="compare-col-title">INTELLECT-2 (May 2025)</div>
+                            <div class="compare-row">
+                                <span class="key">task</span>
+                                <span class="val">reinforcement learning</span>
+                            </div>
+                            <div class="compare-row">
+                                <span class="key">model</span>
+                                <span class="val">32B reasoning model</span>
+                            </div>
+                            <div class="compare-row">
+                                <span class="key">algo</span>
+                                <span class="val">async GRPO</span>
+                            </div>
+                            <div class="compare-row">
+                                <span class="key">sync</span>
+                                <span class="val">fully asynchronous</span>
+                            </div>
+                            <div class="compare-row">
+                                <span class="key">comm</span>
+                                <span class="val">SHARDCAST weight CDN</span>
+                            </div>
+                            <div class="compare-row">
+                                <span class="key">nodes</span>
+                                <span class="val">permissionless swarm</span>
+                            </div>
+                            <div class="compare-row">
+                                <span class="key">framework</span>
+                                <span class="val">PRIME-RL</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Geo distribution -->
+                    <div class="section-label">Geographic distribution — INTELLECT-1</div>
+                    <div class="geo-grid">
+                        <div class="geo-node">
+                            <span class="flag">🇺🇸</span>
+                            <div class="loc">United States</div>
+                            <div class="role">primary cluster</div>
+                        </div>
+                        <div class="geo-node">
+                            <span class="flag">🇬🇧</span>
+                            <div class="loc">United Kingdom</div>
+                            <div class="role">contributor</div>
+                        </div>
+                        <div class="geo-node">
+                            <span class="flag">🇩🇪</span>
+                            <div class="loc">Germany</div>
+                            <div class="role">contributor</div>
+                        </div>
+                        <div class="geo-node">
+                            <span class="flag">🇫🇷</span>
+                            <div class="loc">France</div>
+                            <div class="role">contributor</div>
+                        </div>
+                        <div class="geo-node">
+                            <span class="flag">🇸🇬</span>
+                            <div class="loc">Singapore</div>
+                            <div class="role">Asia node</div>
+                        </div>
+                        <div class="geo-node">
+                            <span class="flag">🇯🇵</span>
+                            <div class="loc">Japan</div>
+                            <div class="role">Asia node</div>
+                        </div>
+                        <div class="geo-node">
+                            <span class="flag">🇦🇺</span>
+                            <div class="loc">Australia</div>
+                            <div class="role">contributor</div>
+                        </div>
+                        <div class="geo-node" style="border-color: var(--border2)">
+                            <span class="flag">+</span>
+                            <div class="loc">24 more</div>
+                            <div class="role">providers</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- INTELLECT-1 TAB -->
+            <div id="tab-intellect1" class="tab-content">
+                <div class="section">
+                    <div class="insight-banner">
+                        <div class="label">💡 Core Insight</div>
+                        <p>
+                            DiLoCo turns the bandwidth problem upside-down. Instead of syncing gradients at every step
+                            (traditional data-parallel requires ~3.2 Tb/s InfiniBand), workers run 100 local AdamW steps
+                            independently, then sync
+                            <strong>pseudo-gradients</strong>
+                            compressed to int8 every ~38 minutes. The internet's 500 Mb/s is suddenly enough to train a
+                            10B model across 5 countries.
+                        </p>
+                    </div>
+
+                    <!-- DiLoCo flow -->
+                    <div class="arch-diagram">
+                        <div class="arch-title">// DiLoCo algorithm flow</div>
+                        <div class="diloco-flow">
+                            <div class="flow-node">
+                                <div class="fn-label">init</div>
+                                <div class="fn-value">θ shared</div>
+                            </div>
+                            <div class="flow-arrow">→</div>
+                            <div class="flow-node">
+                                <div class="fn-label">H=100 local steps</div>
+                                <div class="fn-value">inner AdamW</div>
+                            </div>
+                            <div class="flow-arrow">→</div>
+                            <div class="flow-node">
+                                <div class="fn-label">compute</div>
+                                <div class="fn-value">Δ = θ_old − θ_new</div>
+                            </div>
+                            <div class="flow-arrow">→</div>
+                            <div class="flow-node">
+                                <div class="fn-label">int8 compress</div>
+                                <div class="fn-value">4× smaller</div>
+                            </div>
+                            <div class="flow-arrow">→</div>
+                            <div class="flow-node">
+                                <div class="fn-label">ring all-reduce</div>
+                                <div class="fn-value">avg Δ across nodes</div>
+                            </div>
+                            <div class="flow-arrow">→</div>
+                            <div class="flow-node">
+                                <div class="fn-label">outer step</div>
+                                <div class="fn-value">Nesterov SGD</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bandwidth comparison -->
+                    <div class="section-label">Communication bandwidth requirements</div>
+                    <div class="bw-compare" style="margin-bottom: 24px">
+                        <div class="bw-row">
+                            <div class="bw-label">
+                                <span>Traditional data-parallel (InfiniBand)</span>
+                                <span>3,200 Gb/s</span>
+                            </div>
+                            <div class="bw-bar-bg">
+                                <div
+                                    class="bw-bar-fill"
+                                    style="width: 100%; background: linear-gradient(90deg, #f87171, #ef4444)"
+                                ></div>
+                            </div>
+                        </div>
+                        <div class="bw-row">
+                            <div class="bw-label">
+                                <span>PRIME without int8 (DiLoCo only)</span>
+                                <span>~8 Gb/s</span>
+                            </div>
+                            <div class="bw-bar-bg">
+                                <div
+                                    class="bw-bar-fill"
+                                    style="
+                                        width: 0.25%;
+                                        background: linear-gradient(90deg, #fbbf24, #f59e0b);
+                                        animation-delay: 0.2s;
+                                    "
+                                ></div>
+                            </div>
+                        </div>
+                        <div class="bw-row">
+                            <div class="bw-label">
+                                <span>PRIME with int8 + DiLoCo (used)</span>
+                                <span>4 Gb/s max</span>
+                            </div>
+                            <div class="bw-bar-bg">
+                                <div
+                                    class="bw-bar-fill"
+                                    style="
+                                        width: 0.125%;
+                                        background: linear-gradient(90deg, #34d399, #059669);
+                                        animation-delay: 0.4s;
+                                    "
+                                ></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PRIME components -->
+                    <div class="section-label">PRIME framework components</div>
+                    <div class="cards-grid">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-icon blue">⊞</div>
+                                <h3>ElasticDeviceMesh</h3>
+                            </div>
+                            <p>
+                                Novel abstraction managing two-tier process groups:
+                                <strong>FSDP local groups</strong>
+                                for fast intra-node NVLink communication, and
+                                <strong>fault-tolerant global groups</strong>
+                                for internet-scale DiLoCo sync. Nodes can join or leave without killing the run.
+                            </p>
+                            <div class="code-line">global_rank ↔ local_rank hybrid topology</div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-icon green">⬡</div>
+                                <h3>Int8 Ring-All-Reduce</h3>
+                            </div>
+                            <p>
+                                Custom C++ multithreaded uint8 quantization —
+                                <strong>60× faster</strong>
+                                than PyTorch implementation. Quantizes pseudo-gradient deltas (not weights), making it
+                                robust to outlier accumulation. Pipelined to overlap quant/dequant with network I/O.
+                            </p>
+                            <div class="code-line">4× size reduction · fp32 accumulation</div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-icon purple">◈</div>
+                                <h3>Fault Tolerance</h3>
+                            </div>
+                            <p>
+                                Heartbeat every 2 seconds. Nodes evicted after 6s silence. Graceful exits send a
+                                <em>"deathrattle"</em>
+                                for immediate removal. Peer-to-peer checkpoint transfers let new nodes sync without
+                                halting training — P2P download completes in 30–60 min.
+                            </p>
+                            <div class="code-line">heartbeat_interval=2s · timeout=6s</div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-icon yellow">⊛</div>
+                                <h3>Ring Topology Optimizer</h3>
+                            </div>
+                            <p>
+                                Background process continuously measures bandwidth between all node pairs. Solves a
+                                max-bottleneck Hamiltonian cycle problem (variant of TSP) to find the ring order that
+                                maximizes minimum-bandwidth along the all-reduce ring.
+                            </p>
+                            <div class="code-line">max_C min_(u,v)∈C w(u,v)</div>
+                        </div>
+                    </div>
+
+                    <!-- Training results -->
+                    <div class="section-label">Training efficiency — INTELLECT-1</div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Configuration</th>
+                                <th>Compute Utilization</th>
+                                <th>MFU</th>
+                                <th>All-reduce time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>US-only nodes</td>
+                                <td class="highlight">96%</td>
+                                <td>41.4%</td>
+                                <td>~2 min</td>
+                            </tr>
+                            <tr>
+                                <td>3 continents (global)</td>
+                                <td class="highlight">83%</td>
+                                <td>36.2%</td>
+                                <td>~10 min</td>
+                            </tr>
+                            <tr>
+                                <td>Baseline (centralized)</td>
+                                <td>~95%</td>
+                                <td>~45%</td>
+                                <td>ms (InfiniBand)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="insight-banner" style="border-left-color: var(--green)">
+                        <div class="label" style="color: var(--green)">📊 Result</div>
+                        <p>
+                            INTELLECT-1 achieves
+                            <strong>comparable performance</strong>
+                            to centralized training at
+                            <strong>1/400th the communication cost</strong>
+                            . The model was trained on 1T tokens with a high-quality data mix including web text, code,
+                            books, and scientific content — evaluated competitively on ARC, HellaSwag, TruthfulQA, and
+                            MMLU.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- INTELLECT-2 TAB -->
+            <div id="tab-intellect2" class="tab-content">
+                <div class="section">
+                    <div class="insight-banner" style="border-left-color: var(--accent3)">
+                        <div class="label" style="color: var(--accent3)">💡 Core Insight</div>
+                        <p>
+                            RL is
+                            <strong>inherently more asynchronous</strong>
+                            than pre-training. Rollout generation, policy training, and weight broadcasting can all
+                            proceed simultaneously with no blocking. INTELLECT-2 exploits this: inference workers
+                            (consumer GPUs!) generate reasoning traces while GRPO trainers update the policy
+                            asynchronously — zero communication overhead.
+                        </p>
+                    </div>
+
+                    <!-- Big stats RL -->
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-value purple">32B</div>
+                            <div class="stat-label">
+                                model parameters
+                                <br />
+                                (QwQ-32B base)
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value green">0</div>
+                            <div class="stat-label">
+                                communication
+                                <br />
+                                bottleneck
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">100×</div>
+                            <div class="stat-label">
+                                TOPLOC verification
+                                <br />
+                                speedup vs gen
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value yellow">~1%</div>
+                            <div class="stat-label">
+                                throughput overhead
+                                <br />
+                                from proof gen
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- RL pipeline -->
+                    <div class="arch-diagram">
+                        <div class="arch-title">// INTELLECT-2 distributed RL pipeline</div>
+                        <div class="rl-pipeline">
+                            <div class="rl-stage">
+                                <div class="rl-stage-content">
+                                    <div class="rl-stage-title">① Inference Workers</div>
+                                    <div class="rl-stage-desc">
+                                        Consumer GPUs (3090s, A100s, MI300X, H100s) generate reasoning traces using vLLM
+                                        in bf16. Samples questions deterministically via
+                                        <code>seed = node_addr · step + n_submissions</code>
+                                        to prevent cherry-picking. TOPLOC proofs built asynchronously on CPU with &lt;1%
+                                        overhead.
+                                    </div>
+                                </div>
+                                <span class="rl-badge badge-blue">vLLM · bf16</span>
+                            </div>
+                            <div class="rl-stage">
+                                <div class="rl-stage-content">
+                                    <div class="rl-stage-title">② TOPLOC Validators</div>
+                                    <div class="rl-stage-desc">
+                                        Locality-sensitive hashing scheme verifies inference integrity without redoing
+                                        full inference. Detects quantized/malicious model usage, wrong sampling
+                                        distributions, premature EOS termination. Validators run
+                                        <strong>100× faster</strong>
+                                        than generation — cheap to operate.
+                                    </div>
+                                </div>
+                                <span class="rl-badge badge-purple">LSH · 100×</span>
+                            </div>
+                            <div class="rl-stage">
+                                <div class="rl-stage-content">
+                                    <div class="rl-stage-title">③ GRPO Training Workers</div>
+                                    <div class="rl-stage-desc">
+                                        Centralized trusted nodes run GRPO with PyTorch FSDP2 (ZeRO-3 style). Two-sided
+                                        clipping prevents reward hacking. Computes log-probs using the
+                                        <em>current</em>
+                                        policy at optimization time (async-safe). Auxiliary KL + entropy losses.
+                                    </div>
+                                </div>
+                                <span class="rl-badge badge-green">FSDP2 · GRPO</span>
+                            </div>
+                            <div class="rl-stage">
+                                <div class="rl-stage-content">
+                                    <div class="rl-stage-title">④ SHARDCAST Weight CDN</div>
+                                    <div class="rl-stage-desc">
+                                        HTTP tree-topology network (like a CDN) propagates updated policy weights to all
+                                        inference workers. Checkpoints sharded and streamed in pipeline — workers begin
+                                        downloading before the full checkpoint is ready. SHA-256 integrity check on
+                                        assembly. Last 5 versions kept on relay servers.
+                                    </div>
+                                </div>
+                                <span class="rl-badge badge-yellow">CDN · SHA-256</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TOPLOC details -->
+                    <div class="section-label">TOPLOC — trustless inference verification</div>
+                    <div class="toploc-grid">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-icon purple">🔐</div>
+                                <h3>Computation Check</h3>
+                            </div>
+                            <p>
+                                Worker generates a cryptographic commitment to final hidden states (top-k indices +
+                                polynomial encoding) every 32 tokens. Validator reconstructs via prefill and checks
+                                consistency. Works across non-deterministic GPU hardware and different tensor-parallel
+                                configs.
+                            </p>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-icon blue">📊</div>
+                                <h3>Sampling Check</h3>
+                            </div>
+                            <p>
+                                Correct sampling from logits produces an exponential distribution with mode at 1. If a
+                                smaller model is used for token generation (only using large model for prefill to pass
+                                TOPLOC), a telltale bimodal distribution at 0 and 1 is detected.
+                            </p>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-icon green">✓</div>
+                                <h3>Sanity Checks</h3>
+                            </div>
+                            <p>
+                                EOS token probability must exceed 0.1. Rewards and advantages within predefined bounds.
+                                Parquet schema validation. Fixed deterministic sampling via seed — validator can verify
+                                the exact samples each worker should have used.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Training recipe -->
+                    <div class="section-label">GRPO training recipe innovations</div>
+                    <div class="cards-grid">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-icon orange">⚖</div>
+                                <h3>Two-Sided GRPO Clipping</h3>
+                            </div>
+                            <p>
+                                Standard GRPO clips only the upper bound of policy ratios. INTELLECT-2 adds a
+                                <strong>lower-bound clip</strong>
+                                too — preventing the model from collapsing to near-zero probability on correct answers
+                                when an advantage signal is noisy. Critical for training stability at scale.
+                            </p>
+                            <div class="code-line">clip(r, 1-ε, 1+ε) → clip(r, ε_low, 1+ε_high)</div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-icon yellow">⊘</div>
+                                <h3>Offline + Online Data Filtering</h3>
+                            </div>
+                            <p>
+                                <strong>Offline:</strong>
+                                Remove training prompts where the base model already scores perfectly (no learning
+                                signal) or never scores (too hard).
+                                <strong>Online:</strong>
+                                During training, filter out rollout batches with zero variance in rewards — these carry
+                                no gradient signal and waste compute.
+                            </p>
+                            <div class="code-line">filter: var(rewards) == 0 → discard batch</div>
+                        </div>
+                    </div>
+
+                    <div class="insight-banner" style="border-left-color: var(--green)">
+                        <div class="label" style="color: var(--green)">📊 Result</div>
+                        <p>
+                            INTELLECT-2 improves upon
+                            <strong>QwQ-32B</strong>
+                            (the state-of-the-art 32B reasoning model) across math and coding benchmarks, demonstrating
+                            that globally distributed asynchronous RL can successfully train reasoning capabilities —
+                            without any centralized GPU cluster.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- COMPARISON TAB -->
+            <div id="tab-compare" class="tab-content">
+                <div class="section">
+                    <div class="section-label">Head-to-head technical comparison</div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Dimension</th>
+                                <th>INTELLECT-1</th>
+                                <th>INTELLECT-2</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Training paradigm</td>
+                                <td><span class="tag badge-blue">Pre-training / SFT</span></td>
+                                <td><span class="tag badge-purple">Reinforcement Learning</span></td>
+                            </tr>
+                            <tr>
+                                <td>Model scale</td>
+                                <td>10B parameters</td>
+                                <td>32B parameters</td>
+                            </tr>
+                            <tr>
+                                <td>Synchronization</td>
+                                <td>Every 100 steps (DiLoCo outer step)</td>
+                                <td>Fully asynchronous (no global sync)</td>
+                            </tr>
+                            <tr>
+                                <td>Communication</td>
+                                <td>int8 pseudo-gradients, ring all-reduce</td>
+                                <td>Weight CDN (SHARDCAST), HTTP streaming</td>
+                            </tr>
+                            <tr>
+                                <td>Bandwidth reduction</td>
+                                <td class="highlight">400× vs data-parallel</td>
+                                <td class="highlight">0 overhead (async overlap)</td>
+                            </tr>
+                            <tr>
+                                <td>Compute utilization</td>
+                                <td>83–96%</td>
+                                <td>N/A (async; no blocked waiting)</td>
+                            </tr>
+                            <tr>
+                                <td>Trust model</td>
+                                <td>Trusted nodes assumed</td>
+                                <td>Trustless (TOPLOC proofs)</td>
+                            </tr>
+                            <tr>
+                                <td>Node requirements</td>
+                                <td>8×H100 nodes</td>
+                                <td>Consumer GPUs (3090, A100, etc.)</td>
+                            </tr>
+                            <tr>
+                                <td>Key algo innovation</td>
+                                <td>DiLoCo + int8 ring-all-reduce</td>
+                                <td>Async GRPO + two-sided clipping</td>
+                            </tr>
+                            <tr>
+                                <td>Framework</td>
+                                <td>PRIME (FSDP2 + DiLoCo)</td>
+                                <td>PRIME-RL (fully decoupled)</td>
+                            </tr>
+                            <tr>
+                                <td>Topology</td>
+                                <td>ElasticDeviceMesh (VPN/Tailscale)</td>
+                                <td>Decentralized ledger + orchestrator (Rust)</td>
+                            </tr>
+                            <tr>
+                                <td>Fault tolerance</td>
+                                <td>Heartbeat 2s, P2P checkpoint sync</td>
+                                <td>Step counter polling, dynamic join/leave</td>
+                            </tr>
+                            <tr>
+                                <td>Base model</td>
+                                <td>Llama-3 architecture (WSD scheduler)</td>
+                                <td>QwQ-32B base</td>
+                            </tr>
+                            <tr>
+                                <td>Key result</td>
+                                <td class="highlight">Matches centralized training quality</td>
+                                <td class="highlight">Outperforms QwQ-32B on reasoning</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- Progression narrative -->
+                    <div class="arch-diagram">
+                        <div class="arch-title">// The decentralized training arc — 2024 → 2025</div>
+                        <div class="rl-pipeline" style="max-width: 100%">
+                            <div class="rl-stage">
+                                <div class="rl-stage-content">
+                                    <div class="rl-stage-title">Step 1 — Solve bandwidth (INTELLECT-1)</div>
+                                    <div class="rl-stage-desc">
+                                        DiLoCo proves that 100-step local training + infrequent pseudo-gradient sync can
+                                        match dense gradient communication. int8 compression + topology-aware rings
+                                        squeeze 400× bandwidth reduction out of standard internet connections. Result:
+                                        10B model, 1T tokens, 30 contributors.
+                                    </div>
+                                </div>
+                                <span class="rl-badge badge-blue">Dec 2024</span>
+                            </div>
+                            <div class="rl-stage">
+                                <div class="rl-stage-content">
+                                    <div class="rl-stage-title">Step 2 — Go fully async (INTELLECT-2)</div>
+                                    <div class="rl-stage-desc">
+                                        Recognize that RL's rollout→train→update cycle is naturally decoupled.
+                                        Asynchronous GRPO eliminates the remaining sync bottleneck. TOPLOC makes
+                                        trustless permissionless compute viable. SHARDCAST delivers weights to thousands
+                                        of heterogeneous inference workers. Result: 32B reasoning model, beats SoTA.
+                                    </div>
+                                </div>
+                                <span class="rl-badge badge-purple">May 2025</span>
+                            </div>
+                            <div class="rl-stage">
+                                <div class="rl-stage-content">
+                                    <div class="rl-stage-title">Step 3 — What's next?</div>
+                                    <div class="rl-stage-desc">
+                                        PCCL (Prime Collective Communications Library) — a TCP-based protocol
+                                        purpose-built for internet collective communication with dynamic membership,
+                                        shared state sync, and bandwidth-aware topology. The datacenter network stack is
+                                        finally being redesigned from scratch for the open internet.
+                                    </div>
+                                </div>
+                                <span class="rl-badge badge-green">future</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end container -->
+
+        <!-- Footer -->
+        <div class="container">
+            <footer>
+                <div>
+                    <span class="live-dot"></span>
+                    Decentralized Training Visualization
+                </div>
+                <div>
+                    <a href="https://arxiv.org/abs/2412.01152">2412.01152</a>
+                    ·
+                    <a href="https://arxiv.org/abs/2505.07291">2505.07291</a>
+                </div>
+            </footer>
+        </div>
+
+        <script>
+            function switchTab(name) {
+                document.querySelectorAll(".tab").forEach((t, i) => {
+                    t.classList.toggle("active", ["overview", "intellect1", "intellect2", "compare"][i] === name)
+                })
+                document.querySelectorAll(".tab-content").forEach((c) => c.classList.remove("active"))
+                document.getElementById("tab-" + name).classList.add("active")
+            }
+
+            // Animate bars when visible
+            const observer = new IntersectionObserver(
+                (entries) => {
+                    entries.forEach((e) => {
+                        if (e.isIntersecting) {
+                            e.target.querySelectorAll(".bw-bar-fill").forEach((bar) => {
+                                const w = bar.style.width
+                                bar.style.width = "0"
+                                setTimeout(() => {
+                                    bar.style.width = w
+                                }, 100)
+                            })
+                        }
+                    })
+                },
+                { threshold: 0.2 },
+            )
+
+            document.querySelectorAll(".bw-compare").forEach((el) => observer.observe(el))
+        </script>
+    </body>
+</html>

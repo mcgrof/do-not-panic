@@ -3,6 +3,24 @@
     "updated": "2026-03-06",
     "visualizations": [
         {
+            "id": 76,
+            "title": "INTELLECT-1 & INTELLECT-2 \u2014 Decentralized Training",
+            "description": "How INTELLECT-1 and INTELLECT-2 train frontier models across globally distributed GPU swarms using DiLoCo and async GRPO, slashing bandwidth 400x.",
+            "url": "viz/2026/03/06/intellect_visualization.html",
+            "date": "2026-03-06",
+            "image": "images/76.png",
+            "papers": [
+                {
+                    "id": "2412.01152",
+                    "type": "arxiv"
+                },
+                {
+                    "id": "2505.07291",
+                    "type": "arxiv"
+                }
+            ]
+        },
+        {
             "id": 74,
             "title": "KVQuant: KV Cache Quantization for Long-Context LLMs",
             "description": "Interactive visualization of KVQuant \u2014 per-channel key quantization, pre-RoPE storage, non-uniform quantization, and dense-and-sparse decomposition for 10M context on 8\u00d7A100.",
