@@ -19,7 +19,13 @@
             }
 
             body {
-                background: #08080d;
+                background-color: #1a1a2e;
+                background-image: url("images/do-not-panic-bg.png");
+                background-repeat: no-repeat;
+                background-position: center top;
+                background-size: cover;
+                background-attachment: fixed;
+                background-blend-mode: multiply;
                 color: #d8d8d8;
                 font-family: "JetBrains Mono", "SF Mono", "Fira Code", "Cascadia Code", monospace;
                 font-size: 15px;
@@ -48,14 +54,13 @@
             }
 
             .site-header h1 {
-                font-size: clamp(36px, 7vw, 64px);
-                font-weight: 900;
-                background: linear-gradient(135deg, #44aaff, #cc66ff, #ff6699);
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-                background-clip: text;
-                letter-spacing: -1px;
                 margin-bottom: 12px;
+                line-height: 0;
+            }
+
+            .site-logo {
+                max-width: clamp(240px, 50vw, 480px);
+                height: auto;
                 filter: drop-shadow(0 0 20px rgba(100, 140, 255, 0.3)) drop-shadow(0 0 40px rgba(204, 102, 255, 0.15));
             }
 
@@ -481,7 +486,7 @@
         <canvas id="star-canvas"></canvas>
 
         <header class="site-header">
-            <h1>do-not-panic.com</h1>
+            <h1><img src="images/do-not-panic-main-logo.png" alt="do-not-panic.com" class="site-logo" /></h1>
             <p class="tagline">Linux kernel &middot; open source &middot; travel &middot; philosophy &middot; tools</p>
             <p class="author">by Luis Chamberlain</p>
             <div class="stats">
