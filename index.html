@@ -605,7 +605,7 @@
             <p class="author">by Luis Chamberlain</p>
             <div class="stats">
                 <div>
-                    <span>69</span>
+                    <span>70</span>
                     posts
                 </div>
                 <div>
@@ -666,6 +666,16 @@
             ]
 
             var POSTS = [
+                {
+                    id: 0,
+                    date: "2026-03-06",
+                    title: "knlp — Kernel Machine Learning R&D",
+                    excerpt: "AI research and development — exploring machine learning at the kernel level.",
+                    category: "ai",
+                    source: "external",
+                    url: "https://mcgrof.github.io/knlp/",
+                    image: "images/knlp-logo.png",
+                },
                 {
                     id: 72,
                     date: "2026-03-04",
@@ -1510,6 +1520,9 @@
                     activeFilter === "all"
                         ? POSTS
                         : POSTS.filter(function (p) {
+                              if (activeFilter === "ai") {
+                                  return p.category === "ai" || p.category === "viz"
+                              }
                               return p.category === activeFilter
                           })
 
