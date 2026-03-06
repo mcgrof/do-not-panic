@@ -64,16 +64,24 @@
                 filter: drop-shadow(0 0 20px rgba(100, 140, 255, 0.3)) drop-shadow(0 0 40px rgba(204, 102, 255, 0.15));
             }
 
+            .header-info-backdrop {
+                display: inline-block;
+                background: rgba(8, 8, 13, 0.7);
+                border-radius: 12px;
+                padding: 16px 28px;
+                margin-top: 12px;
+            }
+
             .site-header .tagline {
                 font-size: 14px;
-                color: #666;
+                color: #aaa;
                 margin-bottom: 8px;
                 letter-spacing: 0.5px;
             }
 
             .site-header .author {
                 font-size: 14px;
-                color: #888;
+                color: #bbb;
                 margin-bottom: 24px;
             }
 
@@ -82,13 +90,13 @@
                 justify-content: center;
                 gap: 32px;
                 font-size: 14px;
-                color: #555;
+                color: #999;
                 letter-spacing: 1px;
                 text-transform: uppercase;
             }
 
             .stats span {
-                color: #888;
+                color: #ddd;
                 font-weight: 700;
             }
 
@@ -270,6 +278,21 @@
                 letter-spacing: -2px;
                 line-height: 1;
                 user-select: none;
+            }
+
+            /* ── Month Markers ──────────────────────────── */
+
+            .month-marker {
+                grid-column: 1 / -1;
+                padding: 8px 0 4px;
+            }
+
+            .month-marker .month-label {
+                font-size: 14px;
+                font-weight: 600;
+                color: rgba(255, 255, 255, 0.18);
+                letter-spacing: 2px;
+                text-transform: uppercase;
             }
 
             /* ── Card ────────────────────────────────────── */
@@ -551,6 +574,10 @@
                     font-size: 48px;
                 }
 
+                .month-marker .month-label {
+                    font-size: 12px;
+                }
+
                 /* On mobile: no hover overlay, show body inline */
                 .card-body {
                     position: relative;
@@ -599,22 +626,24 @@
 
         <header class="site-header">
             <h1><img src="images/do-not-panic-main-logo.png" alt="do-not-panic.com" class="site-logo" /></h1>
-            <p class="tagline">
-                AI &middot; Linux kernel &middot; open source &middot; travel &middot; philosophy &middot; tools
-            </p>
-            <p class="author">by Luis Chamberlain</p>
-            <div class="stats">
-                <div>
-                    <span>70</span>
-                    posts
-                </div>
-                <div>
-                    <span>15</span>
-                    years
-                </div>
-                <div>
-                    <span>8</span>
-                    categories
+            <div class="header-info-backdrop">
+                <p class="tagline">
+                    AI &middot; Linux kernel &middot; open source &middot; travel &middot; philosophy &middot; tools
+                </p>
+                <p class="author">by Luis Chamberlain</p>
+                <div class="stats">
+                    <div>
+                        <span>70</span>
+                        posts
+                    </div>
+                    <div>
+                        <span>15</span>
+                        years
+                    </div>
+                    <div>
+                        <span>8</span>
+                        categories
+                    </div>
                 </div>
             </div>
         </header>
@@ -1528,17 +1557,43 @@
 
                 noResults.style.display = filtered.length === 0 ? "block" : "none"
 
+                var MONTH_NAMES = [
+                    "January",
+                    "February",
+                    "March",
+                    "April",
+                    "May",
+                    "June",
+                    "July",
+                    "August",
+                    "September",
+                    "October",
+                    "November",
+                    "December",
+                ]
                 var currentYear = null
+                var currentMonth = null
 
                 filtered.forEach(function (post) {
                     var year = post.date.substring(0, 4)
+                    var month = post.date.substring(5, 7)
 
                     if (year !== currentYear) {
                         currentYear = year
+                        currentMonth = null
                         var marker = document.createElement("div")
                         marker.className = "year-marker"
                         marker.innerHTML = '<div class="year-label">' + year + "</div>"
                         grid.appendChild(marker)
+                    }
+
+                    if (month !== currentMonth) {
+                        currentMonth = month
+                        var mMarker = document.createElement("div")
+                        mMarker.className = "month-marker"
+                        mMarker.innerHTML =
+                            '<div class="month-label">' + MONTH_NAMES[parseInt(month, 10) - 1] + "</div>"
+                        grid.appendChild(mMarker)
                     }
 
                     var badge = BADGE_MAP[post.category]
