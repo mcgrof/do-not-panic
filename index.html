@@ -92,6 +92,64 @@
                 font-weight: 700;
             }
 
+            /* ── Podcast Banner ──────────────────────────── */
+
+            .podcast-banner {
+                position: relative;
+                z-index: 2;
+                display: flex;
+                justify-content: center;
+                gap: 24px;
+                padding: 0 20px 40px;
+                flex-wrap: wrap;
+            }
+
+            .podcast-banner a {
+                display: flex;
+                align-items: center;
+                gap: 16px;
+                padding: 14px 24px;
+                border-radius: 14px;
+                background: rgba(20, 20, 40, 0.85);
+                border: 1px solid rgba(68, 170, 255, 0.2);
+                text-decoration: none;
+                color: #d8d8d8;
+                transition:
+                    border-color 0.25s,
+                    box-shadow 0.25s,
+                    transform 0.2s;
+            }
+
+            .podcast-banner a:hover {
+                border-color: rgba(68, 170, 255, 0.5);
+                box-shadow: 0 0 20px rgba(68, 170, 255, 0.15);
+                transform: translateY(-2px);
+            }
+
+            .podcast-banner img {
+                width: 56px;
+                height: 56px;
+                border-radius: 10px;
+                object-fit: cover;
+            }
+
+            .podcast-banner .link-text {
+                display: flex;
+                flex-direction: column;
+                gap: 2px;
+            }
+
+            .podcast-banner .link-title {
+                font-size: 15px;
+                font-weight: 700;
+                color: #eee;
+            }
+
+            .podcast-banner .link-desc {
+                font-size: 12px;
+                color: #888;
+            }
+
             /* ── Filter Bar ──────────────────────────────── */
 
             .filter-bar {
@@ -504,6 +562,23 @@
                 </div>
             </div>
         </header>
+
+        <div class="podcast-banner">
+            <a href="https://podcast.do-not-panic.com/" target="_blank" rel="noopener noreferrer">
+                <img src="images/post-transformers-logo.jpg" alt="AI: Post Transformers" />
+                <span class="link-text">
+                    <span class="link-title">AI: Post Transformers</span>
+                    <span class="link-desc">AI research reviews podcast</span>
+                </span>
+            </a>
+            <a href="https://podcast.do-not-panic.com/queue.html" target="_blank" rel="noopener noreferrer">
+                <img src="images/paper-queue.png" alt="Paper Queue" />
+                <span class="link-text">
+                    <span class="link-title">Paper Queue</span>
+                    <span class="link-desc">Upcoming papers to review</span>
+                </span>
+            </a>
+        </div>
 
         <nav class="filter-bar" id="filter-bar"></nav>
 
