@@ -5,7 +5,7 @@
         {
             "id": 74,
             "title": "KVQuant: KV Cache Quantization for Long-Context LLMs",
-            "description": "Interactive visualization of KVQuant techniques \u2014 per-channel key quantization, pre-RoPE storage, non-uniform quantization, and dense-and-sparse decomposition.",
+            "description": "Interactive visualization of KVQuant \u2014 per-channel key quantization, pre-RoPE storage, non-uniform quantization, and dense-and-sparse decomposition for 10M context on 8\u00d7A100.",
             "url": "viz/2026/03/06/kvquant-viz.html",
             "date": "2026-03-06",
             "image": "images/74.png",
