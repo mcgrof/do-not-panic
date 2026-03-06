@@ -180,10 +180,11 @@ viz-convert:
 	done; \
 	if [ $$found -eq 0 ]; then echo "[CONVERT] No JSX files to convert"; fi
 
-## viz: Full visualization pipeline (convert, icons, catalog, format)
+## viz: Full visualization pipeline (convert, icons, catalog, format, commit)
 viz: viz-convert icons
 	@$(VENV_PYTHON) gen-infographics.py --catalog-only
 	@$(MAKE) format
+	@./scripts/viz-commit.sh
 	@echo "Done! Catalog updated at viz/catalog.json"
 
 ## viz-dry-run: Preview what viz pipeline would do without changes
@@ -203,9 +204,12 @@ help:
 	@echo "  make clean        Stop server and clean up files"
 	@echo ""
 	@echo "Visualization Pipeline:"
-	@echo "  make viz             Full pipeline: convert, discover, icons, catalog, format"
+	@echo "  make viz             Full pipeline: convert, icons, catalog, format, auto-commit"
 	@echo "  make viz-convert     Convert leftover JSX files to standalone HTML"
 	@echo "  make viz-dry-run     Preview pipeline without changes"
+	@echo ""
+	@echo "  Flow: JSX->HTML -> discover+inject -> icons -> catalog.json -> format -> commit"
+	@echo "  After 'make viz', just run 'git push'."
 	@echo ""
 	@echo "Infographics:"
 	@echo "  make icons           Generate infographic images (skips existing)"
@@ -224,9 +228,7 @@ help:
 	@echo "  PORT=8080 make serve    Use custom port (default: 8000)"
 	@echo ""
 	@echo "Features:"
-	@echo "  • Watch visualizations
-	@echo ""
-	@echo "The visualization demonstrates a few things."
+	@echo "  Watch visualizations at http://localhost:PORT"
 
 # Default target
 .DEFAULT_GOAL := serve
