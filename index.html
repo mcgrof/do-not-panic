@@ -112,6 +112,13 @@
                 padding: 0 20px 40px;
             }
 
+            .podcast-banner .hero-links {
+                display: flex;
+                gap: 20px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
             .podcast-banner .hero-link {
                 display: flex;
                 align-items: center;
@@ -137,6 +144,20 @@
                     0 0 30px rgba(102, 255, 204, 0.2),
                     0 0 60px rgba(102, 255, 204, 0.08);
                 transform: translateY(-2px);
+            }
+
+            .podcast-banner .hero-link.cyan {
+                border-color: rgba(0, 212, 255, 0.35);
+                box-shadow:
+                    0 0 24px rgba(0, 212, 255, 0.1),
+                    inset 0 0 24px rgba(0, 212, 255, 0.03);
+            }
+
+            .podcast-banner .hero-link.cyan:hover {
+                border-color: rgba(0, 212, 255, 0.6);
+                box-shadow:
+                    0 0 30px rgba(0, 212, 255, 0.2),
+                    0 0 60px rgba(0, 212, 255, 0.08);
             }
 
             .podcast-banner .hero-link img {
@@ -633,7 +654,7 @@
                 <p class="author">by Luis Chamberlain</p>
                 <div class="stats">
                     <div>
-                        <span>72</span>
+                        <span>73</span>
                         posts
                     </div>
                     <div>
@@ -649,13 +670,22 @@
         </header>
 
         <div class="podcast-banner">
-            <a href="https://mcgrof.github.io/knlp/" class="hero-link" target="_blank" rel="noopener noreferrer">
-                <img src="images/knlp-logo.png" alt="knlp — Kernel Machine Learning R&D" />
-                <span class="link-text">
-                    <span class="link-title">knlp — Kernel ML R&D</span>
-                    <span class="link-desc">AI research & development</span>
-                </span>
-            </a>
+            <div class="hero-links">
+                <a href="https://mcgrof.github.io/knlp/" class="hero-link" target="_blank" rel="noopener noreferrer">
+                    <img src="images/knlp-logo.png" alt="knlp — Kernel Machine Learning R&D" />
+                    <span class="link-text">
+                        <span class="link-title">knlp — Kernel ML R&D</span>
+                        <span class="link-desc">AI research & development</span>
+                    </span>
+                </a>
+                <a href="https://kvcache.io/" class="hero-link cyan" target="_blank" rel="noopener noreferrer">
+                    <img src="images/kvcache-logo.png" alt="kvcache.io — LMCache KV Cache Visualizations" />
+                    <span class="link-text">
+                        <span class="link-title">kvcache.io</span>
+                        <span class="link-desc">LMCache &mdash; KV cache simulations & projections</span>
+                    </span>
+                </a>
+            </div>
             <div class="secondary-links">
                 <a href="https://podcast.do-not-panic.com/" target="_blank" rel="noopener noreferrer">
                     <img src="images/post-transformers-logo.jpg" alt="AI: Post Transformers" />
@@ -704,6 +734,17 @@
                     source: "external",
                     url: "https://mcgrof.github.io/knlp/",
                     image: "images/knlp-logo.png",
+                },
+                {
+                    id: 75,
+                    date: "2026-03-06",
+                    title: "kvcache.io — LMCache KV Cache Simulations",
+                    excerpt:
+                        "Browser-based KV cache visualizations and projections — inference simulation, training, SOTA KV cache projections, orchestrator comparisons, DeepSeek Engram disk offloading, and agentic cache offloading. An LMCache project.",
+                    category: "ai",
+                    source: "external",
+                    url: "https://kvcache.io/",
+                    image: "images/kvcache-logo.png",
                 },
                 {
                     id: 74,
