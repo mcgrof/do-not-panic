@@ -1,0 +1,1391 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Cotes' Near-Miss & Euler's Identity → Neural Networks</title>
+        <link
+            href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=IBM+Plex+Mono:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,700;1,400&display=swap"
+            rel="stylesheet"
+        />
+        <style>
+            :root {
+                --bg: #0a0a0f;
+                --bg2: #10101a;
+                --bg3: #14141f;
+                --border: #2a2a3a;
+                --gold: #d4a843;
+                --gold-dim: #8a6820;
+                --amber: #e8843a;
+                --blue: #4a9eff;
+                --blue-dim: #2255aa;
+                --cyan: #3ecfcf;
+                --green: #5ecf8a;
+                --red: #e05555;
+                --purple: #aa77ff;
+                --text: #d8d4cc;
+                --text-dim: #7a7870;
+                --serif: "IM Fell English", serif;
+                --serif2: "Playfair Display", serif;
+                --mono: "IBM Plex Mono", monospace;
+            }
+
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                background: var(--bg);
+                color: var(--text);
+                font-family: var(--mono);
+                overflow-x: hidden;
+                line-height: 1.6;
+            }
+
+            /* ── GRAIN OVERLAY ── */
+            body::before {
+                content: "";
+                position: fixed;
+                inset: 0;
+                background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+                pointer-events: none;
+                z-index: 9999;
+                opacity: 0.4;
+            }
+
+            /* ── HEADER ── */
+            header {
+                padding: 4rem 2rem 2rem;
+                max-width: 1100px;
+                margin: 0 auto;
+                border-bottom: 1px solid var(--border);
+            }
+
+            .label-tag {
+                font-size: 0.65rem;
+                letter-spacing: 0.2em;
+                text-transform: uppercase;
+                color: var(--gold);
+                margin-bottom: 1rem;
+                opacity: 0.8;
+            }
+
+            h1 {
+                font-family: var(--serif2);
+                font-size: clamp(1.8rem, 4vw, 3rem);
+                font-weight: 700;
+                line-height: 1.15;
+                color: #f0ece0;
+                margin-bottom: 0.5rem;
+            }
+
+            h1 em {
+                font-style: italic;
+                color: var(--gold);
+            }
+
+            .subtitle {
+                font-size: 0.78rem;
+                color: var(--text-dim);
+                letter-spacing: 0.05em;
+                margin-top: 0.8rem;
+            }
+
+            /* ── LAYOUT ── */
+            main {
+                max-width: 1100px;
+                margin: 0 auto;
+                padding: 0 2rem 4rem;
+            }
+
+            /* ── TIMELINE ── */
+            .timeline {
+                display: flex;
+                gap: 0;
+                margin: 3rem 0;
+                position: relative;
+            }
+
+            .timeline::before {
+                content: "";
+                position: absolute;
+                top: 2.8rem;
+                left: 10%;
+                right: 10%;
+                height: 1px;
+                background: linear-gradient(
+                    90deg,
+                    transparent,
+                    var(--gold-dim),
+                    var(--gold),
+                    var(--gold-dim),
+                    transparent
+                );
+            }
+
+            .tnode {
+                flex: 1;
+                text-align: center;
+                padding: 0 0.5rem;
+                position: relative;
+            }
+
+            .tnode-dot {
+                width: 14px;
+                height: 14px;
+                border-radius: 50%;
+                margin: 0 auto 1rem;
+                border: 2px solid var(--gold-dim);
+                background: var(--bg);
+                position: relative;
+                z-index: 1;
+            }
+
+            .tnode.active .tnode-dot {
+                border-color: var(--gold);
+                background: var(--gold);
+                box-shadow: 0 0 16px var(--gold);
+            }
+
+            .tnode.missed .tnode-dot {
+                border-color: var(--red);
+                background: var(--bg);
+                box-shadow: 0 0 12px rgba(224, 85, 85, 0.4);
+            }
+
+            .tnode-year {
+                font-size: 1.1rem;
+                font-weight: 600;
+                color: var(--gold);
+                margin-bottom: 0.3rem;
+            }
+
+            .tnode.missed .tnode-year {
+                color: var(--red);
+            }
+
+            .tnode-name {
+                font-family: var(--serif);
+                font-size: 0.9rem;
+                color: var(--text);
+                margin-bottom: 0.4rem;
+            }
+
+            .tnode-desc {
+                font-size: 0.65rem;
+                color: var(--text-dim);
+                line-height: 1.5;
+            }
+
+            .missed-banner {
+                background: rgba(224, 85, 85, 0.08);
+                border: 1px solid rgba(224, 85, 85, 0.3);
+                border-radius: 4px;
+                padding: 0.3rem 0.6rem;
+                font-size: 0.6rem;
+                color: var(--red);
+                letter-spacing: 0.1em;
+                text-transform: uppercase;
+                margin-top: 0.5rem;
+                display: inline-block;
+            }
+
+            /* ── TWO-PANE LAYOUT ── */
+            .split {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 1.5rem;
+                margin: 2rem 0;
+            }
+
+            @media (max-width: 720px) {
+                .split {
+                    grid-template-columns: 1fr;
+                }
+                .timeline {
+                    flex-direction: column;
+                }
+                .timeline::before {
+                    display: none;
+                }
+            }
+
+            /* ── PANELS ── */
+            .panel {
+                background: var(--bg2);
+                border: 1px solid var(--border);
+                border-radius: 6px;
+                padding: 1.5rem;
+                position: relative;
+            }
+
+            .panel-label {
+                font-size: 0.6rem;
+                letter-spacing: 0.18em;
+                text-transform: uppercase;
+                color: var(--text-dim);
+                margin-bottom: 1rem;
+            }
+
+            .panel h3 {
+                font-family: var(--serif);
+                font-size: 1rem;
+                color: var(--text);
+                margin-bottom: 1rem;
+                font-style: italic;
+            }
+
+            /* ── FORMULA BLOCKS ── */
+            .formula-block {
+                background: var(--bg3);
+                border-left: 3px solid var(--gold);
+                border-radius: 0 4px 4px 0;
+                padding: 1rem 1.2rem;
+                margin: 1rem 0;
+                font-size: 1.05rem;
+                color: #f0ece0;
+                letter-spacing: 0.03em;
+            }
+
+            .formula-block.blue {
+                border-left-color: var(--blue);
+            }
+            .formula-block.cyan {
+                border-left-color: var(--cyan);
+            }
+            .formula-block.purple {
+                border-left-color: var(--purple);
+            }
+            .formula-block.green {
+                border-left-color: var(--green);
+            }
+
+            .formula-block .anno {
+                font-size: 0.65rem;
+                color: var(--text-dim);
+                margin-top: 0.4rem;
+                letter-spacing: 0.05em;
+            }
+
+            /* ── CANVAS SECTION ── */
+            .canvas-wrap {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+
+            canvas {
+                border: 1px solid var(--border);
+                border-radius: 4px;
+                background: #07070d;
+                display: block;
+            }
+
+            /* ── SLIDER ── */
+            .ctrl-row {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+                width: 100%;
+            }
+
+            .ctrl-label {
+                font-size: 0.72rem;
+                color: var(--text-dim);
+                white-space: nowrap;
+                min-width: 60px;
+            }
+
+            input[type="range"] {
+                -webkit-appearance: none;
+                flex: 1;
+                height: 3px;
+                background: var(--border);
+                border-radius: 2px;
+                outline: none;
+                cursor: pointer;
+            }
+
+            input[type="range"]::-webkit-slider-thumb {
+                -webkit-appearance: none;
+                width: 14px;
+                height: 14px;
+                border-radius: 50%;
+                background: var(--gold);
+                cursor: pointer;
+                box-shadow: 0 0 8px var(--gold);
+            }
+
+            .val-display {
+                font-size: 0.8rem;
+                color: var(--gold);
+                min-width: 70px;
+                text-align: right;
+            }
+
+            /* ── VIEW TOGGLE ── */
+            .toggle-row {
+                display: flex;
+                gap: 0.5rem;
+                margin-bottom: 1rem;
+            }
+
+            .tog-btn {
+                padding: 0.35rem 0.8rem;
+                font-family: var(--mono);
+                font-size: 0.7rem;
+                border: 1px solid var(--border);
+                background: var(--bg3);
+                color: var(--text-dim);
+                border-radius: 3px;
+                cursor: pointer;
+                transition: all 0.2s;
+                letter-spacing: 0.05em;
+            }
+
+            .tog-btn.active {
+                background: rgba(212, 168, 67, 0.12);
+                border-color: var(--gold);
+                color: var(--gold);
+            }
+
+            /* ── NN SECTION ── */
+            .section-header {
+                display: flex;
+                align-items: baseline;
+                gap: 1rem;
+                margin: 3rem 0 1.5rem;
+                border-bottom: 1px solid var(--border);
+                padding-bottom: 0.8rem;
+            }
+
+            .section-header h2 {
+                font-family: var(--serif2);
+                font-size: 1.4rem;
+                color: #f0ece0;
+                font-weight: 700;
+            }
+
+            .section-header .sh-tag {
+                font-size: 0.62rem;
+                color: var(--text-dim);
+                letter-spacing: 0.12em;
+                text-transform: uppercase;
+            }
+
+            .nn-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 1rem;
+            }
+
+            @media (max-width: 720px) {
+                .nn-grid {
+                    grid-template-columns: 1fr;
+                }
+            }
+
+            .nn-card {
+                background: var(--bg2);
+                border: 1px solid var(--border);
+                border-radius: 6px;
+                padding: 1.3rem;
+                transition: border-color 0.2s;
+            }
+
+            .nn-card:hover {
+                border-color: var(--blue-dim);
+            }
+
+            .nn-card-tag {
+                font-size: 0.58rem;
+                letter-spacing: 0.18em;
+                text-transform: uppercase;
+                margin-bottom: 0.6rem;
+            }
+
+            .nn-card h4 {
+                font-family: var(--serif);
+                font-size: 1rem;
+                color: var(--text);
+                margin-bottom: 0.6rem;
+                font-style: italic;
+            }
+
+            .nn-card p {
+                font-size: 0.7rem;
+                color: var(--text-dim);
+                line-height: 1.65;
+                margin-bottom: 0.8rem;
+            }
+
+            /* ── ROPE CANVAS ── */
+            #rope-canvas {
+                width: 100%;
+                height: 160px;
+                border: 1px solid var(--border);
+                border-radius: 4px;
+                background: #07070d;
+                display: block;
+            }
+
+            /* ── STEP-BY-STEP DERIVATION ── */
+            .deriv {
+                counter-reset: step;
+                margin: 1rem 0;
+            }
+
+            .deriv-step {
+                display: flex;
+                gap: 1rem;
+                margin-bottom: 0.6rem;
+                align-items: flex-start;
+            }
+
+            .step-num {
+                font-size: 0.6rem;
+                color: var(--gold);
+                min-width: 1.2rem;
+                padding-top: 0.1rem;
+                opacity: 0.6;
+            }
+
+            .step-body {
+                font-size: 0.78rem;
+                color: var(--text-dim);
+                line-height: 1.5;
+            }
+
+            .step-body .hi {
+                color: var(--text);
+            }
+            .step-body .gold {
+                color: var(--gold);
+            }
+            .step-body .blue {
+                color: var(--blue);
+            }
+            .step-body .cyan {
+                color: var(--cyan);
+            }
+            .step-body .purple {
+                color: var(--purple);
+            }
+            .step-body .red {
+                color: var(--red);
+            }
+
+            /* ── ANIMATE-IN ── */
+            @keyframes fadeUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(16px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            .panel,
+            .nn-card,
+            .timeline {
+                animation: fadeUp 0.5s ease both;
+            }
+
+            .panel:nth-child(2) {
+                animation-delay: 0.08s;
+            }
+            .nn-card:nth-child(2) {
+                animation-delay: 0.06s;
+            }
+            .nn-card:nth-child(3) {
+                animation-delay: 0.12s;
+            }
+            .nn-card:nth-child(4) {
+                animation-delay: 0.18s;
+            }
+
+            /* ── READOUT ── */
+            .readout {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 0.5rem;
+                margin-top: 0.8rem;
+            }
+
+            .ro-cell {
+                background: var(--bg3);
+                border: 1px solid var(--border);
+                border-radius: 3px;
+                padding: 0.5rem 0.7rem;
+                text-align: center;
+            }
+
+            .ro-cell .ro-label {
+                font-size: 0.58rem;
+                color: var(--text-dim);
+                letter-spacing: 0.1em;
+                text-transform: uppercase;
+                margin-bottom: 0.2rem;
+            }
+
+            .ro-cell .ro-val {
+                font-size: 0.9rem;
+                font-weight: 600;
+            }
+
+            /* ── FOOTER ── */
+            footer {
+                border-top: 1px solid var(--border);
+                padding: 2rem;
+                max-width: 1100px;
+                margin: 0 auto;
+                font-size: 0.65rem;
+                color: var(--text-dim);
+                line-height: 1.7;
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <div class="label-tag">Mathematical History × Complex Analysis × Modern ML</div>
+            <h1>
+                Cotes'
+                <em>Near-Miss</em>
+                &amp; the Identity That Runs Your Transformer
+            </h1>
+            <p class="subtitle">
+                Roger Cotes · 1716 &nbsp;→&nbsp; Euler · 1748 &nbsp;→&nbsp; RoPE / Sinusoidal PE · 2017–2023
+            </p>
+        </header>
+
+        <main>
+            <!-- TIMELINE -->
+            <div class="timeline">
+                <div class="tnode missed">
+                    <div class="tnode-dot"></div>
+                    <div class="tnode-year">1716</div>
+                    <div class="tnode-name">Roger Cotes</div>
+                    <div class="tnode-desc">
+                        Derives ln(cosφ + i sinφ) = iφ while computing ellipsoid surface area. Dies age 33. Never
+                        exponentiates it.
+                    </div>
+                    <div class="missed-banner">💀 near-miss</div>
+                </div>
+                <div class="tnode">
+                    <div class="tnode-dot"></div>
+                    <div class="tnode-year">1748</div>
+                    <div class="tnode-name">Leonhard Euler</div>
+                    <div class="tnode-desc">
+                        <em>Introductio in Analysin Infinitorum</em>
+                        — publishes e
+                        <sup>iφ</sup>
+                        = cosφ + i sinφ. Exponentiates what Cotes had in log form.
+                    </div>
+                </div>
+                <div class="tnode active">
+                    <div class="tnode-dot"></div>
+                    <div class="tnode-year">φ = π</div>
+                    <div class="tnode-name">Euler's Identity</div>
+                    <div class="tnode-desc">
+                        e
+                        <sup>iπ</sup>
+                        + 1 = 0 — arithmetic, algebra, geometry, analysis, and the number 0 unified in one line.
+                    </div>
+                </div>
+                <div class="tnode">
+                    <div class="tnode-dot"></div>
+                    <div class="tnode-year">2017</div>
+                    <div class="tnode-name">Vaswani et al.</div>
+                    <div class="tnode-desc">
+                        Sinusoidal positional encodings in "Attention Is All You Need" — the real/imaginary parts of
+                        Cotes' formula, in every transformer.
+                    </div>
+                </div>
+                <div class="tnode active">
+                    <div class="tnode-dot"></div>
+                    <div class="tnode-year">2021–</div>
+                    <div class="tnode-name">RoPE / ALiBi</div>
+                    <div class="tnode-desc">
+                        Rotary Position Embedding applies e
+                        <sup>iθ</sup>
+                        as a rotation operator directly on Q and K in attention — Cotes' phasor at the core of LLaMA,
+                        Qwen, Mistral.
+                    </div>
+                </div>
+            </div>
+
+            <!-- DERIVATION SPLIT -->
+            <div class="split">
+                <div class="panel">
+                    <div class="panel-label">The Near-Miss — 1716</div>
+                    <h3>What Cotes actually wrote</h3>
+
+                    <div class="formula-block">
+                        ln(cos φ +
+                        <span style="color: var(--cyan)">i</span>
+                        sin φ) =
+                        <span style="color: var(--cyan)">i</span>
+                        φ
+                        <div class="anno">Cotes 1716 · log form · one exponentiation away</div>
+                    </div>
+
+                    <div class="deriv">
+                        <div class="deriv-step">
+                            <span class="step-num">①</span>
+                            <span class="step-body">
+                                Start from the Pythagorean trig identity:
+                                <span class="hi">cos²φ + sin²φ = 1</span>
+                                — the unit circle constraint.
+                            </span>
+                        </div>
+                        <div class="deriv-step">
+                            <span class="step-num">②</span>
+                            <span class="step-body">
+                                Write the unit-magnitude complex number:
+                                <span class="hi">z = cosφ + i sinφ</span>
+                                , noting
+                                <span class="hi">|z| = 1</span>
+                                .
+                            </span>
+                        </div>
+                        <div class="deriv-step">
+                            <span class="step-num">③</span>
+                            <span class="step-body">
+                                Cotes observes: the
+                                <span class="gold">natural log of z</span>
+                                must be purely imaginary,
+                                <span class="gold">iφ</span>
+                                , since |z|=1 means Re(ln z) = ln|z| = 0.
+                            </span>
+                        </div>
+                        <div class="deriv-step">
+                            <span class="step-num">④</span>
+                            <span class="step-body">
+                                Result:
+                                <span class="gold">ln(cosφ + i sinφ) = iφ</span>
+                                . He stops here. He never applies
+                                <span class="red">exp(·)</span>
+                                to both sides.
+                            </span>
+                        </div>
+                        <div class="deriv-step">
+                            <span class="step-num">⑤</span>
+                            <span class="step-body">
+                                <span class="red">The missed step:</span>
+                                apply exp →
+                                <span class="blue">e^(iφ) = cosφ + i sinφ</span>
+                                . Euler does this 32 years later.
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-label">Euler's Exponentiation — 1748</div>
+                    <h3>From Cotes' log to the formula we know</h3>
+
+                    <div class="formula-block blue">
+                        e
+                        <sup>iφ</sup>
+                        = cos φ +
+                        <span style="color: var(--cyan)">i</span>
+                        sin φ
+                        <div class="anno">Euler 1748 · exp form · trivially derived from Cotes</div>
+                    </div>
+
+                    <div
+                        class="formula-block"
+                        style="border-left-color: var(--purple); font-size: 0.9rem; margin-top: 1.4rem"
+                    >
+                        <div
+                            style="
+                                color: var(--text-dim);
+                                font-size: 0.68rem;
+                                margin-bottom: 0.5rem;
+                                letter-spacing: 0.06em;
+                            "
+                        >
+                            Taylor series proof (Euler's actual method)
+                        </div>
+                        <span style="color: var(--purple)">
+                            e
+                            <sup>iφ</sup>
+                        </span>
+                        = 1 + iφ − φ²/2! − iφ³/3! + φ⁴/4! + …
+                        <br />
+                        <br />
+                        = (1 − φ²/2! + φ⁴/4! − …) + i(φ − φ³/3! + …)
+                        <br />
+                        <br />
+                        =
+                        <span style="color: var(--blue)">cosφ</span>
+                        +
+                        <span style="color: var(--cyan)">i sinφ</span>
+                        <div class="anno">The real parts sum to cosine, the imaginary parts to sine — exactly.</div>
+                    </div>
+
+                    <div class="formula-block green" style="margin-top: 1.2rem">
+                        Set φ = π : &nbsp; e
+                        <sup>iπ</sup>
+                        = −1 + 0i &nbsp;⟹&nbsp;
+                        <strong>
+                            e
+                            <sup>iπ</sup>
+                            + 1 = 0
+                        </strong>
+                        <div class="anno">Euler's Identity — Cotes had this in 1716, latent in his log formula.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- INTERACTIVE UNIT CIRCLE -->
+            <div class="panel" style="margin-top: 1.5rem">
+                <div class="panel-label">Interactive Visualization</div>
+
+                <div class="toggle-row" id="viewToggle">
+                    <button class="tog-btn active" data-view="euler">
+                        Euler view: e
+                        <sup>iφ</sup>
+                    </button>
+                    <button class="tog-btn" data-view="cotes">Cotes view: ln(z) = iφ</button>
+                    <button class="tog-btn" data-view="identity">Identity: φ → π</button>
+                </div>
+
+                <div class="split" style="gap: 1.2rem; margin: 0">
+                    <div class="canvas-wrap">
+                        <canvas id="unitCircle" width="360" height="360"></canvas>
+                        <div class="ctrl-row" style="margin-top: 0.5rem">
+                            <span class="ctrl-label">φ (radians)</span>
+                            <input type="range" id="phiSlider" min="0" max="6.2832" step="0.01" value="0.8" />
+                            <span class="val-display" id="phiVal">0.80</span>
+                        </div>
+                        <div class="readout">
+                            <div class="ro-cell">
+                                <div class="ro-label">cosφ (Re)</div>
+                                <div class="ro-val" id="roRe" style="color: var(--blue)">—</div>
+                            </div>
+                            <div class="ro-cell">
+                                <div class="ro-label">sinφ (Im)</div>
+                                <div class="ro-val" id="roIm" style="color: var(--cyan)">—</div>
+                            </div>
+                            <div class="ro-cell">
+                                <div class="ro-label">iφ (log)</div>
+                                <div class="ro-val" id="roLog" style="color: var(--gold)">—</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div id="formulaDisplay" style="margin-bottom: 1rem"></div>
+                        <div id="narration" style="font-size: 0.72rem; color: var(--text-dim); line-height: 1.7"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NN SECTION -->
+            <div class="section-header">
+                <h2>The Formula Inside Every Modern Transformer</h2>
+                <span class="sh-tag">Applied Complex Analysis → Neural Networks</span>
+            </div>
+
+            <div class="nn-grid">
+                <div class="nn-card">
+                    <div class="nn-card-tag" style="color: var(--blue)">📡 Attention is All You Need · 2017</div>
+                    <h4>Sinusoidal Positional Encoding</h4>
+                    <p>
+                        Vaswani et al. needed to inject token position into embeddings without learned parameters. Their
+                        solution: for position
+                        <em>pos</em>
+                        and dimension
+                        <em>2i</em>
+                        :
+                    </p>
+                    <div class="formula-block blue" style="font-size: 0.82rem">
+                        PE(pos, 2i) &nbsp;= sin(pos / 10000
+                        <sup>2i/d</sup>
+                        )
+                        <br />
+                        PE(pos, 2i+1) = cos(pos / 10000
+                        <sup>2i/d</sup>
+                        )
+                        <div class="anno">
+                            Literally: Re(e
+                            <sup>i·pos/10000^(2i/d)</sup>
+                            ) and Im(e
+                            <sup>i·pos/10000^(2i/d)</sup>
+                            ) — Cotes' formula, split across two channels.
+                        </div>
+                    </div>
+                    <p style="margin-bottom: 0">
+                        Every original transformer (BERT, GPT-1/2) carries Cotes' phasor as its positional backbone. The
+                        frequency
+                        <code>
+                            10000
+                            <sup>−2i/d</sup>
+                        </code>
+                        is just the θ in e
+                        <sup>iθ·pos</sup>
+                        .
+                    </p>
+                </div>
+
+                <div class="nn-card">
+                    <div class="nn-card-tag" style="color: var(--purple)">🔄 RoPE · Su et al. 2021</div>
+                    <h4>Rotary Position Embedding</h4>
+                    <p>
+                        Instead of adding a PE to the input, RoPE
+                        <em>rotates</em>
+                        query and key vectors in the complex plane by an angle proportional to position. For a 2D slice
+                        of q at position m:
+                    </p>
+                    <div class="formula-block purple" style="font-size: 0.82rem">
+                        f(q, m) = e
+                        <sup>imθ</sup>
+                        · q
+                        <div class="anno">Rotation in ℂ by angle mθ — Cotes/Euler's phasor as a position operator.</div>
+                    </div>
+                    <p style="margin-bottom: 0; margin-top: 0.5rem">
+                        The attention dot product q
+                        <sup>T</sup>
+                        k then only depends on (m−n)θ — relative position falls out for free. RoPE drives
+                        <strong>LLaMA</strong>
+                        ,
+                        <strong>Qwen</strong>
+                        ,
+                        <strong>Mistral</strong>
+                        ,
+                        <strong>Gemma</strong>
+                        ,
+                        <strong>GPT-NeoX</strong>
+                        — basically every competitive open model since 2022.
+                    </p>
+                </div>
+
+                <div class="nn-card">
+                    <div class="nn-card-tag" style="color: var(--green)">🌊 Fourier Features · Rahimi & Recht 2007</div>
+                    <h4>Random Fourier Features &amp; Kernels</h4>
+                    <p>
+                        The RBF kernel k(x,y) = e
+                        <sup>−||x−y||²/2σ²</sup>
+                        is approximated by random projections using Bochner's theorem: a stationary kernel = Fourier
+                        transform of a spectral density. The projection is:
+                    </p>
+                    <div class="formula-block green" style="font-size: 0.82rem">
+                        z(x) = [cos(ω
+                        <sub>j</sub>
+                        ·x + b
+                        <sub>j</sub>
+                        )]
+                        <sub>j=1..D</sub>
+                        <div class="anno">
+                            cos(·) is Re(e
+                            <sup>i(ω·x+b)</sup>
+                            ) — Cotes' real part doing kernel approximation.
+                        </div>
+                    </div>
+                    <p style="margin-bottom: 0">
+                        Used in NeRF, Gaussian Splatting, and any positional encoding for continuous coordinate MLPs.
+                        Also underpins the theory of why sinusoidal PEs work.
+                    </p>
+                </div>
+
+                <div class="nn-card">
+                    <div class="nn-card-tag" style="color: var(--amber)">⚡ Complex-Valued Neural Nets</div>
+                    <h4>Activations in ℂ &amp; Phase-Amplitude Decomposition</h4>
+                    <p>
+                        Some architectures operate directly in ℂ — representing each neuron as r·e
+                        <sup>iθ</sup>
+                        where r is magnitude and θ is phase. Cotes' identity gives the canonical log representation:
+                    </p>
+                    <div class="formula-block" style="border-left-color: var(--amber); font-size: 0.82rem">
+                        ln(r · e
+                        <sup>iθ</sup>
+                        ) = ln(r) + iθ
+                        <div class="anno">
+                            Decomposes complex activation into log-amplitude + phase — exact Cotes form.
+                        </div>
+                    </div>
+                    <p style="margin-bottom: 0">
+                        Used in MRI reconstruction (k-space is complex), radar signal processing, and complex-valued
+                        transformers for time-series. Phase = geometry; amplitude = magnitude — Cotes knew this split in
+                        1716.
+                    </p>
+                </div>
+            </div>
+
+            <!-- RoPE MINI-DEMO -->
+            <div class="panel" style="margin-top: 1.5rem">
+                <div class="panel-label">RoPE Demo — Cotes' Rotation in Practice</div>
+                <p style="font-size: 0.72rem; color: var(--text-dim); margin-bottom: 1rem">
+                    Two token positions (m=1, m=6) — their query vectors are rotated by e
+                    <sup>imθ</sup>
+                    in the complex plane. The relative angle (m₂−m₁)θ encodes positional distance.
+                </p>
+                <canvas id="rope-canvas" width="700" height="160"></canvas>
+                <div class="ctrl-row" style="margin-top: 0.8rem">
+                    <span class="ctrl-label">θ (freq)</span>
+                    <input type="range" id="thetaSlider" min="0.05" max="1.2" step="0.01" value="0.3" />
+                    <span class="val-display" id="thetaVal">0.30</span>
+                </div>
+            </div>
+
+            <!-- CLOSING THOUGHT -->
+            <div class="panel" style="margin-top: 1.5rem; border-color: rgba(212, 168, 67, 0.25)">
+                <div class="panel-label">Historical Irony</div>
+                <p
+                    style="
+                        font-family: var(--serif);
+                        font-style: italic;
+                        color: var(--text);
+                        font-size: 1rem;
+                        line-height: 1.8;
+                        margin-bottom: 1rem;
+                    "
+                >
+                    Roger Cotes wrote ln(cosφ + i sinφ) = iφ in 1716. Every transformer you run today — LLaMA, Qwen,
+                    Mistral, GPT-4 — uses the exponentiated version of that exact formula to decide which tokens attend
+                    to which. Cotes didn't fail mathematically. He just stopped one step early. Newton called him the
+                    finest mathematician of his time. He was dead at 33.
+                </p>
+                <div class="formula-block" style="font-size: 0.82rem; border-left-color: var(--gold-dim)">
+                    <span style="color: var(--red)">Cotes 1716:</span>
+                    &nbsp;ln(cosφ + i sinφ) = iφ &nbsp;&nbsp;→&nbsp;&nbsp;
+                    <span style="color: var(--text-dim)">stops here</span>
+                    <br />
+                    <span style="color: var(--blue)">Euler 1748:</span>
+                    &nbsp;e
+                    <sup>iφ</sup>
+                    = cosφ + i sinφ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→&nbsp;&nbsp;
+                    <span style="color: var(--text-dim)">applies exp(·) to both sides</span>
+                    <br />
+                    <span style="color: var(--purple)">RoPE 2021:</span>
+                    &nbsp;f(q, m) = e
+                    <sup>imθ</sup>
+                    ·q &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→&nbsp;&nbsp;
+                    <span style="color: var(--text-dim)">runs in every competitive LLM</span>
+                    <div class="anno" style="margin-top: 0.6rem">
+                        Same formula. 305 years apart. Different name on the paper.
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            References: Cotes,
+            <em>Harmonia Mensurarum</em>
+            (1722, posthumous) · Euler,
+            <em>Introductio in Analysin Infinitorum</em>
+            (1748) · Vaswani et al., "Attention Is All You Need" (2017) · Su et al., "RoFormer: Enhanced Transformer
+            with Rotary Position Embedding" (2021) · Rahimi &amp; Recht, "Random Features for Large-Scale Kernel
+            Machines" (2007)
+        </footer>
+
+        <script>
+            // ─── UNIT CIRCLE CANVAS ────────────────────────────────────────────
+            const canvas = document.getElementById("unitCircle")
+            const ctx = canvas.getContext("2d")
+            const W = canvas.width,
+                H = canvas.height
+            const cx = W / 2,
+                cy = H / 2,
+                R = 130
+
+            let phi = 0.8
+            let viewMode = "euler"
+
+            const COLORS = {
+                gold: "#d4a843",
+                blue: "#4a9eff",
+                cyan: "#3ecfcf",
+                purple: "#aa77ff",
+                green: "#5ecf8a",
+                red: "#e05555",
+                dim: "#2a2a3a",
+                dimmer: "#1a1a26",
+                text: "#d8d4cc",
+            }
+
+            function drawUnitCircle(phi) {
+                ctx.clearRect(0, 0, W, H)
+
+                // Grid
+                ctx.strokeStyle = COLORS.dimmer
+                ctx.lineWidth = 1
+                for (let x = 0; x < W; x += 40) {
+                    ctx.beginPath()
+                    ctx.moveTo(x, 0)
+                    ctx.lineTo(x, H)
+                    ctx.stroke()
+                }
+                for (let y = 0; y < H; y += 40) {
+                    ctx.beginPath()
+                    ctx.moveTo(0, y)
+                    ctx.lineTo(W, y)
+                    ctx.stroke()
+                }
+
+                // Axes
+                ctx.strokeStyle = COLORS.dim
+                ctx.lineWidth = 1.5
+                ctx.beginPath()
+                ctx.moveTo(0, cy)
+                ctx.lineTo(W, cy)
+                ctx.stroke()
+                ctx.beginPath()
+                ctx.moveTo(cx, 0)
+                ctx.lineTo(cx, H)
+                ctx.stroke()
+
+                // Axis labels
+                ctx.fillStyle = "#3a3a55"
+                ctx.font = "11px IBM Plex Mono"
+                ctx.fillText("Re", W - 26, cy - 8)
+                ctx.fillText("Im", cx + 8, 16)
+
+                // Unit circle
+                ctx.strokeStyle = COLORS.dim
+                ctx.lineWidth = 1
+                ctx.beginPath()
+                ctx.arc(cx, cy, R, 0, Math.PI * 2)
+                ctx.stroke()
+
+                // Tick marks
+                ctx.fillStyle = "#3a3a55"
+                ctx.font = "10px IBM Plex Mono"
+                ctx.fillText("1", cx + R + 4, cy + 12)
+                ctx.fillText("-1", cx - R - 20, cy + 12)
+                ctx.fillText("i", cx + 4, cy - R - 4)
+                ctx.fillText("-i", cx + 4, cy + R + 14)
+
+                const cosP = Math.cos(phi)
+                const sinP = Math.sin(phi)
+                const px = cx + R * cosP
+                const py = cy - R * sinP
+
+                // Arc for angle
+                ctx.strokeStyle = COLORS.gold + "77"
+                ctx.lineWidth = 2
+                ctx.beginPath()
+                ctx.arc(cx, cy, 38, 0, -phi, phi > 0)
+                ctx.stroke()
+                ctx.fillStyle = COLORS.gold
+                ctx.font = "12px IBM Plex Mono"
+                const labelR = 52
+                ctx.fillText("φ", cx + labelR * Math.cos(phi / 2) - 4, cy - labelR * Math.sin(phi / 2) + 4)
+
+                if (viewMode === "cotes") {
+                    // Show the log decomposition — imaginary axis at iφ
+                    // Draw iφ on imaginary axis
+                    const iphiY = cy - (phi * R) / Math.PI
+                    ctx.strokeStyle = COLORS.gold
+                    ctx.lineWidth = 2
+                    ctx.setLineDash([4, 4])
+                    ctx.beginPath()
+                    ctx.moveTo(cx, cy)
+                    ctx.lineTo(cx, iphiY)
+                    ctx.stroke()
+                    ctx.setLineDash([])
+
+                    ctx.fillStyle = COLORS.gold
+                    ctx.font = "11px IBM Plex Mono"
+                    ctx.fillText("iφ", cx + 8, iphiY + 4)
+
+                    // Draw Re/Im projections (dashed)
+                    ctx.strokeStyle = COLORS.blue + "aa"
+                    ctx.lineWidth = 1.5
+                    ctx.setLineDash([5, 5])
+                    ctx.beginPath()
+                    ctx.moveTo(px, py)
+                    ctx.lineTo(px, cy)
+                    ctx.stroke()
+                    ctx.strokeStyle = COLORS.cyan + "aa"
+                    ctx.beginPath()
+                    ctx.moveTo(px, py)
+                    ctx.lineTo(cx, py)
+                    ctx.stroke()
+                    ctx.setLineDash([])
+                } else {
+                    // Euler view — standard projections
+                    ctx.strokeStyle = COLORS.blue + "aa"
+                    ctx.lineWidth = 1.5
+                    ctx.setLineDash([5, 5])
+                    ctx.beginPath()
+                    ctx.moveTo(px, cy)
+                    ctx.lineTo(px, py)
+                    ctx.stroke()
+                    ctx.strokeStyle = COLORS.cyan + "aa"
+                    ctx.beginPath()
+                    ctx.moveTo(cx, py)
+                    ctx.lineTo(px, py)
+                    ctx.stroke()
+                    ctx.setLineDash([])
+                }
+
+                // Phasor
+                ctx.strokeStyle = COLORS.gold
+                ctx.lineWidth = 2.5
+                ctx.beginPath()
+                ctx.moveTo(cx, cy)
+                ctx.lineTo(px, py)
+                ctx.stroke()
+
+                // Arrowhead
+                const angle = Math.atan2(-(py - cy), px - cx)
+                const aLen = 10,
+                    aW = 5
+                ctx.fillStyle = COLORS.gold
+                ctx.beginPath()
+                ctx.moveTo(px, py)
+                ctx.lineTo(
+                    px - aLen * Math.cos(angle) + aW * Math.sin(angle),
+                    py + aLen * Math.sin(angle) + aW * Math.cos(angle),
+                )
+                ctx.lineTo(
+                    px - aLen * Math.cos(angle) - aW * Math.sin(angle),
+                    py + aLen * Math.sin(angle) - aW * Math.cos(angle),
+                )
+                ctx.closePath()
+                ctx.fill()
+
+                // Point
+                ctx.fillStyle = "#f0ece0"
+                ctx.beginPath()
+                ctx.arc(px, py, 5, 0, Math.PI * 2)
+                ctx.fill()
+
+                // cos label
+                ctx.fillStyle = COLORS.blue
+                ctx.font = "bold 11px IBM Plex Mono"
+                ctx.fillText("cosφ = " + cosP.toFixed(3), px - 10, cy + 18 * (sinP >= 0 ? 1 : -2))
+
+                // sin label
+                ctx.fillStyle = COLORS.cyan
+                const sinLabelX = cosP > 0 ? cx - 70 : cx + 8
+                ctx.fillText("sinφ = " + sinP.toFixed(3), sinLabelX, py + 4)
+
+                // Identity approach marker
+                if (viewMode === "identity") {
+                    const targetPhi = Math.PI
+                    // Draw ghost at π
+                    const gx = cx + R * Math.cos(targetPhi)
+                    const gy = cy - R * Math.sin(targetPhi)
+                    ctx.strokeStyle = COLORS.red + "66"
+                    ctx.lineWidth = 1.5
+                    ctx.setLineDash([3, 5])
+                    ctx.beginPath()
+                    ctx.moveTo(cx, cy)
+                    ctx.lineTo(gx, gy)
+                    ctx.stroke()
+                    ctx.setLineDash([])
+                    ctx.fillStyle = COLORS.red
+                    ctx.beginPath()
+                    ctx.arc(gx, gy, 5, 0, Math.PI * 2)
+                    ctx.fill()
+                    ctx.font = "11px IBM Plex Mono"
+                    ctx.fillText("φ=π: e^iπ = -1", gx - 10, gy - 12)
+                }
+            }
+
+            function updateReadout(phi) {
+                document.getElementById("roRe").textContent = Math.cos(phi).toFixed(4)
+                document.getElementById("roIm").textContent = Math.sin(phi).toFixed(4)
+                document.getElementById("roLog").textContent = "i·" + phi.toFixed(4)
+            }
+
+            const formulaHTML = {
+                euler: `
+    <div class="formula-block blue" style="font-size:0.95rem;">
+      e<sup>iφ</sup> = <span style="color:var(--blue)">cosφ</span> + i·<span style="color:var(--cyan)">sinφ</span>
+      <div class="anno">Euler 1748 — exponential maps angle → point on unit circle</div>
+    </div>`,
+                cotes: `
+    <div class="formula-block" style="font-size:0.95rem;">
+      ln(<span style="color:var(--blue)">cosφ</span> + i<span style="color:var(--cyan)">sinφ</span>) = iφ
+      <div class="anno">Cotes 1716 — logarithm of a unit-circle point is purely imaginary</div>
+    </div>`,
+                identity: `
+    <div class="formula-block green" style="font-size:0.95rem;">
+      e<sup>iπ</sup> + 1 = 0
+      <div class="anno">φ → π. Cotes had this. He called it something else. Then he died.</div>
+    </div>`,
+            }
+
+            const narrations = {
+                euler: `The phasor <strong style="color:#f0ece0">e<sup>iφ</sup></strong> traces the unit circle as φ increases. Its real part is cosφ (projected onto the horizontal axis, blue dashes) and imaginary part is sinφ (cyan dashes). This is Euler's form — directly usable as a rotation operator in RoPE.`,
+                cotes: `The vertical gold line shows <strong style="color:var(--gold)">iφ</strong> on the imaginary axis — Cotes' result. He observed that since |z|=1, ln(z) must be purely imaginary, giving ln(cosφ + i sinφ) = iφ. He had the rotation geometry. He just didn't exponentiate.`,
+                identity: `Drag φ toward π ≈ 3.14159. The ghost point (red) shows where you land: cosπ = −1, sinπ = 0. So e<sup>iπ</sup> = −1, which gives e<sup>iπ</sup> + 1 = 0. Cotes' log formula at φ=π: ln(−1) = iπ — also correct, just less famous.`,
+            }
+
+            function updateFormulaDisplay() {
+                document.getElementById("formulaDisplay").innerHTML = formulaHTML[viewMode]
+                document.getElementById("narration").innerHTML = narrations[viewMode]
+            }
+
+            // Slider
+            document.getElementById("phiSlider").addEventListener("input", function () {
+                phi = parseFloat(this.value)
+                document.getElementById("phiVal").textContent = phi.toFixed(2)
+                drawUnitCircle(phi)
+                updateReadout(phi)
+            })
+
+            // Toggle
+            document.getElementById("viewToggle").addEventListener("click", function (e) {
+                const btn = e.target.closest(".tog-btn")
+                if (!btn) return
+                document.querySelectorAll(".tog-btn").forEach((b) => b.classList.remove("active"))
+                btn.classList.add("active")
+                viewMode = btn.dataset.view
+                if (viewMode === "identity") {
+                    document.getElementById("phiSlider").value = Math.PI
+                    phi = Math.PI
+                    document.getElementById("phiVal").textContent = "π"
+                    updateReadout(phi)
+                }
+                drawUnitCircle(phi)
+                updateFormulaDisplay()
+            })
+
+            // Init
+            drawUnitCircle(phi)
+            updateReadout(phi)
+            updateFormulaDisplay()
+
+            // ─── ROPE DEMO CANVAS ───────────────────────────────────────────────
+            const rCanvas = document.getElementById("rope-canvas")
+            const rCtx = rCanvas.getContext("2d")
+            const RW = rCanvas.width,
+                RH = rCanvas.height
+
+            let theta = 0.3
+
+            function drawRoPE(theta) {
+                rCtx.clearRect(0, 0, RW, RH)
+
+                const positions = [1, 3, 6]
+                const colors = [COLORS.blue, COLORS.cyan, COLORS.purple]
+                const paneW = RW / positions.length
+                const r = 55
+
+                positions.forEach((m, idx) => {
+                    const baseCx = paneW * idx + paneW / 2
+                    const baseCy = RH / 2
+                    const angle = m * theta
+
+                    // Background circle
+                    rCtx.strokeStyle = COLORS.dim
+                    rCtx.lineWidth = 1
+                    rCtx.beginPath()
+                    rCtx.arc(baseCx, baseCy, r, 0, Math.PI * 2)
+                    rCtx.stroke()
+
+                    // Rotation arc
+                    rCtx.strokeStyle = colors[idx] + "66"
+                    rCtx.lineWidth = 2
+                    rCtx.beginPath()
+                    rCtx.arc(baseCx, baseCy, 20, 0, -angle, angle > 0)
+                    rCtx.stroke()
+
+                    // Phasor
+                    const px = baseCx + r * Math.cos(angle)
+                    const py = baseCy - r * Math.sin(angle)
+
+                    rCtx.strokeStyle = colors[idx]
+                    rCtx.lineWidth = 2
+                    rCtx.beginPath()
+                    rCtx.moveTo(baseCx, baseCy)
+                    rCtx.lineTo(px, py)
+                    rCtx.stroke()
+
+                    // Point
+                    rCtx.fillStyle = colors[idx]
+                    rCtx.beginPath()
+                    rCtx.arc(px, py, 5, 0, Math.PI * 2)
+                    rCtx.fill()
+
+                    // Label
+                    rCtx.fillStyle = colors[idx]
+                    rCtx.font = "11px IBM Plex Mono"
+                    rCtx.textAlign = "center"
+                    rCtx.fillText(`pos m=${m}`, baseCx, RH - 12)
+                    rCtx.fillText(`e^(i·${m}·θ)`, baseCx, 16)
+
+                    const angleStr = (m * theta).toFixed(3) + " rad"
+                    rCtx.fillStyle = COLORS.text + "aa"
+                    rCtx.font = "10px IBM Plex Mono"
+                    rCtx.fillText(angleStr, baseCx, baseCy + r + 18)
+                    rCtx.textAlign = "left"
+                })
+
+                // Relative angle annotation between pos 1 and pos 6
+                rCtx.strokeStyle = COLORS.gold + "55"
+                rCtx.lineWidth = 1
+                rCtx.setLineDash([4, 4])
+                const x1 = paneW * 0 + paneW / 2 + 55 * Math.cos(1 * theta)
+                const y1 = RH / 2 - 55 * Math.sin(1 * theta)
+                const x6 = paneW * 2 + paneW / 2 + 55 * Math.cos(6 * theta)
+                const y6 = RH / 2 - 55 * Math.sin(6 * theta)
+                rCtx.setLineDash([])
+
+                rCtx.fillStyle = COLORS.gold
+                rCtx.font = "10px IBM Plex Mono"
+                rCtx.textAlign = "center"
+                rCtx.fillText(
+                    `Δ = (6−1)θ = ${(5 * theta).toFixed(3)} rad  ← relative position, position-invariant dot product`,
+                    RW / 2,
+                    RH / 2 + r + 34,
+                )
+                rCtx.textAlign = "left"
+            }
+
+            document.getElementById("thetaSlider").addEventListener("input", function () {
+                theta = parseFloat(this.value)
+                document.getElementById("thetaVal").textContent = theta.toFixed(2)
+                drawRoPE(theta)
+            })
+
+            drawRoPE(theta)
+
+            // ─── IDENTITY ANIMATION ─────────────────────────────────────────────
+            // Subtle auto-animate when identity mode — phi crawls toward π
+            let animId = null
+            function checkAutoAnimate() {
+                if (viewMode === "identity") {
+                    if (animId) return
+                    let p = parseFloat(document.getElementById("phiSlider").value)
+                    const target = Math.PI
+                    if (Math.abs(p - target) < 0.02) return
+                    animId = requestAnimationFrame(function step() {
+                        p += (target - p) * 0.04
+                        document.getElementById("phiSlider").value = p
+                        phi = p
+                        document.getElementById("phiVal").textContent = p.toFixed(2)
+                        drawUnitCircle(p)
+                        updateReadout(p)
+                        if (Math.abs(p - target) > 0.002 && viewMode === "identity") {
+                            animId = requestAnimationFrame(step)
+                        } else {
+                            animId = null
+                            document.getElementById("phiVal").textContent = "π"
+                        }
+                    })
+                } else {
+                    if (animId) {
+                        cancelAnimationFrame(animId)
+                        animId = null
+                    }
+                }
+            }
+
+            // Observe toggle clicks for identity animation
+            document.getElementById("viewToggle").addEventListener("click", function () {
+                setTimeout(checkAutoAnimate, 50)
+            })
+        </script>
+    </body>
+</html>

@@ -1,7 +1,16 @@
 {
     "base_url": "https://www.do-not-panic.com/visualizations/",
-    "updated": "2026-03-06",
+    "updated": "2026-03-24",
     "visualizations": [
+        {
+            "id": 77,
+            "title": "Cotes' Near-Miss & Euler's Identity \u2192 Neural Networks",
+            "description": "Interactive visualization of how Cotes nearly reached Euler's formula, and why complex exponentials, rotations, and sinusoids still sit inside modern neural networks and transformers.",
+            "url": "viz/2026/03/24/cotes-euler-neural.html",
+            "date": "2026-03-24",
+            "image": "images/77.png",
+            "papers": []
+        },
         {
             "id": 76,
             "title": "INTELLECT-1 & INTELLECT-2 \u2014 Decentralized Training",
