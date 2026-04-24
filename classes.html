@@ -1,0 +1,654 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta
+            name="description"
+            content="AI Classes by Luis Chamberlain — a series of interactive classes on artificial intelligence. Each class pairs a hands-on visualization aid with slides, so you learn the math by playing with it."
+        />
+        <meta name="theme-color" content="#08080d" />
+        <title>AI Classes · do-not-panic.com</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700;9..144,900&family=JetBrains+Mono:wght@400;600&family=Inter:wght@300;400;500;600;700&display=swap"
+            rel="stylesheet"
+        />
+        <style>
+            *,
+            *::before,
+            *::after {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+
+            :root {
+                --bg: #08080d;
+                --bg2: #0f0f1a;
+                --surface: rgba(20, 20, 34, 0.72);
+                --border: rgba(255, 255, 255, 0.06);
+                --border-soft: rgba(255, 255, 255, 0.04);
+                --text: #eae8e0;
+                --muted: #8c8f99;
+                --accent: #66ffcc;
+                --accent-soft: rgba(102, 255, 204, 0.12);
+                --blue: #6bb8ff;
+                --purple: #b088ff;
+                --orange: #ff9b45;
+                --pink: #ff6699;
+            }
+
+            body {
+                background: var(--bg);
+                color: var(--text);
+                font-family:
+                    "Inter",
+                    system-ui,
+                    -apple-system,
+                    sans-serif;
+                font-weight: 300;
+                line-height: 1.6;
+                overflow-x: hidden;
+                min-height: 100vh;
+            }
+
+            body::before {
+                content: "";
+                position: fixed;
+                inset: 0;
+                background:
+                    radial-gradient(ellipse at 15% -10%, rgba(102, 255, 204, 0.06) 0%, transparent 55%),
+                    radial-gradient(ellipse at 85% 110%, rgba(176, 136, 255, 0.06) 0%, transparent 55%),
+                    radial-gradient(ellipse at 50% 50%, rgba(107, 184, 255, 0.02) 0%, transparent 60%);
+                pointer-events: none;
+                z-index: 0;
+            }
+
+            a {
+                color: var(--accent);
+                text-decoration: none;
+            }
+            a:hover {
+                text-decoration: underline;
+            }
+
+            main {
+                position: relative;
+                z-index: 1;
+                max-width: 1080px;
+                margin: 0 auto;
+                padding: 0 24px 120px;
+            }
+
+            /* ── Top nav ── */
+            .topnav {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 24px 0 16px;
+                font-size: 14px;
+                color: var(--muted);
+            }
+            .topnav a.home {
+                color: var(--muted);
+                font-family: "JetBrains Mono", monospace;
+                letter-spacing: 1px;
+            }
+            .topnav a.home:hover {
+                color: var(--text);
+            }
+            .topnav .breadcrumb {
+                font-family: "JetBrains Mono", monospace;
+                letter-spacing: 1px;
+                color: var(--accent);
+            }
+
+            /* ── Hero ── */
+            .hero {
+                padding: 72px 0 48px;
+                text-align: center;
+            }
+            .hero-tag {
+                display: inline-block;
+                font-family: "JetBrains Mono", monospace;
+                font-size: 11px;
+                letter-spacing: 3px;
+                color: var(--accent);
+                border: 1px solid rgba(102, 255, 204, 0.35);
+                padding: 6px 14px;
+                border-radius: 100px;
+                margin-bottom: 24px;
+            }
+            .hero h1 {
+                font-family: "Fraunces", serif;
+                font-weight: 900;
+                font-size: clamp(42px, 7vw, 84px);
+                letter-spacing: -2px;
+                line-height: 1;
+                margin-bottom: 20px;
+                background: linear-gradient(135deg, #66ffcc 10%, #6bb8ff 50%, #b088ff 90%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
+            .hero p {
+                font-size: 17px;
+                color: var(--muted);
+                max-width: 640px;
+                margin: 0 auto 12px;
+                line-height: 1.65;
+            }
+            .hero p.byline {
+                font-family: "JetBrains Mono", monospace;
+                font-size: 13px;
+                color: var(--muted);
+                letter-spacing: 1px;
+                margin-top: 18px;
+            }
+            .hero p.byline a {
+                color: var(--text);
+            }
+
+            /* ── Ethos ── */
+            .ethos {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 16px;
+                padding: 40px 0 20px;
+            }
+            .ethos-card {
+                background: var(--surface);
+                border: 1px solid var(--border);
+                border-radius: 14px;
+                padding: 20px 22px;
+            }
+            .ethos-card .icon {
+                font-size: 24px;
+                line-height: 1;
+                margin-bottom: 10px;
+            }
+            .ethos-card h3 {
+                font-family: "Fraunces", serif;
+                font-weight: 700;
+                font-size: 17px;
+                margin-bottom: 6px;
+                color: var(--text);
+            }
+            .ethos-card p {
+                font-size: 14px;
+                color: var(--muted);
+                line-height: 1.55;
+            }
+            @media (max-width: 720px) {
+                .ethos {
+                    grid-template-columns: 1fr;
+                }
+            }
+
+            /* ── Section heads ── */
+            .section-head {
+                margin: 56px 0 20px;
+                display: flex;
+                align-items: baseline;
+                justify-content: space-between;
+                flex-wrap: wrap;
+                gap: 10px;
+                border-bottom: 1px solid var(--border);
+                padding-bottom: 10px;
+            }
+            .section-head h2 {
+                font-family: "Fraunces", serif;
+                font-weight: 700;
+                font-size: 22px;
+                color: var(--text);
+            }
+            .section-head .sub {
+                font-family: "JetBrains Mono", monospace;
+                font-size: 12px;
+                color: var(--muted);
+                letter-spacing: 1px;
+            }
+
+            /* ── Featured class card ── */
+            .featured {
+                display: grid;
+                grid-template-columns: 360px 1fr;
+                gap: 28px;
+                background: var(--surface);
+                border: 1px solid var(--border);
+                border-radius: 18px;
+                padding: 24px;
+                margin-bottom: 20px;
+                transition:
+                    border-color 0.25s ease,
+                    transform 0.25s ease;
+            }
+            .featured:hover {
+                border-color: rgba(102, 255, 204, 0.35);
+            }
+            @media (max-width: 760px) {
+                .featured {
+                    grid-template-columns: 1fr;
+                }
+            }
+            .featured-visual {
+                aspect-ratio: 1 / 1;
+                border-radius: 12px;
+                background: linear-gradient(135deg, #0a0f0d 0%, #14141f 100%);
+                border: 1px solid var(--border);
+                position: relative;
+                overflow: hidden;
+            }
+            .featured-visual svg {
+                width: 100%;
+                height: 100%;
+                display: block;
+            }
+            .featured-visual .badge {
+                position: absolute;
+                top: 14px;
+                left: 14px;
+                font-family: "JetBrains Mono", monospace;
+                font-size: 11px;
+                color: var(--accent);
+                background: rgba(8, 8, 13, 0.72);
+                backdrop-filter: blur(8px);
+                border: 1px solid rgba(102, 255, 204, 0.3);
+                padding: 5px 10px;
+                border-radius: 100px;
+                letter-spacing: 1.5px;
+                z-index: 2;
+            }
+
+            .featured-body h3 {
+                font-family: "Fraunces", serif;
+                font-weight: 700;
+                font-size: 28px;
+                line-height: 1.15;
+                letter-spacing: -0.5px;
+                color: var(--text);
+                margin-bottom: 14px;
+            }
+            .featured-body .meta {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+                margin-bottom: 14px;
+                font-family: "JetBrains Mono", monospace;
+                font-size: 11px;
+                color: var(--muted);
+                letter-spacing: 1px;
+            }
+            .featured-body .meta span {
+                padding: 4px 10px;
+                border: 1px solid var(--border);
+                border-radius: 100px;
+            }
+            .featured-body p {
+                font-size: 15px;
+                color: var(--muted);
+                line-height: 1.65;
+                margin-bottom: 14px;
+            }
+            .topics {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 6px;
+                margin-bottom: 18px;
+            }
+            .topic {
+                font-family: "JetBrains Mono", monospace;
+                font-size: 11px;
+                color: #b0bab5;
+                background: rgba(255, 255, 255, 0.03);
+                border: 1px solid var(--border-soft);
+                padding: 4px 10px;
+                border-radius: 6px;
+                letter-spacing: 0.3px;
+            }
+            .featured-actions {
+                display: flex;
+                gap: 10px;
+                flex-wrap: wrap;
+            }
+            .btn {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                padding: 10px 18px;
+                border-radius: 100px;
+                font-family: "Inter", sans-serif;
+                font-size: 14px;
+                font-weight: 600;
+                text-decoration: none;
+                transition: all 0.2s ease;
+                border: 1px solid transparent;
+            }
+            .btn.primary {
+                background: var(--accent);
+                color: var(--bg);
+            }
+            .btn.primary:hover {
+                background: #82ffd8;
+                transform: translateY(-1px);
+                text-decoration: none;
+            }
+            .btn.ghost {
+                border-color: var(--border);
+                color: var(--muted);
+            }
+            .btn.ghost:hover {
+                border-color: rgba(255, 255, 255, 0.2);
+                color: var(--text);
+                text-decoration: none;
+            }
+            .btn.ghost.soon {
+                cursor: not-allowed;
+            }
+            .btn.ghost.soon::after {
+                content: "· coming soon";
+                font-family: "JetBrains Mono", monospace;
+                font-size: 10px;
+                opacity: 0.6;
+                margin-left: 4px;
+            }
+
+            /* ── Upcoming cards ── */
+            .upcoming-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+                gap: 16px;
+            }
+            .upcoming-card {
+                background: var(--surface);
+                border: 1px dashed var(--border);
+                border-radius: 14px;
+                padding: 20px 22px;
+                min-height: 160px;
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+            }
+            .upcoming-card .num {
+                font-family: "JetBrains Mono", monospace;
+                font-size: 11px;
+                color: var(--muted);
+                letter-spacing: 2px;
+            }
+            .upcoming-card h3 {
+                font-family: "Fraunces", serif;
+                font-weight: 700;
+                font-size: 18px;
+                color: var(--text);
+            }
+            .upcoming-card p {
+                font-size: 13px;
+                color: var(--muted);
+                line-height: 1.55;
+                flex: 1;
+            }
+            .upcoming-card .tag {
+                font-family: "JetBrains Mono", monospace;
+                font-size: 10px;
+                letter-spacing: 1.5px;
+                color: var(--muted);
+                text-transform: uppercase;
+                align-self: flex-start;
+                padding: 3px 8px;
+                border: 1px solid var(--border);
+                border-radius: 100px;
+            }
+
+            /* ── Footer ── */
+            footer {
+                text-align: center;
+                padding: 60px 20px 40px;
+                color: var(--muted);
+                font-family: "JetBrains Mono", monospace;
+                font-size: 12px;
+                letter-spacing: 1px;
+            }
+            footer a {
+                color: var(--muted);
+            }
+            footer a:hover {
+                color: var(--text);
+            }
+        </style>
+    </head>
+    <body>
+        <main>
+            <div class="topnav">
+                <a class="home" href="/">← do-not-panic.com</a>
+                <span class="breadcrumb">AI · CLASSES</span>
+            </div>
+
+            <section class="hero">
+                <div class="hero-tag">AI CLASSES · BY LUIS CHAMBERLAIN</div>
+                <h1>Artificial Intelligence, one class at a time</h1>
+                <p>
+                    A growing series of interactive classes on modern AI. Each class pairs a hands-on visualization aid
+                    with the slides, so you learn the math by
+                    <em>playing</em>
+                    with it — not just staring at it.
+                </p>
+                <p class="byline">
+                    run alongside
+                    <a href="https://mcgrof.github.io/knlp/">knlp — Kernel ML R&amp;D</a>
+                    and
+                    <a href="https://podcast.do-not-panic.com/">AI: Post Transformers</a>
+                </p>
+            </section>
+
+            <section class="ethos">
+                <div class="ethos-card">
+                    <div class="icon">🎛️</div>
+                    <h3>Visualizations first</h3>
+                    <p>
+                        Every class ships with an interactive visualization. Drag sliders, flip switches, step gradient
+                        descent —
+                        <em>see</em>
+                        the math move.
+                    </p>
+                </div>
+                <div class="ethos-card">
+                    <div class="icon">🧮</div>
+                    <h3>From first principles</h3>
+                    <p>
+                        No hand-waving. We build from one line of calculus up to transformers and the GPU memory wall,
+                        so each idea sits on the one before it.
+                    </p>
+                </div>
+                <div class="ethos-card">
+                    <div class="icon">🏄</div>
+                    <h3>Patience scales</h3>
+                    <p>
+                        Concepts compound. What feels impossible at slide 30 is obvious by slide 80. The fundamentals
+                        keep paying dividends.
+                    </p>
+                </div>
+            </section>
+
+            <div class="section-head">
+                <h2>Class 01 — available now</h2>
+                <span class="sub">2026-04-24</span>
+            </div>
+
+            <a class="featured" href="viz/2026/04/24/intro-to-neural-networks.html">
+                <div class="featured-visual">
+                    <span class="badge">CLASS 01</span>
+                    <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <defs>
+                            <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+                                <stop offset="0%" stop-color="#66ffcc" />
+                                <stop offset="100%" stop-color="#6bb8ff" />
+                            </linearGradient>
+                            <linearGradient id="g2" x1="0" y1="0" x2="1" y2="1">
+                                <stop offset="0%" stop-color="#b088ff" />
+                                <stop offset="100%" stop-color="#ff6699" />
+                            </linearGradient>
+                            <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+                                <stop offset="0%" stop-color="rgba(102,255,204,.18)" />
+                                <stop offset="100%" stop-color="rgba(102,255,204,0)" />
+                            </radialGradient>
+                        </defs>
+                        <rect width="400" height="400" fill="#0a0a12" />
+                        <circle cx="200" cy="200" r="180" fill="url(#glow)" />
+                        <!-- 3-layer neural network -->
+                        <!-- edges layer 1 -->
+                        <g stroke="rgba(102,255,204,.35)" stroke-width="1" fill="none">
+                            <line x1="80" y1="100" x2="200" y2="90" />
+                            <line x1="80" y1="100" x2="200" y2="170" />
+                            <line x1="80" y1="100" x2="200" y2="250" />
+                            <line x1="80" y1="100" x2="200" y2="320" />
+                            <line x1="80" y1="200" x2="200" y2="90" />
+                            <line x1="80" y1="200" x2="200" y2="170" />
+                            <line x1="80" y1="200" x2="200" y2="250" />
+                            <line x1="80" y1="200" x2="200" y2="320" />
+                            <line x1="80" y1="300" x2="200" y2="90" />
+                            <line x1="80" y1="300" x2="200" y2="170" />
+                            <line x1="80" y1="300" x2="200" y2="250" />
+                            <line x1="80" y1="300" x2="200" y2="320" />
+                        </g>
+                        <!-- edges layer 2 -->
+                        <g stroke="rgba(176,136,255,.4)" stroke-width="1.2" fill="none">
+                            <line x1="200" y1="90" x2="320" y2="170" />
+                            <line x1="200" y1="170" x2="320" y2="170" />
+                            <line x1="200" y1="250" x2="320" y2="170" />
+                            <line x1="200" y1="320" x2="320" y2="170" />
+                            <line x1="200" y1="90" x2="320" y2="230" />
+                            <line x1="200" y1="170" x2="320" y2="230" />
+                            <line x1="200" y1="250" x2="320" y2="230" />
+                            <line x1="200" y1="320" x2="320" y2="230" />
+                        </g>
+                        <!-- layer 1 neurons -->
+                        <g fill="url(#g1)" stroke="#1a2430" stroke-width="2">
+                            <circle cx="80" cy="100" r="14" />
+                            <circle cx="80" cy="200" r="14" />
+                            <circle cx="80" cy="300" r="14" />
+                        </g>
+                        <!-- layer 2 neurons -->
+                        <g fill="#1a2430" stroke="url(#g1)" stroke-width="2">
+                            <circle cx="200" cy="90" r="16" />
+                            <circle cx="200" cy="170" r="16" />
+                            <circle cx="200" cy="250" r="16" />
+                            <circle cx="200" cy="320" r="16" />
+                        </g>
+                        <!-- output neurons -->
+                        <g fill="url(#g2)" stroke="#1a2430" stroke-width="2">
+                            <circle cx="320" cy="170" r="15" />
+                            <circle cx="320" cy="230" r="15" />
+                        </g>
+                        <!-- formula watermark -->
+                        <text
+                            x="200"
+                            y="380"
+                            text-anchor="middle"
+                            fill="rgba(234,232,224,.45)"
+                            font-family="JetBrains Mono, monospace"
+                            font-size="14"
+                            font-weight="600"
+                            letter-spacing="2"
+                        >
+                            y = w · x + b
+                        </text>
+                        <text
+                            x="200"
+                            y="38"
+                            text-anchor="middle"
+                            fill="rgba(234,232,224,.55)"
+                            font-family="Fraunces, serif"
+                            font-size="13"
+                            font-style="italic"
+                        >
+                            Intro to Neural Networks
+                        </text>
+                    </svg>
+                </div>
+                <div class="featured-body">
+                    <h3>Intro to Neural Networks — From a Simple Neuron to the GPU Memory Wall</h3>
+                    <div class="meta">
+                        <span>~60 MIN</span>
+                        <span>BEGINNER</span>
+                        <span>INTERACTIVE</span>
+                        <span>PYTHON · PYTORCH</span>
+                    </div>
+                    <p>
+                        The whole deep-learning stack, built from one line of calculus. Derivatives and the chain rule,
+                        the 1943 McCulloch–Pitts neuron, a single linear neuron fit live with sliders, squared error and
+                        MSE, backprop derived stage by stage, gradient descent you can step by hand, PyTorch's autograd,
+                        and the GPU memory wall that makes all of it expensive.
+                    </p>
+                    <div class="topics">
+                        <span class="topic">derivatives</span>
+                        <span class="topic">chain rule</span>
+                        <span class="topic">McCulloch–Pitts</span>
+                        <span class="topic">weights &amp; bias</span>
+                        <span class="topic">MSE loss</span>
+                        <span class="topic">backpropagation</span>
+                        <span class="topic">gradient descent</span>
+                        <span class="topic">Adam / AdamW</span>
+                        <span class="topic">autograd</span>
+                        <span class="topic">GPU memory wall</span>
+                    </div>
+                    <div class="featured-actions">
+                        <span class="btn primary">▸ Open visualization</span>
+                        <span class="btn ghost soon">Slides (PDF)</span>
+                    </div>
+                </div>
+            </a>
+
+            <div class="section-head">
+                <h2>Upcoming classes</h2>
+                <span class="sub">in the queue · roughly</span>
+            </div>
+
+            <div class="upcoming-grid">
+                <div class="upcoming-card">
+                    <span class="tag">Class 02</span>
+                    <div class="num">// after nets</div>
+                    <h3>Attention &amp; the Transformer</h3>
+                    <p>
+                        Queries, keys, values, softmax, multi-head attention, and the residual stream — from scratch,
+                        with an interactive token-to-token attention map.
+                    </p>
+                </div>
+                <div class="upcoming-card">
+                    <span class="tag">Class 03</span>
+                    <div class="num">// inference math</div>
+                    <h3>KV Cache &amp; Long Context</h3>
+                    <p>
+                        How prefill and decode actually work, why context length is expensive, and how the KV cache
+                        rescues latency at the cost of memory.
+                    </p>
+                </div>
+                <div class="upcoming-card">
+                    <span class="tag">Class 04</span>
+                    <div class="num">// training systems</div>
+                    <h3>Distributed Training 101</h3>
+                    <p>
+                        Data parallelism, tensor parallelism, pipeline parallelism, ZeRO — the moving parts behind
+                        training across thousands of GPUs.
+                    </p>
+                </div>
+                <div class="upcoming-card">
+                    <span class="tag">Class 05</span>
+                    <div class="num">// alignment</div>
+                    <h3>RLHF, DPO, and Constitutional AI</h3>
+                    <p>
+                        How raw base models are turned into chatbots — reward models, preferences, and the alignment
+                        loop that has become most of the work.
+                    </p>
+                </div>
+            </div>
+
+            <footer>
+                do-not-panic.com &copy; 2011–2026 ·
+                <a href="/">home</a>
+                ·
+                <a href="https://github.com/mcgrof">github</a>
+            </footer>
+        </main>
+    </body>
+</html>
