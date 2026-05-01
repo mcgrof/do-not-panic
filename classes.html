@@ -355,17 +355,6 @@
                 color: var(--text);
                 text-decoration: none;
             }
-            .btn.ghost.soon {
-                cursor: not-allowed;
-            }
-            .btn.ghost.soon::after {
-                content: "· coming soon";
-                font-family: "JetBrains Mono", monospace;
-                font-size: 10px;
-                opacity: 0.6;
-                margin-left: 4px;
-            }
-
             /* ── Footer ── */
             footer {
                 text-align: center;
@@ -669,16 +658,14 @@
                         <span class="topic">top-k / top-p</span>
                     </div>
                     <div class="featured-actions">
-                        <a class="btn primary" href="viz/2026/05/01/information-theory.html">
-                            ▸ Open visualization
-                        </a>
+                        <a class="btn primary" href="viz/2026/05/01/information-theory.html">▸ Open visualization</a>
                         <a class="btn ghost" href="viz/2026/05/01/information-theory-slides.html">Slides ↗</a>
                     </div>
                 </div>
             </div>
 
-            <a class="featured" href="viz/2026/05/01/applied-information-theory.html">
-                <div class="featured-visual">
+            <div class="featured">
+                <a class="featured-visual" href="viz/2026/05/01/applied-information-theory.html">
                     <span class="badge">CLASS 03</span>
                     <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                         <defs>
@@ -753,9 +740,13 @@
                             Applied Information Theory
                         </text>
                     </svg>
-                </div>
+                </a>
                 <div class="featured-body">
-                    <h3>Applied Information Theory — Distillation, Scaling Laws, Speculative Decoding, and L²M</h3>
+                    <h3>
+                        <a href="viz/2026/05/01/applied-information-theory.html">
+                            Applied Information Theory — Distillation, Scaling Laws, Speculative Decoding, and L²M
+                        </a>
+                    </h3>
                     <div class="meta">
                         <span>~75 MIN</span>
                         <span>INTERMEDIATE</span>
@@ -779,11 +770,13 @@
                         <span class="topic">long-context memory</span>
                     </div>
                     <div class="featured-actions">
-                        <span class="btn primary">▸ Open visualization</span>
-                        <span class="btn ghost soon">Slides (PDF)</span>
+                        <a class="btn primary" href="viz/2026/05/01/applied-information-theory.html">
+                            ▸ Open visualization
+                        </a>
+                        <a class="btn ghost" href="viz/2026/05/01/applied-information-theory-slides.html">Slides ↗</a>
                     </div>
                 </div>
-            </a>
+            </div>
 
             <footer>
                 do-not-panic.com &copy; 2011–2026 ·
