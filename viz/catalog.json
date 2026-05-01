@@ -1,7 +1,16 @@
 {
     "base_url": "https://www.do-not-panic.com/visualizations/",
-    "updated": "2026-04-24",
+    "updated": "2026-05-01",
     "visualizations": [
+        {
+            "id": 79,
+            "title": "Information Theory — An Interactive Class",
+            "description": "Information Theory — an interactive class on entropy, cross-entropy, KL divergence, MLE, and sampling. How to measure just how wrong your predictions are, from intuition to the math that trains every modern model.",
+            "url": "viz/2026/05/01/information-theory.html",
+            "date": "2026-05-01",
+            "image": "images/79.png",
+            "papers": []
+        },
         {
             "id": 78,
             "title": "Intro to Neural Networks — An Interactive Class",
