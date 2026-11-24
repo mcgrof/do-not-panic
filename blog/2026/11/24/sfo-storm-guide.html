@@ -3,7 +3,12 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>SFO Thanksgiving Storm Guide</title>
+        <title>SFO Thanksgiving Storm Guide: November 25–27, 2026</title>
+        <meta
+            name="description"
+            content="A reviewed Thanksgiving travel guide for SFO: storm timing, tide forecasts, airline waivers, BART hours and what to check before leaving."
+        />
+        <link rel="canonical" href="https://do-not-panic.com/blog/2026/11/24/sfo-storm-guide.html" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
             href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap"
@@ -56,6 +61,7 @@
             }
             * {
                 box-sizing: border-box;
+                min-width: 0;
             }
             html,
             body {
@@ -246,7 +252,8 @@
                 flex-wrap: wrap;
                 gap: 6px;
             }
-            .seg button {
+            .seg button,
+            .seg a {
                 font: inherit;
                 font-size: 0.9rem;
                 color: var(--ink);
@@ -256,6 +263,14 @@
                 padding: 7px 12px;
                 cursor: pointer;
             }
+            .seg a {
+                text-decoration: none;
+            }
+            caption {
+                text-align: left;
+                margin-bottom: 12px;
+                color: var(--muted);
+            }
             .seg button:hover {
                 border-color: var(--muted);
             }
@@ -263,29 +278,6 @@
                 background: var(--ink);
                 color: var(--card);
                 border-color: var(--ink);
-            }
-            .result {
-                display: grid;
-                grid-template-columns: auto 1fr;
-                gap: 24px;
-                align-items: start;
-            }
-            .grid100 {
-                display: grid;
-                grid-template-columns: repeat(10, 16px);
-                gap: 3px;
-            }
-            .grid100 i {
-                width: 16px;
-                height: 16px;
-                border-radius: 3px;
-                background: var(--rule);
-            }
-            .grid100 i.d {
-                background: var(--water);
-            }
-            .grid100 i.c {
-                background: var(--surge);
             }
             .verdict {
                 display: flex;
@@ -310,15 +302,6 @@
                 vertical-align: middle;
                 margin-right: 6px;
                 border-radius: 2px;
-            }
-            .k0 {
-                background: var(--rule);
-            }
-            .kd {
-                background: var(--water);
-            }
-            .kc {
-                background: var(--surge);
             }
             .k1 {
                 background: var(--water);
@@ -667,7 +650,7 @@
             /* tides */
             .tides {
                 display: grid;
-                grid-template-columns: repeat(5, 1fr);
+                grid-template-columns: repeat(4, 1fr);
                 gap: 10px;
                 align-items: end;
                 border-bottom: 1px solid var(--muted);
@@ -695,7 +678,7 @@
             }
             .tlabs {
                 display: grid;
-                grid-template-columns: repeat(5, 1fr);
+                grid-template-columns: repeat(4, 1fr);
                 gap: 10px;
                 text-align: center;
                 font-size: 0.8rem;
@@ -729,8 +712,7 @@
                 .ticks div:first-child {
                     display: none;
                 }
-                .detail,
-                .result {
+                .detail {
                     grid-template-columns: 1fr;
                 }
                 .scale {
@@ -747,361 +729,284 @@
     <body>
         <main>
             <header>
-                <div class="stamp">Updated Tue Nov 24, 2026, noon Pacific</div>
-                <h1>Flying out of SFO on Nov 25, 26 or 27? Here are your odds.</h1>
+                <div class="stamp">Reviewed November 24, 2026 &middot; All times Pacific (PST)</div>
+                <h1>Flying out of SFO this Thanksgiving? Here&rsquo;s what to check.</h1>
                 <p class="lede">
-                    Short version: your flight will very probably go. Wednesday morning is the rough patch, and the
-                    likely pain is a late departure, not a cancellation. Thursday and Friday look fine at SFO; the
-                    trouble on those days is a separate storm on the East Coast.
+                    Wednesday morning deserves the most planning. Rain and wind are expected to ease later that day, but
+                    shoreline flooding and airline delays can outlast the storm. Check your flight, your route to the
+                    airport, and any connection before changing plans.
                 </p>
                 <div class="callout">
-                    <strong>Where things stand right now</strong>
+                    <strong>A forecast snapshot, not a live flight tracker</strong>
                     <p>
-                        As of noon Tuesday the FAA lists no delay programs at SFO, Oakland or San Jose. This morning's
-                        king tide set a November record at the San Francisco gauge and SFO reported no impact on
-                        flights. The airport no longer expects flooding to cause ground stops this week. Rain and wind
-                        arrive this evening.
+                        On November 23, Mayor Daniel Lurie said SFO no longer anticipated ground stops caused by
+                        flooding, while wind could still disrupt flights.
+                        <a href="https://www.sfchronicle.com/bayarea/article/sfo-flood-ground-stops-22546901.php">
+                            That update
+                        </a>
+                        is encouraging; it does not guarantee your departure.
+                        <a href="https://www.flysfo.com/flight-info/alerts-advisories/sfo-weather-preparation">
+                            SFO says
+                        </a>
+                        pumps, flood barriers and airfield inspections are ready.
                     </p>
                 </div>
                 <p class="small">
-                    The percentages on this page are my estimates, built from how SFO performed in recent storms and how
-                    this storm compares. They are not official forecasts. No agency or airline publishes cancellation
-                    odds. The working is shown further down.
+                    This page does not fetch live data. Weather outlook: NWS discussion issued November 24 at 10:25 AM
+                    PST. Airline terms reviewed November 24. Open the live sources before traveling.
                 </p>
+                <nav class="seg" aria-label="Live travel information">
+                    <a href="https://www.flysfo.com/flight-info/flight-status">SFO flight status</a>
+                    <a href="https://nasstatus.faa.gov/">FAA airport restrictions</a>
+                    <a href="https://www.weather.gov/mtr/">NWS Bay Area</a>
+                    <a href="https://quickmap.dot.ca.gov/">Caltrans road conditions</a>
+                    <a href="https://www.bart.gov/">BART trip planner and alerts</a>
+                </nav>
             </header>
 
-            <section>
-                <h2>The three days at a glance</h2>
+            <section aria-labelledby="outlook">
+                <h2 id="outlook">The local outlook</h2>
                 <div class="days">
                     <div class="day warn">
                         <div class="stamp">Wed Nov 25</div>
-                        <h3>Delays likely, mostly before noon</h3>
-                        <span class="pill">&#9650; Rough morning</span>
-                        <div class="pair">
-                            <div>
-                                <b>1&ndash;3%</b>
-                                <span>chance your flight is canceled</span>
-                            </div>
-                            <div>
-                                <b>30&ndash;45%</b>
-                                <span>chance it leaves late</span>
-                            </div>
-                        </div>
-                        <p class="small">
-                            Rain and 25 to 35 mph gusts overnight, mostly over by late morning. Busiest outbound day of
-                            the week. Afternoon is the better half.
+                        <h3>Allow for disruption</h3>
+                        <span class="pill">Morning weather; later recovery</span>
+                        <p>
+                            Rain and wind overnight into morning. Afternoon conditions should improve outside coastal
+                            flood zones. Aircraft, crews and queues can still be out of position.
                         </p>
                     </div>
-                    <div class="day">
+                    <div class="day warn">
                         <div class="stamp">Thu Nov 26 &middot; Thanksgiving</div>
-                        <h3>Smooth here, rough back East</h3>
-                        <span class="pill">&#9679; Fine unless you're headed to the Northeast</span>
-                        <div class="pair">
-                            <div>
-                                <b>under 1%</b>
-                                <span>most destinations</span>
-                            </div>
-                            <div>
-                                <b>3&ndash;8%</b>
-                                <span>DC, Philadelphia, New York, Boston</span>
-                            </div>
-                        </div>
-                        <p class="small">
-                            Dry at SFO and the lightest crowds of the week. A coastal storm reaches the Mid-Atlantic and
-                            Northeast.
+                        <h3>Drier, with shoreline risk</h3>
+                        <span class="pill">Bayshore flood warning until 4 PM</span>
+                        <p>
+                            Better local flying weather does not clear every access road. Check the journey to SFO as
+                            carefully as the flight. BART service starts at 8 AM.
                         </p>
                     </div>
                     <div class="day">
                         <div class="stamp">Fri Nov 27</div>
-                        <h3>Close to a normal day</h3>
-                        <span class="pill">&#9679; Near normal</span>
-                        <div class="pair">
-                            <div>
-                                <b>under 1%</b>
-                                <span>most destinations</span>
-                            </div>
-                            <div>
-                                <b>2&ndash;5%</b>
-                                <span>Northeast, morning flights</span>
-                            </div>
-                        </div>
-                        <p class="small">
-                            Dry at SFO. The East Coast storm is on its way out. Tides drop below the level that already
-                            caused no trouble Tuesday.
+                        <h3>Check the whole itinerary</h3>
+                        <span class="pill">Drier local outlook</span>
+                        <p>
+                            Check your destination, connection and inbound aircraft. An improved Bay Area forecast alone
+                            cannot establish whether your flight will leave on time.
                         </p>
                     </div>
                 </div>
-            </section>
-
-            <section>
-                <h2>Check a flight like yours</h2>
-                <div class="card pick">
-                    <div class="grp">
-                        <span id="lDay">Day</span>
-                        <div class="seg" id="segDay" role="group" aria-labelledby="lDay"></div>
-                    </div>
-                    <div class="grp">
-                        <span id="lTime">Departure time</span>
-                        <div class="seg" id="segTime" role="group" aria-labelledby="lTime"></div>
-                    </div>
-                    <div class="grp">
-                        <span id="lDest">Where you're going</span>
-                        <div class="seg" id="segDest" role="group" aria-labelledby="lDest"></div>
-                    </div>
-                    <hr class="divider" />
-                    <div class="result">
-                        <div style="display: flex; flex-direction: column; gap: 8px">
-                            <div class="grid100" id="grid" role="img" aria-label="100 flights like yours"></div>
-                            <span class="small">100 flights like yours</span>
-                        </div>
-                        <div class="verdict">
-                            <h3 id="vTitle"></h3>
-                            <div class="pair">
-                                <div>
-                                    <b id="vC"></b>
-                                    <span>canceled, out of 100</span>
-                                </div>
-                                <div>
-                                    <b id="vD"></b>
-                                    <span>leave 15+ minutes late, out of 100</span>
-                                </div>
-                            </div>
-                            <ul id="vTips"></ul>
-                            <div class="key">
-                                <span>
-                                    <i class="kc"></i>
-                                    canceled
-                                </span>
-                                <span>
-                                    <i class="kd"></i>
-                                    late
-                                </span>
-                                <span>
-                                    <i class="k0"></i>
-                                    on time
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 <p class="small">
-                    For scale, an ordinary day across US airlines runs roughly 1 flight in 100 canceled and 1 in 5 late.
+                    Sources:
+                    <a href="#source-weather">NWS forecast and coastal warning</a>
+                    ;
+                    <a href="https://www.bart.gov/news/articles/2026/news20261113-0">BART holiday schedule</a>
+                    . These are planning judgments, not measured cancellation probabilities.
                 </p>
             </section>
 
-            <section>
-                <h2>What to do</h2>
+            <section aria-labelledby="destination-weather">
+                <h2 id="destination-weather">Check the weather at the other end</h2>
+                <p>
+                    The November 24
+                    <a href="https://forecast.weather.gov/MapClick.php?lat=39.9533&amp;lon=-75.1383">
+                        NWS Philadelphia forecast
+                    </a>
+                    calls for a rainy, windy Thanksgiving, with breezy conditions and a chance of rain Friday. That is
+                    one example of why drier weather at SFO does not settle the whole itinerary. Check each destination
+                    and connecting airport for its own forecast, including the arrival date of a Wednesday red-eye.
+                </p>
+            </section>
+
+            <section aria-labelledby="planner">
+                <h2 id="planner">Build your departure checklist</h2>
+                <p>Choose your itinerary for reminders. This does not look up a flight or predict its outcome.</p>
+                <div class="card pick">
+                    <div class="grp">
+                        <span id="lDay">Departure day</span>
+                        <div class="seg" id="segDay" role="group" aria-labelledby="lDay"></div>
+                    </div>
+                    <div class="grp">
+                        <span id="lTime">Departure time at SFO (PST)</span>
+                        <div class="seg" id="segTime" role="group" aria-labelledby="lTime"></div>
+                    </div>
+                    <div class="grp">
+                        <span id="lDest">Itinerary</span>
+                        <div class="seg" id="segDest" role="group" aria-labelledby="lDest"></div>
+                    </div>
+                    <hr class="divider" />
+                    <div class="verdict" aria-live="polite" aria-atomic="true">
+                        <h3 id="vTitle">Check your airline and ground transport before leaving.</h3>
+                        <ul id="vTips">
+                            <li>Use the live links above and the practical advice below.</li>
+                        </ul>
+                    </div>
+                    <noscript>
+                        <p>The interactive choices need JavaScript. The guidance below remains available.</p>
+                    </noscript>
+                </div>
+            </section>
+
+            <section aria-labelledby="actions">
+                <h2 id="actions">What to do before leaving</h2>
                 <div class="todo">
                     <div class="card">
-                        <h3>Tonight</h3>
+                        <h3>Check your booking</h3>
                         <ul>
+                            <li>Enable airline notifications. Check the flight again before leaving home.</li>
                             <li>
-                                Turn on your airline's app notifications. Rebooking in the app beats any line at the
-                                airport.
+                                Check the inbound aircraft if available. Its arrival is useful information, but aircraft
+                                assignments can change and crew or traffic restrictions can still intervene.
                             </li>
                             <li>
-                                Flying before 9 AM Wednesday? Look up where your plane is coming from. If the inbound
-                                flight lands at SFO tonight, you are in good shape.
-                            </li>
-                            <li>
-                                If your Wednesday flight is flexible, a free move to the afternoon or to Thursday is on
-                                the table (waivers below).
+                                If your plans are flexible, compare available replacement flights under the waiver.
+                                Confirm the price and eligibility before accepting a change.
                             </li>
                         </ul>
                     </div>
                     <div class="card">
-                        <h3>Getting to the airport</h3>
+                        <h3>Plan the trip to SFO</h3>
                         <ul>
                             <li>
-                                The low stretch of Highway 101 between Candlestick Point and Burlingame, including
-                                ramps, can flood around high tide: 10:49 AM Wednesday, 11:38 AM Thursday.
+                                Check
+                                <a href="https://quickmap.dot.ca.gov/">Caltrans</a>
+                                for highway closures and local alerts for access streets. Never drive through floodwater
+                                or around a closure.
                             </li>
-                            <li>BART runs into the International Terminal and stays off 101.</li>
                             <li>
-                                TSA says arrive 2 hours ahead for domestic, 3 for international. Wednesday is the peak
-                                day before the holiday.
+                                BART avoids the highway journey, but check service alerts and your first train.
+                                <strong>
+                                    Thanksgiving hours are 8 AM&ndash;midnight; Friday is 5 AM&ndash;midnight.
+                                </strong>
+                                An early Thursday flight may need another way to the airport.
+                            </li>
+                            <li>
+                                <a href="https://www.flysfo.com/passengers/travel-tips">SFO recommends</a>
+                                arriving at least 2 hours before domestic departures and 3 before international
+                                departures. Add ground travel time separately; follow your airline&rsquo;s check-in
+                                deadlines.
                             </li>
                         </ul>
                     </div>
                     <div class="card">
-                        <h3>If it goes sideways</h3>
+                        <h3>If the airline changes the flight</h3>
                         <ul>
                             <li>
-                                Canceled, or delayed 3+ hours domestic (6+ international), and you decide not to go:
-                                federal rules entitle you to a full refund to your original payment.
+                                For a cancellation or qualifying significant change, you can decline travel and credits
+                                and receive a refund for unused travel under
+                                <a
+                                    href="https://www.transportation.gov/individuals/aviation-consumer-protection/refunds"
+                                >
+                                    DOT rules
+                                </a>
+                                , including when weather is the cause.
                             </li>
-                            <li>Accepting the rebooked flight gives up that refund.</li>
-                            <li>San Jose is 35 miles south. United's waiver lets you switch to SJC.</li>
+                            <li>
+                                The late-arrival threshold is 3+ hours for domestic itineraries or 6+ for international
+                                ones, measured against the original scheduled arrival at the destination. Other
+                                significant changes can also qualify.
+                            </li>
+                            <li>
+                                If you take a replacement flight, you do not get a refund for that flown travel. Review
+                                the options before accepting a voucher or rebooking.
+                            </li>
                         </ul>
                     </div>
                 </div>
 
-                <h3>Free-change waivers for Wednesday Nov 25 SFO flights</h3>
-                <div class="card tw">
+                <h3 id="waivers">Waivers for November 25 travel through SFO</h3>
+                <p>
+                    These notices have conditions. A waived change fee does not by itself mean every replacement flight
+                    costs the same. Your booking and the airline&rsquo;s current terms control.
+                </p>
+                <div class="card tw" role="region" aria-label="Airline waiver conditions" tabindex="0">
                     <table>
+                        <caption>Reviewed November 24, 2026; availability and eligibility must be confirmed.</caption>
                         <thead>
                             <tr>
-                                <th>Airline</th>
-                                <th>What you get</th>
-                                <th>Limits</th>
+                                <th scope="col">Airline</th>
+                                <th scope="col">Offer</th>
+                                <th scope="col">Key conditions</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>United</td>
-                                <td>No change fee or fare difference; San Jose allowed as a substitute</td>
-                                <td>Ticket bought by Nov 22; same cities and cabin; new flight by Nov 28</td>
+                                <th scope="row">
+                                    <a href="https://www.united.com/en/us/fly/travel/trip-planning/travel-alerts.html">
+                                        United
+                                    </a>
+                                </th>
+                                <td>
+                                    Reported waiver of change fee and fare difference; SJC listed as an alternative.
+                                </td>
+                                <td>
+                                    Ticket bought by Nov 22; replacement travel by Nov 28, same cabin and cities except
+                                    the permitted airport substitution.
+                                    <a
+                                        href="https://www.sfchronicle.com/travel/article/united-sfo-flight-waiver-22546476.php"
+                                    >
+                                        Terms reported by the Chronicle
+                                    </a>
+                                    ; confirm in your United booking. Full consumer terms could not be independently
+                                    read during this review.
+                                </td>
                             </tr>
                             <tr>
-                                <td>American</td>
-                                <td>One free rebooking</td>
-                                <td>Same origin and destination; travel between Nov 23 and Nov 28</td>
+                                <th scope="row">
+                                    <a href="https://www.aa.com/web/i18n/travel-info/travel-alerts.html">American</a>
+                                </th>
+                                <td>One-time change under the SFO weather notice, including Basic Economy.</td>
+                                <td>
+                                    Ticket bought by Nov 22; original travel Nov 25; book the change by Nov 25;
+                                    replacement travel Nov 23&ndash;28. Same cities; same cabin or pay the difference.
+                                    Check the quoted fare before confirming.
+                                </td>
                             </tr>
                             <tr>
-                                <td>Southwest</td>
-                                <td>Free rebooking</td>
-                                <td>Within 14 days of the original date</td>
-                            </tr>
-                            <tr>
-                                <td>Alaska, Delta</td>
-                                <td>No SFO waiver reported as of Tuesday morning</td>
-                                <td>Check the airline's travel-alerts page</td>
+                                <th scope="row"><a href="https://www.southwest.com/travel-advisory/">Southwest</a></th>
+                                <td>Rebook or travel standby without additional airfare under the advisory.</td>
+                                <td>
+                                    Original SFO reservation for Nov 25; same city pair; within 14 days of the original
+                                    travel date. Check seat availability and the full notice.
+                                </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
                 <p class="small">
-                    Nothing covers Thursday or Friday yet, and no East Coast waivers had been reported by Tuesday. Those
-                    tend to appear a day ahead, so check again Wednesday if you are headed to the Northeast.
+                    This is not an exhaustive list. Check your airline for additional dates, airports or newer waivers.
+                    An SFO waiver does not automatically cover a separate ticket or another airport.
                 </p>
-
                 <div class="callout">
-                    <strong>Coming home Sunday Nov 29?</strong>
+                    <strong>Returning Sunday, November 29?</strong>
                     <p>
-                        Another storm is forecast from Saturday morning through Monday morning, with an 80% chance of
-                        measurable rain in San Francisco. Sunday is the busiest flying day of the year. That return leg
-                        carries more weather risk than anything on Thursday or Friday.
+                        The November 24 NWS outlook brings rain back late Saturday or Sunday, with uncertain timing.
+                        Recheck the return leg closer to departure.
                     </p>
                 </div>
             </section>
 
-            <section>
-                <h2>How I got these numbers</h2>
+            <section aria-labelledby="uncertainty">
+                <h2 id="uncertainty">Why this guide no longer gives cancellation odds</h2>
                 <p>
-                    At SFO, storms mostly turn into delays. The runways are 750 feet apart, so when clouds drop or wind
-                    picks up the FAA spaces arrivals out, from about 45 to 48 an hour in fair weather to about 36.
-                    Flights wait their turn. Few get scrubbed. The recent record backs that up:
+                    The first version estimated percentages from a few storm-day reports, an approximate daily flight
+                    count, and judgment calls about routes and departure times. That was not enough evidence to predict
+                    an individual flight. The percentages and the &ldquo;100 flights&rdquo; graphic have been removed.
                 </p>
-                <div class="card tw">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Day</th>
-                                <th>What hit</th>
-                                <th class="n">Canceled</th>
-                                <th class="n">Delayed</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Dec 24, 2025</td>
-                                <td>Wind and rain, FAA delay program, inbound delays over 2 hours</td>
-                                <td class="n">10 (0.9%)</td>
-                                <td class="n">400+ (36%)</td>
-                            </tr>
-                            <tr>
-                                <td>Nov 16, 2026</td>
-                                <td>Rain, low visibility</td>
-                                <td class="n">not reported</td>
-                                <td class="n">280 (25%)</td>
-                            </tr>
-                            <tr class="hl">
-                                <td>Nov 18, 2026</td>
-                                <td>
-                                    Atmospheric river. Gusts over 50 mph, record rain, ground stop over an hour, delays
-                                    averaging 186 minutes
-                                </td>
-                                <td class="n">27 (2.5%)</td>
-                                <td class="n">432 (39%)</td>
-                            </tr>
-                            <tr>
-                                <td>Nov 19, 2026</td>
-                                <td>Day-after recovery, flooded access roads</td>
-                                <td class="n">8 (0.7%)</td>
-                                <td class="n">595 (54%)</td>
-                            </tr>
-                            <tr>
-                                <td>Nov 13&ndash;15, 2026</td>
-                                <td>Not weather: nationwide FAA ground stop</td>
-                                <td class="n">500+, 304, 116</td>
-                                <td class="n">400+ on day one</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <pre class="math">
-Step 1  How many flights a day?
-        On Nov 16 the airport said 280 delays was about a quarter of flights.
-        280 x 4 = about 1,100 arrivals plus departures per day.
-
-Step 2  Worst recent weather day, Nov 18:
-        27 canceled / 1,100 = 2.5%      432 delayed / 1,100 = 39%
-
-Step 3  Tonight's storm against Nov 18:
-                      Nov 18              Tue night to Wed
-        peak gusts    50+ mph             25-35 mph, up to 45 near the bay
-        rain in SF    2.31 in             0.5 to 1 in
-        timing        all day             mostly overnight, over by late morning
-        Weaker and mostly overnight, when few flights run.
-        Weather alone should land at or under Nov 18: about 1 to 2%.
-
-Step 4  Things that push Wednesday up:
-        + busiest outbound day, full planes, little slack to recover
-        + planes arriving late tonight start Wednesday behind
-        + a second storm hits Atlanta, Charlotte, Miami, Orlando on Wednesday
-        Things that pull it down:
-        - airlines moved people early with waivers
-        - SFO no longer expects tide flooding to stop flights
-        Net for a typical Wednesday flight: 1 to 3% canceled, 30 to 45% late.
-
-Step 5  Thursday and Friday: dry at SFO, tides falling (8.2 ft, then 7.9 ft,
-        both under Tuesday's 8.4 ft forecast peak that caused no disruption).
-        Local risk drops to an ordinary day. What is left is the East Coast
-        storm, so the odds split by destination.</pre>
-                <h3>What would make Wednesday worse than this</h3>
-                <ul>
-                    <li>
-                        <b>The front stalls.</b>
-                        One of the two models the Weather Service is watching slows the front over the Bay Area. Rain
-                        and gusts lingering into the 6 to 10 AM departure push would look more like Nov 18.
-                    </li>
-                    <li>
-                        <b>Thunderstorms.</b>
-                        Forecasters put the chance at 10 to 15% tonight into Wednesday morning. A cell over the airport
-                        stops ramp work and departures until it passes.
-                    </li>
-                    <li>
-                        <b>Water on the airfield at 10:49 AM.</b>
-                        The forecast peak is 8.5 ft, about 2.7 ft above normal, an inch or two above the January
-                        high-water mark at SFO. The airport does not expect a stoppage, and the mayor has said weather
-                        ground stops remain possible.
-                    </li>
-                    <li>
-                        <b>Another system failure.</b>
-                        The Nov 13 FAA outage canceled 500+ SFO flights in a day. Nothing predicts a repeat. It is the
-                        reason the upper tail exists.
-                    </li>
-                </ul>
                 <p>
-                    I put the chance of a bad Wednesday, meaning more than 50 cancellations at SFO, at roughly 1 in 10.
-                    The first place it would show up is the
-                    <a href="https://nasstatus.faa.gov/">FAA's airport status page</a>
-                    : look for a ground delay program or ground stop at SFO.
+                    Past airport totals can mix arrivals and departures, use different reporting cutoffs, and miss
+                    airline or route differences. A credible forecast would need consistent flight-level data and
+                    testing on storms it had not already seen. A milder rain forecast alone does not establish lower
+                    cancellation odds.
                 </p>
-                <p class="small">
-                    Estimates for short regional hops and long-haul international flights lean on a general airline
-                    pattern, not SFO data from this month: when arrivals are metered, carriers cut small-jet short
-                    flights first and protect long-hauls.
+                <p>
+                    <a href="https://www.flysfo.com/about/airport-operations/policies-regulations/runway-constraints">
+                        SFO explains
+                    </a>
+                    that close runway spacing limits arrivals in poor visibility. Wind, traffic restrictions and
+                    aircraft rotations also matter. A ground stop can hold flights bound for SFO at their origin; it
+                    does not necessarily mean the airport is closed. Read the scope and timing of any
+                    <a href="https://nasstatus.faa.gov/">FAA restriction</a>
+                    and check your airline.
                 </p>
             </section>
 
@@ -1109,11 +1014,15 @@ Step 5  Thursday and Friday: dry at SFO, tides falling (8.2 ft, then 7.9 ft,
             <div class="part">Background: the storm itself</div>
 
             <section>
-                <h2>How much rain is this, against a regular rainy day?</h2>
+                <h2>How much water is an inch of rain?</h2>
                 <p>
-                    The atmospheric river already came through on Nov 18 and dropped a record 2.31 inches on downtown SF
-                    in a day. Tonight's storm is a faster, lighter cold front. Inches of rain; pick a row to see it in
-                    gallons.
+                    Downtown San Francisco recorded
+                    <strong>2.64 inches on November 18</strong>
+                    , according to the NWS daily record report issued November 19 at 4:42 AM (preliminary data). The
+                    2.31-inch figure in the first version was an earlier, partial-day total. The forecast ranges below
+                    come from the November 23 NWS discussion, not a live rain feed. Select a row to explore the volume.
+                    <a href="#source-rain">Rainfall sources</a>
+                    .
                 </p>
                 <div class="card">
                     <div class="bars" id="bars"></div>
@@ -1125,7 +1034,7 @@ Step 5  Thursday and Friday: dry at SFO, tides falling (8.2 ft, then 7.9 ft,
                     <div class="key">
                         <span>
                             <i class="k1"></i>
-                            tonight's storm, low end of forecast
+                            Nov 23 forecast, low end
                         </span>
                         <span>
                             <i class="k2"></i>
@@ -1144,7 +1053,7 @@ Step 5  Thursday and Friday: dry at SFO, tides falling (8.2 ft, then 7.9 ft,
                             <div class="tubeWrap">
                                 <div class="tube ref"><div class="w" id="tRef"></div></div>
                                 <span class="num" id="tRefV"></span>
-                                <span class="small">average SF rainy day</span>
+                                <span class="small">quarter-inch reference</span>
                             </div>
                             <div class="tubeWrap">
                                 <div class="tube"><div class="w" id="tSel"></div></div>
@@ -1157,24 +1066,24 @@ Step 5  Thursday and Friday: dry at SFO, tides falling (8.2 ft, then 7.9 ft,
                             <div class="stats">
                                 <div class="stat">
                                     <b id="sX"></b>
-                                    <span class="small">average rainy days' worth</span>
+                                    <span class="small">times the quarter-inch reference</span>
                                 </div>
                                 <div class="stat">
                                     <b id="sGal"></b>
-                                    <span class="small">gallons falling on San Francisco's 46.9 sq mi</span>
+                                    <span class="small">gallons if uniform over an illustrative 46.9 sq mi</span>
                                 </div>
                                 <div class="stat">
                                     <b id="sPool"></b>
-                                    <span class="small">Olympic swimming pools</span>
+                                    <span class="small">2,500 m³ pool equivalents</span>
                                 </div>
                                 <div class="stat">
                                     <b id="sRoof"></b>
-                                    <span class="small">gallons off a 1,000 sq ft roof</span>
+                                    <span class="small">gallons falling on 1,000 sq ft of horizontal roof area</span>
                                 </div>
                             </div>
                             <div class="slider">
                                 <label for="depth" class="small">Or set a depth:</label>
-                                <input type="range" id="depth" min="0.05" max="5" step="0.05" value="0.75" />
+                                <input type="range" id="depth" min="0.05" max="5" step="0.01" value="0.75" />
                                 <span class="num" id="depthV"></span>
                             </div>
                         </div>
@@ -1186,62 +1095,117 @@ Step 5  Thursday and Friday: dry at SFO, tides falling (8.2 ft, then 7.9 ft,
 Step 1  1 inch of rain on 1 sq ft = 12 x 12 x 1 = 144 cubic inches
 Step 2  1 gallon = 231 cubic inches, so 144 / 231 = 0.623 gallons
 Step 3  1 sq mi = 5,280 x 5,280 = 27,878,400 sq ft
-Step 4  SF land area: 46.9 x 27,878,400 = 1.31 billion sq ft
+Step 4  Illustrative city-sized area: 46.9 x 27,878,400 = 1.31 billion sq ft
 Step 5  1.31 billion x 0.623 = about 815 million gallons per inch of rain
-Step 6  Olympic pool = 2,500 m3 = about 660,000 gallons
+Step 6  Reference pool = 2,500 m3 = about 660,000 gallons
         815,000,000 / 660,000 = about 1,235 pools per inch
-Average rainy day: 22.9 in per year / 71 rainy days = 0.32 in</pre>
+Reference depth: 0.25 in (chosen for comparison, not a climate average)</pre>
+                <p class="small">
+                    This is a volume illustration: depth multiplied by area. It assumes uniform rain, not an actual
+                    citywide measured total, flood depth or runoff forecast. Absorption, drainage, storage and
+                    evaporation change how much water reaches streets and drains.
+                </p>
             </section>
 
             <section>
-                <h2>The tides: why the bay is the real story</h2>
+                <h2>The tides: water level is not flood depth</h2>
                 <p>
-                    City storm drains empty into the bay. When the bay sits almost three feet above a normal high tide,
-                    outfalls back up and modest rain has nowhere to go. The heaviest rain is forecast overnight, in the
-                    gap between Tuesday's and Wednesday's high tides, which is the lucky version of this setup.
+                    High bay water can slow drainage through gravity-fed outfalls and push water into low shoreline
+                    areas. Pumps, barriers and local elevations affect what floods. A dry runway does not establish that
+                    every road nearby is passable.
                 </p>
                 <div class="card">
-                    <h3 style="margin-bottom: 10px">
-                        High tides at the San Francisco gauge, feet above low-water datum (MLLW)
-                    </h3>
-                    <div class="tides" id="tides"></div>
-                    <div class="tlabs" id="tlabs"></div>
+                    <h3>Forecast high water at the San Francisco gauge</h3>
+                    <p class="small">NWS November 24, 10:25 AM PST issue. Feet above MLLW; surge already included.</p>
+                    <div class="tides" id="tides" aria-hidden="true"></div>
+                    <div class="tlabs" id="tlabs" aria-hidden="true"></div>
                     <div class="key" style="margin-top: 12px">
                         <span>
                             <i class="k3"></i>
-                            normal high tide
+                            NWS normal-high-water reference
                         </span>
                         <span>
                             <i class="k4"></i>
-                            extra from king tide plus storm surge
+                            forecast excess above that reference
                         </span>
+                    </div>
+                    <div class="tw">
+                        <table>
+                            <caption>
+                                Forecasts from that issue, including Tuesday; these are not observed peaks.
+                            </caption>
+                            <thead>
+                                <tr>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Peak (PST)</th>
+                                    <th scope="col">Feet MLLW</th>
+                                    <th scope="col">Above NWS normal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row">Tue Nov 24</th>
+                                    <td>10:05 AM</td>
+                                    <td>8.2</td>
+                                    <td>2.4 ft</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Wed Nov 25</th>
+                                    <td>10:49 AM</td>
+                                    <td>8.5</td>
+                                    <td>2.7 ft</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Thu Nov 26</th>
+                                    <td>11:38 AM</td>
+                                    <td>8.0</td>
+                                    <td>2.2 ft</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Fri Nov 27</th>
+                                    <td>12:31 PM</td>
+                                    <td>7.8</td>
+                                    <td>2.0 ft</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
                 <p class="small">
-                    Forecast values from the Weather Service; Wednesday was revised down slightly on Monday. Tuesday's
-                    observed peak came at 10:06 AM and set a November record. A Coastal Flood Warning for San Francisco
-                    Bay runs through 4 PM Thursday. Peak time can shift up to 90 minutes around the bay.
+                    <a href="https://tidesandcurrents.noaa.gov/datum_options.html">MLLW</a>
+                    means mean lower low water, a long-term tidal reference. An 8.5-foot reading does not mean 8.5 feet
+                    of water on a road or runway. These are San Francisco gauge times, not SFO-local peaks; NWS says
+                    timing can differ by up to 90 minutes around the region. Do not add surge to the totals again.
+                </p>
+                <p class="small">
+                    The
+                    <a href="https://www.weather.gov/wwamap/wwatxtget.php?cwa=mtr&amp;wwa=all">
+                        bayshore Coastal Flood Warning
+                    </a>
+                    runs through Thursday at 4 PM in the reviewed issue. Check its current status. Forecast values do
+                    not verify a road closure or an airport shutdown.
                 </p>
             </section>
 
             <section>
                 <h2>What an atmospheric river is</h2>
                 <p>
-                    A long, narrow conveyor of water vapor a mile or so above the ocean. When it runs into the
-                    California coast it gets shoved uphill and wrung out.
+                    A long, narrow region of strong water-vapor transport. When moist air rises over coastal mountains,
+                    it cools and can produce heavy rain or snow. The illustration below is schematic, not a forecast of
+                    this storm or a drawing to scale.
                 </p>
                 <div class="card scroller">
                     <svg
                         id="xsec"
                         viewBox="0 0 900 350"
                         role="img"
-                        aria-label="Cross-section: water vapor flows from the Pacific toward the coast about a mile up, is lifted by the coastal mountains, and falls as rain on the windward slopes."
+                        aria-label="Schematic cross-section: moist air moves from the Pacific, rises over coastal mountains and produces rain on windward slopes. Not to scale."
                     >
                         <rect class="sky" x="0" y="0" width="900" height="350" />
                         <line class="axisL" x1="0" y1="225" x2="900" y2="225" />
-                        <text class="axisT" x="6" y="220">~0.6 mi up</text>
+                        <text class="axisT" x="6" y="220">low-level flow</text>
                         <line class="axisL" x1="0" y1="120" x2="900" y2="120" />
-                        <text class="axisT" x="6" y="115">~1.5 mi up</text>
+                        <text class="axisT" x="6" y="115">air rises and cools</text>
                         <g id="parts"></g>
                         <rect class="seaFill" x="0" y="300" width="570" height="50" />
                         <path id="land" class="landFill" d="" />
@@ -1266,22 +1230,25 @@ Average rainy day: 22.9 in per year / 71 rainy days = 0.32 in</pre>
                         </g>
                     </svg>
                 </div>
+                <div class="seg">
+                    <button type="button" id="pauseAnimation" aria-controls="xsec" aria-pressed="false">
+                        Pause animation
+                    </button>
+                </div>
                 <ol class="steps">
                     <li>
                         <b>The river.</b>
-                        Ahead of a cold front, a fast low-level wind (the low-level jet) carries warm, wet air from the
-                        subtropics. Almost all of the water is invisible vapor in the lowest mile and a half of the
-                        atmosphere.
+                        Strong winds carry moist air toward the coast. Much of the moisture transport is concentrated
+                        low in the atmosphere; the water vapor itself is invisible.
                     </li>
                     <li>
                         <b>Landfall.</b>
-                        The plume hits the coast. Flat ground gets steady rain from the front itself.
+                        The plume reaches land. Frontal lifting can produce rain even away from mountains.
                     </li>
                     <li>
                         <b>The squeeze.</b>
-                        Mountains force the air upward. Rising air expands and cools, cool air holds less vapor, and the
-                        excess condenses and falls. This is why the Santa Cruz Mountains and Mount Tam routinely get two
-                        to four times what downtown SF gets from the same storm.
+                        Mountains force air upward. Rising air expands and cools, allowing vapor to condense into
+                        droplets or ice. This can greatly increase rainfall on the windward slopes.
                     </li>
                     <li>
                         <b>Rain shadow.</b>
@@ -1301,53 +1268,62 @@ Average rainy day: 22.9 in per year / 71 rainy days = 0.32 in</pre>
                     </div>
                     <div class="fact">
                         <b>~12 Mississippis</b>
-                        <span class="small">water moved by a moderate one, as vapor (math below)</span>
+                        <span class="small">illustrative vapor flow, not this storm (assumptions below)</span>
                     </div>
                 </div>
 
-                <h3>Where the "12 Mississippis" comes from</h3>
+                <h3>A scale comparison: an illustrative &ldquo;12 Mississippis&rdquo;</h3>
                 <p>
-                    Forecasters rate these storms by IVT, integrated vapor transport: how many kilograms of water vapor
-                    cross each meter of the river's width every second. It comes from adding up, layer by layer from the
-                    surface to about 5.5 miles up, the moisture content of the air times the wind speed times the mass
-                    of air in that layer.
+                    Integrated vapor transport (IVT) combines moisture and horizontal wind through the atmosphere.
+                    Direction matters: add the wind components through the layers first, then take the magnitude. To
+                    turn that into a flow across an entire plume, use the transport perpendicular to a cross-section and
+                    integrate across its width. A peak IVT at one point is not the width-average.
                 </p>
                 <pre class="math">
-IVT = (1/g) x SUM over layers of ( q x v x dp )
+IVT_x = SUM(q x u x dp) / g
+IVT_y = SUM(q x v x dp) / g
+IVT   = sqrt(IVT_x^2 + IVT_y^2)
 
-  q   = kg of water vapor per kg of air in the layer
-  v   = wind speed in the layer, m/s
-  dp  = pressure thickness of the layer, pascals
-  dp/g = kg of air sitting over each square meter in that layer
-         (pressure is the weight of the air above, per unit area)
+q = water-vapor mass / air mass (kg/kg)
+u, v = horizontal wind components (m/s)
+dp = layer pressure thickness (Pa); g = gravity (m/s2)
+IVT units = kg of water per meter per second
 
-  units: (kg/kg) x (m/s) x (kg/m2) = kg per meter per second
-
-Step 1  moderate river: IVT = 500 kg/m/s
-Step 2  width = 400 km = 400,000 m
-Step 3  500 x 400,000 = 200,000,000 kg of water per second
-Step 4  1 m3 of water = 1,000 kg, so 200,000 m3/s
-Step 5  Mississippi at its mouth averages about 17,000 m3/s
-Step 6  200,000 / 17,000 = about 12 Mississippis</pre>
+Illustration only: assume a perpendicular, width-mean IVT of 500 kg/m/s
+across 400 km, not a peak of 500 at one point.
+500 x 400,000 = 200,000,000 kg/s of transported vapor
+Divide by 1,000 kg/m3 = 200,000 m3/s liquid-water equivalent
+Using about 17,000 m3/s for the Mississippi: about 12 river flows</pre>
                 <p class="small">
-                    The storm scale (Ralph et al., 2019) starts from peak IVT, then shifts a category down if the river
-                    lasts under 24 hours and up if it lasts over 48:
+                    This is a hypothetical flow calculation, not an estimate for this week. Only part of the transported
+                    vapor falls locally as precipitation.
+                    <a href="https://www.psl.noaa.gov/arportal/about/">NOAA&rsquo;s background on atmospheric rivers</a>
+                    explains why comparisons with large rivers are useful.
                 </p>
-                <div class="scale" aria-label="Atmospheric river scale by peak IVT">
+                <p class="small">
+                    These are IVT intensity bands in kg m⁻¹ s⁻¹. The Ralph et al. (2019) event scale also uses duration
+                    at a location and a three-hour average for peak IVT. The baseline is 24–48 hours; shorter events
+                    shift down a category and longer ones up, within the scale&rsquo;s limits. These bands alone are not
+                    event categories or flight-disruption ratings:
+                </p>
+                <div
+                    class="scale"
+                    aria-label="IVT intensity bands in kilograms per meter per second; event category also depends on duration"
+                >
                     <div>
-                        <b>250&ndash;500</b>
+                        <b>250 to &lt;500</b>
                         weak
                     </div>
                     <div>
-                        <b>500&ndash;750</b>
+                        <b>500 to &lt;750</b>
                         moderate
                     </div>
                     <div>
-                        <b>750&ndash;1000</b>
+                        <b>750 to &lt;1000</b>
                         strong
                     </div>
                     <div>
-                        <b>1000&ndash;1250</b>
+                        <b>1000 to &lt;1250</b>
                         extreme
                     </div>
                     <div>
@@ -1356,159 +1332,83 @@ Step 6  200,000 / 17,000 = about 12 Mississippis</pre>
                     </div>
                 </div>
 
-                <h3>Who figured this out</h3>
+                <h3>Where to learn more</h3>
                 <p>
-                    Reginald Newell's group at MIT first described "tropospheric rivers" in 1992 after spotting
-                    filaments of moisture in global weather analyses. Yong Zhu and Newell switched to the name
-                    "atmospheric rivers" in 1994, and in 1998 showed that four or five of these filaments, covering
-                    under a tenth of the globe's circumference at mid-latitudes, carry over 90% of the poleward water
-                    vapor transport. Marty Ralph, Paul Neiman and Gary Wick flew research aircraft through them off
-                    California in the winter of 1997&ndash;98 and published the measurements in 2004, which pinned down
-                    the roughly 400 km width and the low-level jet. Ralph's 2019 paper added the five-step scale above.
-                    "Pineapple Express" is the older folk name for the ones that tap moisture near Hawaii.
+                    <a href="https://www.noaa.gov/stories/what-are-atmospheric-rivers">NOAA&rsquo;s introduction</a>
+                    explains how these storms supply water as well as cause flooding.
+                    <a
+                        href="https://www.usgs.gov/publications/a-scale-characterize-strength-and-impacts-atmospheric-rivers"
+                    >
+                        Ralph and colleagues&rsquo; 2019 paper
+                    </a>
+                    combines transport and duration into an event scale. &ldquo;Pineapple Express&rdquo; describes
+                    atmospheric rivers carrying moisture from near Hawaii toward the West Coast.
                 </p>
             </section>
 
             <footer>
-                <span>
-                    Forecasts and airline policies change by the hour this week. Your airline's app is the authority on
-                    your flight.
-                </span>
-                <span>
-                    Built with Claude. Published on
+                <h2>Credits and source notes</h2>
+                <p>
+                    Initial guide and visualizations:
+                    <strong>Claude (Anthropic)</strong>
+                    . Independent review, source checks, methodology corrections and revisions:
+                    <strong>ChatGPT Codex (OpenAI)</strong>
+                    . Published by
                     <a href="https://do-not-panic.com/">do-not-panic.com</a>
-                    to help travelers.
-                </span>
+                    .
+                </p>
+                <p>
+                    The November 24 review removed unsupported flight probabilities, updated rain and tide values,
+                    clarified waiver and refund conditions, and added the Thanksgiving BART schedule.
+                </p>
                 <ul>
-                    <li>
-                        Live status:
-                        <a href="https://nasstatus.faa.gov/">FAA National Airspace System status</a>
-                        (checked 11:49 AM PT Nov 24)
-                    </li>
-                    <li>
-                        Weather and tides:
+                    <li id="source-weather">
                         <a
-                            href="https://forecast.weather.gov/product.php?site=MTR&issuedby=MTR&product=AFD&format=CI&version=1&glossary=1"
+                            href="https://forecast.weather.gov/product.php?format=txt&amp;glossary=1&amp;issuedby=MTR&amp;product=AFD&amp;site=GRR&amp;version=1"
                         >
                             NWS Bay Area forecast discussion
                         </a>
-                        (Nov 23 evening issue);
-                        <a
-                            href="https://abc7news.com/live-updates/live-bay-area-weather-updates-san-francisco-recovers-severe-flooding-more-storms-king-tides-coming-northern-california/20069742/"
-                        >
-                            ABC7 live updates
+                        : November 24, 10:25 AM PST, product AFDMTR / FXUS66 KMTR 241825.
+                        <a href="https://www.weather.gov/wwamap/wwatxtget.php?cwa=mtr&amp;wwa=all">
+                            Coastal Hazard Message
                         </a>
+                        : November 23, 1:10 PM PST. These links roll forward to newer issues; the values here stay
+                        fixed.
+                    </li>
+                    <li id="source-rain">
+                        <a
+                            href="https://forecast.weather.gov/product.php?format=TXT&amp;glossary=1&amp;issuedby=MTR&amp;product=AFD&amp;site=GRR&amp;version=4"
+                        >
+                            NWS rainfall outlook
+                        </a>
+                        : November 23, 12:39 PM short-term discussion carried in the 10:08 PM issue (FXUS66 KMTR
+                        240608). Peninsula 0.5&ndash;1 inch; North Bay 0.5&ndash;1.2, with locally higher mountain
+                        totals.
+                        <a
+                            href="https://forecast.weather.gov/product.php?format=CI&amp;glossary=0&amp;issuedby=MTR&amp;product=RER&amp;site=CRH&amp;version=1"
+                        >
+                            NWS record report
+                        </a>
+                        : November 19, 4:42 AM (SXUS76 KMTR 191242), downtown SF 2.64 inches on November 18. These are
+                        rolling product links, not permanent archives.
                     </li>
                     <li>
-                        SFO flood outlook: SF Chronicle,
-                        <a href="https://www.sfchronicle.com/bayarea/article/sfo-flood-ground-stops-22546901.php">
-                            SFO no longer expects flooding to trigger ground stops
+                        <a href="https://www.flysfo.com/flight-info/alerts-advisories/sfo-weather-preparation">
+                            SFO preparations
                         </a>
-                        ,
-                        <a
-                            href="https://www.sfchronicle.com/weather/article/live-updates-record-high-tides-bay-area-flooding-22546836.php"
-                        >
-                            king tides live updates
-                        </a>
-                        ,
-                        <a
-                            href="https://www.sfchronicle.com/sf/article/sfo-flood-threat-roads-to-airport-king-tides-22546186.php"
-                        >
-                            roads to the airport
+                        (November 23);
+                        <a href="https://www.bart.gov/news/articles/2026/news20261113-0">BART holiday service</a>
+                        (November 13). Airline notices and DOT refund guidance are linked beside the relevant advice.
+                    </li>
+                    <li>
+                        <a href="https://www.noaa.gov/stories/what-are-atmospheric-rivers">
+                            NOAA atmospheric-river explainer
                         </a>
                         ;
-                        <a href="https://www.cnn.com/2026/11/24/us/live-news/thanksgiving-travel">
-                            CNN travel live updates
+                        <a href="https://repository.library.noaa.gov/view/noaa/25074">
+                            Ralph et al. (2019), atmospheric-river scale
                         </a>
-                    </li>
-                    <li>
-                        Past storm days:
-                        <a
-                            href="https://abc7news.com/live-updates/live-bay-area-storm-updates-tornado-warning-issued-santa-cruz-county-waterspouts-spotted-san-francisco/20045464/entry/20052128/"
-                        >
-                            ABC7
-                        </a>
-                        (Nov 18),
-                        <a href="https://avi-go.com/news/articles/5e64f9ea6a89a383d9e358a29e815fd0">Avi-Go</a>
-                        (Nov 19),
-                        <a
-                            href="https://www.thesfnews.com/waterspouts-near-sfo-as-storms-delay-hundreds-of-flights/104633"
-                        >
-                            SF News
-                        </a>
-                        (Nov 14&ndash;16),
-                        <a
-                            href="https://www.kqed.org/news/12109878/hundreds-of-bay-area-flights-remain-disrupted-after-faa-ground-stop"
-                        >
-                            KQED
-                        </a>
-                        (Nov 13),
-                        <a
-                            href="https://www.sfchronicle.com/weather/article/california-storm-live-updates-21260216.php"
-                        >
-                            SF Chronicle
-                        </a>
-                        (Dec 24, 2025)
-                    </li>
-                    <li>
-                        Runway capacity:
-                        <a
-                            href="https://www.aviationpros.com/airport-business/airport-infrastructure-operations/news/55405869/a-major-sfo-runway-is-reopening-early-what-travelers-should-know"
-                        >
-                            AviationPros
-                        </a>
-                    </li>
-                    <li>
-                        Waivers and refunds:
-                        <a
-                            href="https://abc7news.com/story/airlines-issue-waivers-san-francisco-travelers-ahead-thanksgiving-storms-how-get-refund-rebook-flights/20075468/"
-                        >
-                            ABC7
-                        </a>
-                        ,
-                        <a href="https://www.sfchronicle.com/travel/article/united-sfo-flight-waiver-22546476.php">
-                            SF Chronicle
-                        </a>
-                        ,
-                        <a
-                            href="https://www.iheart.com/content/2026-11-24-united-allows-for-changing-flights-wednesday-at-sfo/"
-                        >
-                            iHeart
-                        </a>
-                        ,
-                        <a
-                            href="https://www.thetraveler.org/storms-on-both-coasts-threaten-2026-thanksgiving-air-travel/"
-                        >
-                            The Traveler
-                        </a>
-                    </li>
-                    <li>
-                        East Coast storm:
-                        <a
-                            href="https://thepointsguy.com/news/thanksgiving-flight-cancellations-delays-thanksgiving-2026"
-                        >
-                            The Points Guy
-                        </a>
-                        ,
-                        <a
-                            href="https://www.thetraveler.org/thanksgiving-noreaster-poses-major-flight-disruption-risk/"
-                        >
-                            The Traveler
-                        </a>
-                    </li>
-                    <li>
-                        Rain climatology:
-                        <a
-                            href="https://currentresults.com/Weather/California/Places/san-francisco-weather-averages.php"
-                        >
-                            Current Results
-                        </a>
-                        . Literature: Newell et al. 1992 and Zhu &amp; Newell 1994,
-                        <i>Geophys. Res. Lett.</i>
-                        ; Zhu &amp; Newell 1998 and Ralph, Neiman &amp; Wick 2004,
-                        <i>Mon. Wea. Rev.</i>
-                        ; Ralph et al. 2019,
-                        <i>Bull. Amer. Meteor. Soc.</i>
+                        . The animation and volume calculations are illustrations, not simulations of this storm.
                     </li>
                 </ul>
             </footer>
@@ -1518,6 +1418,8 @@ Step 6  200,000 / 17,000 = about 12 Mississippis</pre>
             ;(function () {
                 var NS = "http://www.w3.org/2000/svg"
                 var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches
+                var paused = Boolean(reduce)
+                var animationFrame
                 var $ = function (id) {
                     return document.getElementById(id)
                 }
@@ -1534,37 +1436,11 @@ Step 6  200,000 / 17,000 = about 12 Mississippis</pre>
                     ["late", "After 2 PM"],
                 ]
                 var DESTS = [
-                    ["west", "West, Mountain, Midwest, Texas, Hawaii"],
-                    ["reg", "Short hop on a small jet"],
-                    ["se", "Atlanta, Charlotte, Florida"],
-                    ["ne", "DC, Philadelphia, New York, Boston"],
-                    ["intl", "International long-haul"],
+                    ["domestic", "Domestic nonstop"],
+                    ["connection", "Connecting itinerary"],
+                    ["international", "International nonstop"],
                 ]
-                // [cancel lo, cancel hi, late lo, late hi] in percent; estimates, see "How I got these numbers"
-                var ODDS = {
-                    wed: {
-                        west: { early: [1, 3, 35, 50], mid: [1, 3, 30, 45], late: [0.5, 2, 25, 40] },
-                        reg: { early: [3, 7, 40, 55], mid: [2, 6, 35, 50], late: [1, 4, 30, 45] },
-                        se: { early: [2, 5, 40, 55], mid: [2, 5, 40, 55], late: [2, 6, 45, 60] },
-                        ne: { early: [1, 3, 35, 50], mid: [1, 3, 30, 45], late: [2, 5, 35, 50] },
-                        intl: { early: [0.5, 1.5, 30, 45], mid: [0.5, 1.5, 30, 45], late: [0.5, 1.5, 25, 40] },
-                    },
-                    thu: {
-                        west: { all: [0.3, 1, 12, 20] },
-                        reg: { all: [0.5, 1.5, 12, 20] },
-                        se: { all: [1, 3, 20, 35] },
-                        ne: { all: [3, 8, 35, 55] },
-                        intl: { all: [0.3, 1, 12, 20] },
-                    },
-                    fri: {
-                        west: { all: [0.3, 1, 15, 22] },
-                        reg: { all: [0.5, 1.5, 15, 22] },
-                        se: { all: [0.5, 1.5, 15, 25] },
-                        ne: { early: [2, 5, 25, 40], mid: [1, 3, 20, 35], late: [1, 3, 20, 35] },
-                        intl: { all: [0.3, 1, 15, 22] },
-                    },
-                }
-                var sel = { day: "wed", time: "early", dest: "west" }
+                var sel = { day: "wed", time: "early", dest: "domestic" }
                 function seg(host, opts, key) {
                     opts.forEach(function (o) {
                         var b = document.createElement("button")
@@ -1588,86 +1464,67 @@ Step 6  200,000 / 17,000 = about 12 Mississippis</pre>
                 seg($("segDay"), DAYS, "day")
                 seg($("segTime"), TIMES, "time")
                 seg($("segDest"), DESTS, "dest")
-                var grid = $("grid")
-                for (var gi = 0; gi < 100; gi++) {
-                    grid.appendChild(document.createElement("i"))
-                }
-                function rng(a, b) {
-                    return a < 1 && b <= 1 ? "under 1" : a + "–" + b
-                }
                 function render() {
-                    var t = ODDS[sel.day][sel.dest],
-                        o = t[sel.time] || t.all
-                    var c = Math.max(1, Math.round((o[0] + o[1]) / 2)),
-                        d = Math.round((o[2] + o[3]) / 2)
-                    var cells = grid.children
-                    for (var i = 0; i < 100; i++) {
-                        cells[i].className = i < c ? "c" : i < c + d ? "d" : ""
-                    }
-                    $("vC").textContent = rng(o[0], o[1])
-                    $("vD").textContent = o[2] + "–" + o[3]
-                    var title =
-                        o[1] >= 6
-                            ? "Higher risk than most. Have a backup."
-                            : o[1] >= 3
-                              ? "Likely to go, with a real chance of a late start."
-                              : o[3] >= 40
-                                ? "Very likely to go. Plan for a delay."
-                                : "Very likely to go, close to on time."
-                    $("vTitle").textContent = title
                     var tips = []
+                    var title = "Check your flight and your journey to SFO."
                     if (sel.day === "wed") {
-                        if (sel.time === "early")
-                            tips.push(
-                                "Early flights depend on planes that arrive tonight, during the storm. Check tonight whether your inbound aircraft made it to SFO.",
-                            )
-                        if (sel.time === "mid")
-                            tips.push(
-                                "Rain should be ending by late morning. High tide is 10:49 AM; leave extra time on Highway 101 or take BART.",
-                            )
-                        if (sel.time === "late")
-                            tips.push(
-                                "The better half of Wednesday. Weather should be done; leftover delays from the morning are the main risk.",
-                            )
-                        tips.push("United, American and Southwest will move a Wednesday SFO flight for free.")
+                        title =
+                            sel.time === "late"
+                                ? "Check recovery delays before choosing a later flight."
+                                : "Give Wednesday morning extra attention."
+                        tips.push(
+                            "Check your inbound aircraft and airline notifications. A delay earlier in the rotation can affect your departure.",
+                        )
+                        tips.push(
+                            "If your booking qualifies for a waiver, compare available alternatives and confirm the final price.",
+                        )
                     }
-                    if (sel.day === "thu") tips.push("Dry at SFO and the quietest airport day of the week.")
-                    if (sel.day === "fri") tips.push("Dry at SFO. Any trouble comes from the other end of the route.")
-                    if (sel.dest === "reg")
+                    if (sel.day === "thu") {
+                        title = "Check the holiday train schedule and road conditions."
                         tips.push(
-                            "When the FAA meters arrivals, airlines cut small-jet short hops first. If driving is realistic, keep it as plan B.",
+                            "BART starts service at 8 AM on Thanksgiving. Check the first train from your station and its arrival time at SFO; early flights may require another option.",
                         )
-                    if (sel.dest === "se" && sel.day === "wed")
+                    }
+                    if (sel.day === "fri") {
+                        title = "Check the full itinerary, even with better local weather."
                         tips.push(
-                            "A separate storm reaches Atlanta, Charlotte, Miami and Orlando on Wednesday and builds through the day.",
+                            "BART has regular weekday hours Friday, 5 AM to midnight. Check the specific train and service alerts.",
                         )
-                    if (sel.dest === "se" && sel.day !== "wed")
-                        tips.push("The Southeast storm has moved north by now; expect some leftover schedule mess.")
-                    if (sel.dest === "ne" && sel.day === "wed" && sel.time === "late")
+                    }
+                    if (sel.time === "early")
                         tips.push(
-                            "Evening and red-eye flights land in the Northeast Thursday morning, as the coastal storm arrives there.",
+                            "Confirm your ground transport the night before; do not assume the first train gets you to check-in in time.",
                         )
-                    if (sel.dest === "ne" && sel.day === "thu")
+                    if (sel.time === "mid")
                         tips.push(
-                            "The coastal storm hits DC, Philadelphia, New York and Boston on Thanksgiving. No waiver covers this yet; check your airline Wednesday.",
+                            "Check bayshore road alerts before leaving. The San Francisco tide-gauge time is not a prediction for a particular road or SFO.",
                         )
-                    if (sel.dest === "ne" && sel.day === "fri")
-                        tips.push("The storm is leaving the Northeast. Morning flights carry the most leftover risk.")
-                    if (sel.dest === "intl")
-                        tips.push("Long-haul flights are the last ones airlines cancel. Expect to go, possibly late.")
-                    $("vTips").innerHTML = tips
-                        .map(function (x) {
-                            return "<li>" + x + "</li>"
-                        })
-                        .join("")
-                    grid.setAttribute(
-                        "aria-label",
-                        "Out of 100 flights like yours: about " +
-                            c +
-                            " canceled, about " +
-                            d +
-                            " late, the rest on time",
+                    if (sel.time === "late")
+                        tips.push(
+                            "Check the last useful replacement flight if yours is disrupted, especially when connections are involved.",
+                        )
+                    if (sel.dest === "connection")
+                        tips.push(
+                            "Check every leg and the connection margin. Ask the airline to rebook the whole itinerary if a disruption breaks the connection; separate tickets need separate attention.",
+                        )
+                    if (sel.dest === "international")
+                        tips.push(
+                            "Allow at least 3 hours at SFO and follow your airline's document and check-in deadlines. Long-haul flights can also be canceled.",
+                        )
+                    if (sel.dest === "domestic")
+                        tips.push(
+                            "Allow at least 2 hours at SFO and follow your airline's check-in deadline. Add ground travel time separately.",
+                        )
+                    tips.push(
+                        "Check weather and airline notices for your destination and any connecting airport, including the arrival date after an overnight flight.",
                     )
+                    $("vTitle").textContent = title
+                    $("vTips").replaceChildren()
+                    tips.forEach(function (tip) {
+                        var item = document.createElement("li")
+                        item.textContent = tip
+                        $("vTips").appendChild(item)
+                    })
                 }
                 render()
 
@@ -1713,6 +1570,7 @@ Step 6  200,000 / 17,000 = about 12 Mississippis</pre>
                     p.el.setAttribute("cy", p.y.toFixed(1))
                 }
                 function step() {
+                    if (paused) return
                     for (var i = 0; i < P.length; i++) {
                         var p = P[i]
                         if (p.rain) {
@@ -1739,41 +1597,50 @@ Step 6  200,000 / 17,000 = about 12 Mississippis</pre>
                         }
                         place(p)
                     }
-                    if (!reduce) requestAnimationFrame(step)
+                    if (!paused) animationFrame = requestAnimationFrame(step)
                 }
-                if (reduce) {
-                    P.forEach(function (p, i) {
-                        p.y = p.y0 - lift(p.x)
-                        if (p.x > 600 && p.x < 715 && i % 2) {
-                            p.el.setAttribute("class", "drop")
-                            p.el.setAttribute("r", 1.8)
-                            p.y += Math.random() * (300 - terr(p.x) - p.y)
-                        }
-                        place(p)
-                    })
-                } else {
-                    requestAnimationFrame(step)
+                P.forEach(function (p, i) {
+                    p.y = p.y0 - lift(p.x)
+                    if (p.x > 600 && p.x < 715 && i % 2) {
+                        p.rain = true
+                        p.el.setAttribute("class", "drop")
+                        p.el.setAttribute("r", 1.8)
+                        p.y += Math.random() * (300 - terr(p.x) - p.y)
+                    }
+                    place(p)
+                })
+                function updateMotionButton() {
+                    $("pauseAnimation").textContent = paused ? "Resume animation" : "Pause animation"
+                    $("pauseAnimation").setAttribute("aria-pressed", String(paused))
                 }
+                $("pauseAnimation").addEventListener("click", function () {
+                    paused = !paused
+                    cancelAnimationFrame(animationFrame)
+                    if (!paused) animationFrame = requestAnimationFrame(step)
+                    updateMotionButton()
+                })
+                updateMotionButton()
+                if (!paused) animationFrame = requestAnimationFrame(step)
 
                 /* ---------- rainfall comparison ---------- */
-                var AVG = 22.9 / 71
+                var REF = 0.25
                 var GAL_PER_IN = (46.9 * 27878400 * 144) / 231
                 var POOL = 660430
                 var MAX = 3
                 var rows = [
-                    { id: "avg", name: "Average SF rainy day", sub: "22.9 in a year over 71 wet days", lo: AVG },
+                    { id: "ref", name: "Quarter-inch reference", sub: "illustration, not a climate average", lo: REF },
                     {
                         id: "sf",
-                        name: "Tue night–Wed storm, SF and Peninsula",
-                        sub: "forecast 0.5 to 1 in",
+                        name: "Nov 24–25 storm, San Mateo Peninsula",
+                        sub: "Nov 23 forecast: 0.5 to 1 in",
                         lo: 0.5,
                         hi: 1.0,
                         hot: true,
                     },
                     {
                         id: "nb",
-                        name: "Tue night–Wed storm, North Bay",
-                        sub: "forecast 0.5 to 1.2 in",
+                        name: "Nov 24–25 storm, North Bay",
+                        sub: "Nov 23 forecast: 0.5 to 1.2 in; mountains locally higher",
                         lo: 0.5,
                         hi: 1.2,
                         hot: true,
@@ -1781,10 +1648,9 @@ Step 6  200,000 / 17,000 = about 12 Mississippis</pre>
                     {
                         id: "ar",
                         name: "Nov 18 atmospheric river",
-                        sub: "downtown SF, one day, record for the date",
-                        lo: 2.31,
+                        sub: "downtown SF daily total; preliminary NWS record",
+                        lo: 2.64,
                     },
-                    { id: "nov", name: "A whole normal November", sub: "downtown SF monthly average", lo: 2.6 },
                 ]
                 var bars = $("bars")
                 function fmtIn(v) {
@@ -1834,29 +1700,31 @@ Step 6  200,000 / 17,000 = about 12 Mississippis</pre>
                     return Math.round(n).toLocaleString("en-US")
                 }
                 var PX = 40
-                $("tRef").style.height = AVG * PX + "px"
-                $("tRefV").textContent = AVG.toFixed(2) + " in"
+                $("tRef").style.height = REF * PX + "px"
+                $("tRefV").textContent = REF.toFixed(2) + " in"
                 function show(depth, title, label) {
                     $("dTitle").textContent = title
                     $("tSel").style.height = Math.min(depth * PX, 212) + "px"
                     $("tSelV").textContent = depth.toFixed(2) + " in"
                     $("tSelL").textContent = label
-                    $("sX").textContent = (depth / AVG).toFixed(1) + "×"
+                    $("sX").textContent = (depth / REF).toFixed(1) + "×"
                     $("sGal").textContent = big(depth * GAL_PER_IN)
                     $("sPool").textContent = Math.round((depth * GAL_PER_IN) / POOL).toLocaleString("en-US")
                     $("sRoof").textContent = Math.round((depth * 1000 * 144) / 231).toLocaleString("en-US")
                     $("depth").value = depth
+                    $("depth").setAttribute("aria-valuetext", depth.toFixed(2) + " inches of rain")
                     $("depthV").textContent = depth.toFixed(2) + " in"
                 }
                 function select(r) {
                     rows.forEach(function (o) {
                         $("row-" + o.id).setAttribute("aria-pressed", o === r ? "true" : "false")
                     })
+                    // Midpoint is for volume illustration, not an expected rainfall prediction.
                     var mid = r.hi ? (r.lo + r.hi) / 2 : r.lo
                     show(
                         mid,
-                        r.name + (r.hi ? ", middle of the forecast range" : ""),
-                        r.hi ? "middle of forecast" : "selected",
+                        r.name + (r.hi ? ", arithmetic midpoint of the range" : ""),
+                        r.hi ? "range midpoint" : "selected",
                     )
                 }
                 $("depth").addEventListener("input", function () {
@@ -1870,11 +1738,10 @@ Step 6  200,000 / 17,000 = about 12 Mississippis</pre>
                 /* ---------- tides: [day, time, total ft MLLW, ft above normal] ---------- */
                 var FT = 24
                 var tides = [
-                    ["Mon 23", "9:25 AM", 8.0, 2.2],
-                    ["Tue 24", "10:05 AM", 8.4, 2.6],
+                    ["Tue 24", "10:05 AM", 8.2, 2.4],
                     ["Wed 25", "10:49 AM", 8.5, 2.7],
-                    ["Thu 26", "11:38 AM", 8.2, 2.4],
-                    ["Fri 27", "12:31 PM", 7.9, 1.7],
+                    ["Thu 26", "11:38 AM", 8.0, 2.2],
+                    ["Fri 27", "12:31 PM", 7.8, 2.0],
                 ]
                 tides.forEach(function (t) {
                     var col = document.createElement("div")
