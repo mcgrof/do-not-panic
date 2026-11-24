@@ -1,0 +1,155 @@
+{
+    "airport": "KSFO",
+    "flight_date": "2026-11-24",
+    "captured_at": "2026-11-24T23:44:16.039023+00:00",
+    "captured_at_pacific": "2026-11-24T15:44:16-08:00",
+    "scope": "Arrivals and departures at SFO, combined. Carrier labels preserved from FlightAware; regional operators are separate.",
+    "source_url": "https://www.flightaware.com/live/cancelled/today/KSFO",
+    "source_table_url": "https://www.flightaware.com/ajax/airport/cancelled_count.rvt?type=airline&timePeriod=today&airportFilter=KSFO",
+    "total_cancelled": 3,
+    "total_delayed": 100,
+    "scheduled_flight_denominators": null,
+    "airlines": [
+        {
+            "airline": "United",
+            "cancelled": 3,
+            "delayed": 41
+        },
+        {
+            "airline": "Asiana",
+            "cancelled": 0,
+            "delayed": 1
+        },
+        {
+            "airline": "Air Canada",
+            "cancelled": 0,
+            "delayed": 3
+        },
+        {
+            "airline": "All Nippon",
+            "cancelled": 0,
+            "delayed": 2
+        },
+        {
+            "airline": "Alaska Airlines",
+            "cancelled": 0,
+            "delayed": 6
+        },
+        {
+            "airline": "China Airlines",
+            "cancelled": 0,
+            "delayed": 1
+        },
+        {
+            "airline": "Delta Air Lines",
+            "cancelled": 0,
+            "delayed": 1
+        },
+        {
+            "airline": "Lufthansa",
+            "cancelled": 0,
+            "delayed": 1
+        },
+        {
+            "airline": "EVA Air",
+            "cancelled": 0,
+            "delayed": 1
+        },
+        {
+            "airline": "Frontier",
+            "cancelled": 0,
+            "delayed": 4
+        },
+        {
+            "airline": "ITA Airways",
+            "cancelled": 0,
+            "delayed": 1
+        },
+        {
+            "airline": "Japan Airlines",
+            "cancelled": 0,
+            "delayed": 1
+        },
+        {
+            "airline": "JetBlue",
+            "cancelled": 0,
+            "delayed": 4
+        },
+        {
+            "airline": "Jazz (ACA)",
+            "cancelled": 0,
+            "delayed": 1
+        },
+        {
+            "airline": "Korean Air",
+            "cancelled": 0,
+            "delayed": 1
+        },
+        {
+            "airline": "Philippine Air Lines",
+            "cancelled": 0,
+            "delayed": 1
+        },
+        {
+            "airline": "Horizon (ASA)",
+            "cancelled": 0,
+            "delayed": 1
+        },
+        {
+            "airline": "SkyWest",
+            "cancelled": 0,
+            "delayed": 12
+        },
+        {
+            "airline": "Southwest",
+            "cancelled": 0,
+            "delayed": 6
+        },
+        {
+            "airline": "Avianca El Salvador",
+            "cancelled": 0,
+            "delayed": 1
+        },
+        {
+            "airline": "ZIPAIR",
+            "cancelled": 0,
+            "delayed": 1
+        },
+        {
+            "airline": "Emirates",
+            "cancelled": 0,
+            "delayed": 1
+        },
+        {
+            "airline": "American Airlines",
+            "cancelled": 0,
+            "delayed": 8
+        }
+    ],
+    "advance_reports": [
+        {
+            "flight_date": "2026-11-25",
+            "captured_at_pacific": "2026-11-24T15:45:00-08:00",
+            "time_precision": "minute (approximate)",
+            "cancelled": 0,
+            "delayed": 3,
+            "source_url": "https://www.flightaware.com/live/cancelled/tomorrow/KSFO"
+        },
+        {
+            "flight_date": "2026-11-26",
+            "captured_at_pacific": "2026-11-24T15:45:00-08:00",
+            "time_precision": "minute (approximate)",
+            "cancelled": 0,
+            "delayed": 0,
+            "source_url": "https://www.flightaware.com/live/cancelled/plus2days/KSFO"
+        }
+    ],
+    "limitations": [
+        "Static snapshot, not a live feed. All counts may change.",
+        "Counts do not identify the cause of a cancellation or delay.",
+        "Counts are not a carrier reliability ranking. Exact scheduled-flight denominators are unavailable; rounded source percentages were intentionally omitted.",
+        "An airline absent from the source table has unknown counts, not a verified zero.",
+        "Advance reports count disruptions already recorded for future flight dates. Zero recorded now does not imply zero later.",
+        "No calibrated per-flight or per-airline future cancellation probabilities are available from these snapshots."
+    ]
+}

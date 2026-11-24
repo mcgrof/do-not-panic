@@ -3,10 +3,10 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>SFO Thanksgiving Storm Guide: November 25–27, 2026</title>
+        <title>SFO Thanksgiving Storm Guide: November 25–29, 2026</title>
         <meta
             name="description"
-            content="A reviewed Thanksgiving travel guide for SFO: storm timing, tide forecasts, airline waivers, BART hours and what to check before leaving."
+            content="SFO cancellations and delays by airline, a dated Thanksgiving weather outlook through Sunday, and practical advice on airline waivers, tides and BART."
         />
         <link rel="canonical" href="https://do-not-panic.com/blog/2026/11/24/sfo-storm-guide.html" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -724,6 +724,104 @@
                     transition: none;
                 }
             }
+
+            /* A dated airport snapshot: raw counts, with a separate weather outlook. */
+            .airline-summary {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 16px;
+            }
+            .airline-card {
+                display: flex;
+                flex-direction: column;
+                gap: 18px;
+            }
+            .airline-card [hidden] {
+                display: none;
+            }
+            .airline-chart {
+                display: flex;
+                flex-direction: column;
+                gap: 14px;
+            }
+            .airline-row {
+                display: grid;
+                grid-template-columns: minmax(155px, 1.05fr) 2fr 38px;
+                gap: 12px;
+                align-items: center;
+            }
+            .airline-name {
+                font-size: 0.9rem;
+                line-height: 1.25;
+            }
+            .airline-track {
+                height: 16px;
+                background: var(--paper);
+                border-left: 1px solid var(--muted);
+            }
+            .airline-fill {
+                display: block;
+                height: 100%;
+                background: var(--surge);
+                border-radius: 0 3px 3px 0;
+            }
+            .airline-chart[data-metric="delayed"] .airline-fill {
+                background: var(--water);
+            }
+            .airline-value {
+                text-align: right;
+            }
+            .airline-details {
+                border-top: 1px solid var(--rule);
+                padding-top: 14px;
+            }
+            .airline-details summary {
+                cursor: pointer;
+                color: var(--water);
+                font-weight: 600;
+            }
+            .advance-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 18px;
+                margin: 10px 0;
+            }
+            .advance-grid > div {
+                display: flex;
+                flex-direction: column;
+                gap: 4px;
+            }
+            .advance-grid b {
+                font-family: var(--mono);
+                font-size: 1.05rem;
+            }
+            @media (max-width: 440px) {
+                .airline-row {
+                    grid-template-columns: minmax(100px, 1fr) 1.1fr 28px;
+                    gap: 8px;
+                }
+                .airline-summary {
+                    gap: 10px;
+                }
+                .advance-grid {
+                    grid-template-columns: 1fr;
+                }
+            }
+            .sr-only {
+                position: absolute;
+                width: 1px;
+                height: 1px;
+                padding: 0;
+                margin: -1px;
+                overflow: hidden;
+                clip: rect(0, 0, 0, 0);
+                white-space: nowrap;
+                border: 0;
+            }
+            summary:focus-visible {
+                outline: 2px solid var(--water);
+                outline-offset: 4px;
+            }
         </style>
     </head>
     <body>
@@ -731,14 +829,14 @@
             <header>
                 <div class="stamp">
                     Last updated
-                    <time datetime="2026-11-24T12:20:00-08:00">November 24, 2026, 12:20 PM PST</time>
+                    <time datetime="2026-11-24T15:49:00-08:00">November 24, 2026, 3:49 PM PST</time>
                     &middot; All times Pacific
                 </div>
                 <h1>Flying out of SFO this Thanksgiving? Here&rsquo;s what to check.</h1>
                 <p class="lede">
-                    Wednesday morning deserves the most planning. Rain and wind are expected to ease later that day, but
-                    shoreline flooding and airline delays can outlast the storm. Check your flight, your route to the
-                    airport, and any connection before changing plans.
+                    Wednesday&rsquo;s daytime forecast at SFO has improved: mostly sunny, after rain mainly overnight.
+                    Thursday through Saturday also look quieter locally; rain and wind return Sunday. Overnight airline
+                    disruption, shoreline flooding and weather at your destination still need separate checks.
                 </p>
                 <div class="callout">
                     <strong>A forecast snapshot, not a live flight tracker</strong>
@@ -754,10 +852,17 @@
                         </a>
                         pumps, flood barriers and airfield inspections are ready.
                     </p>
+                    <p>
+                        At 3:38 PM PST November 24, the
+                        <a href="https://www.fly.faa.gov/fly/flyfaa/flyfaaindex?ARPT=SFO&amp;p=0">FAA SFO status</a>
+                        listed no destination-specific delays, with general gate/taxi and airborne delays of 15 minutes
+                        or less. That airport-level snapshot does not describe every flight or forecast tomorrow.
+                    </p>
                 </div>
                 <p class="small">
-                    This page does not fetch live data. Weather outlook: NWS discussion issued November 24 at 10:25 AM
-                    PST. Airline terms reviewed November 24. Open the live sources before traveling.
+                    This page does not fetch live data. Weather sources: November 24 NWS SFO point forecast, 2:15 PM
+                    PST; Bay Area discussion, 2:31 PM PST. Airline terms reviewed November 24. Open the live sources
+                    before traveling.
                 </p>
                 <nav class="seg" aria-label="Live travel information">
                     <a href="https://www.flysfo.com/flight-info/flight-status">SFO flight status</a>
@@ -768,34 +873,351 @@
                 </nav>
             </header>
 
+            <section aria-labelledby="airline-status">
+                <div class="part">SFO flights &middot; Tuesday, November 24</div>
+                <h2 id="airline-status">Cancellations and delays by airline</h2>
+                <p>
+                    FlightAware reported
+                    <strong>3 cancellations and 100 delays</strong>
+                    across SFO arrivals and departures at
+                    <time datetime="2026-11-24T15:44:16-08:00">3:44 PM PST on November 24</time>
+                    . All three cancellations were listed under United. The source does not identify their cause.
+                </p>
+                <div class="airline-summary">
+                    <div class="stat">
+                        <b>3</b>
+                        <span class="small">canceled flights reported</span>
+                    </div>
+                    <div class="stat">
+                        <b>100</b>
+                        <span class="small">delayed flights reported</span>
+                    </div>
+                    <div class="stat">
+                        <b>23</b>
+                        <span class="small">airlines in the source table</span>
+                    </div>
+                </div>
+                <div class="card airline-card">
+                    <div
+                        id="airlineMetric"
+                        class="seg"
+                        role="group"
+                        aria-label="Choose reported flight disruption"
+                        hidden
+                    >
+                        <button type="button" data-metric="cancelled" aria-pressed="true">Cancellations</button>
+                        <button type="button" data-metric="delayed" aria-pressed="false">Delays</button>
+                    </div>
+                    <p id="airlineChartLabel" class="small" aria-live="polite">
+                        Canceled flights &middot; counts, not percentages &middot; bar scale 0&ndash;3
+                    </p>
+                    <div id="airlineChart" class="airline-chart" aria-describedby="airlineChartLabel airlineScope">
+                        <div class="airline-row" data-cancelled="3" data-delayed="41">
+                            <span class="airline-name">United</span>
+                            <div class="airline-track" aria-hidden="true">
+                                <span class="airline-fill" style="width: 100%"></span>
+                            </div>
+                            <span class="airline-value num">
+                                3
+                                <span class="sr-only">canceled</span>
+                            </span>
+                        </div>
+                        <div class="airline-row" data-cancelled="0" data-delayed="8">
+                            <span class="airline-name">American Airlines</span>
+                            <div class="airline-track" aria-hidden="true">
+                                <span class="airline-fill" style="width: 0%"></span>
+                            </div>
+                            <span class="airline-value num">
+                                0
+                                <span class="sr-only">canceled</span>
+                            </span>
+                        </div>
+                        <div class="airline-row" data-cancelled="0" data-delayed="12">
+                            <span class="airline-name">SkyWest</span>
+                            <div class="airline-track" aria-hidden="true">
+                                <span class="airline-fill" style="width: 0%"></span>
+                            </div>
+                            <span class="airline-value num">
+                                0
+                                <span class="sr-only">canceled</span>
+                            </span>
+                        </div>
+                        <div class="airline-row" data-cancelled="0" data-delayed="6">
+                            <span class="airline-name">Alaska Airlines</span>
+                            <div class="airline-track" aria-hidden="true">
+                                <span class="airline-fill" style="width: 0%"></span>
+                            </div>
+                            <span class="airline-value num">
+                                0
+                                <span class="sr-only">canceled</span>
+                            </span>
+                        </div>
+                        <div class="airline-row" data-cancelled="0" data-delayed="6">
+                            <span class="airline-name">Southwest</span>
+                            <div class="airline-track" aria-hidden="true">
+                                <span class="airline-fill" style="width: 0%"></span>
+                            </div>
+                            <span class="airline-value num">
+                                0
+                                <span class="sr-only">canceled</span>
+                            </span>
+                        </div>
+                        <div class="airline-row" data-cancelled="0" data-delayed="1">
+                            <span class="airline-name">Delta Air Lines</span>
+                            <div class="airline-track" aria-hidden="true">
+                                <span class="airline-fill" style="width: 0%"></span>
+                            </div>
+                            <span class="airline-value num">
+                                0
+                                <span class="sr-only">canceled</span>
+                            </span>
+                        </div>
+                        <div class="airline-row" data-cancelled="0" data-delayed="26">
+                            <span class="airline-name">Other listed airlines (17)</span>
+                            <div class="airline-track" aria-hidden="true">
+                                <span class="airline-fill" style="width: 0%"></span>
+                            </div>
+                            <span class="airline-value num">
+                                0
+                                <span class="sr-only">canceled</span>
+                            </span>
+                        </div>
+                    </div>
+                    <p id="airlineScope" class="small">
+                        Six familiar SFO carriers are shown separately; the other 17 listed airlines are grouped. These
+                        are raw counts, not a reliability ranking: airlines operate different numbers of flights.
+                        SkyWest is kept separate from its marketing partners. Switch to delays to see the broader
+                        disruption.
+                    </p>
+                    <details class="airline-details">
+                        <summary>All 23 airlines: exact reported counts</summary>
+                        <div class="tw" role="region" aria-label="Complete airline disruption table" tabindex="0">
+                            <table id="airlineTable">
+                                <caption>
+                                    SFO arrivals and departures combined, November 24; snapshot at 3:44 PM PST.
+                                </caption>
+                                <thead>
+                                    <tr>
+                                        <th scope="col">FlightAware airline label</th>
+                                        <th scope="col">Canceled</th>
+                                        <th scope="col">Delayed</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">Air Canada</th>
+                                        <td class="num">0</td>
+                                        <td class="num">3</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Alaska Airlines</th>
+                                        <td class="num">0</td>
+                                        <td class="num">6</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">All Nippon</th>
+                                        <td class="num">0</td>
+                                        <td class="num">2</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">American Airlines</th>
+                                        <td class="num">0</td>
+                                        <td class="num">8</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Asiana</th>
+                                        <td class="num">0</td>
+                                        <td class="num">1</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Avianca El Salvador</th>
+                                        <td class="num">0</td>
+                                        <td class="num">1</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">China Airlines</th>
+                                        <td class="num">0</td>
+                                        <td class="num">1</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Delta Air Lines</th>
+                                        <td class="num">0</td>
+                                        <td class="num">1</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">EVA Air</th>
+                                        <td class="num">0</td>
+                                        <td class="num">1</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Emirates</th>
+                                        <td class="num">0</td>
+                                        <td class="num">1</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Frontier</th>
+                                        <td class="num">0</td>
+                                        <td class="num">4</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Horizon (ASA)</th>
+                                        <td class="num">0</td>
+                                        <td class="num">1</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">ITA Airways</th>
+                                        <td class="num">0</td>
+                                        <td class="num">1</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Japan Airlines</th>
+                                        <td class="num">0</td>
+                                        <td class="num">1</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Jazz (ACA)</th>
+                                        <td class="num">0</td>
+                                        <td class="num">1</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">JetBlue</th>
+                                        <td class="num">0</td>
+                                        <td class="num">4</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Korean Air</th>
+                                        <td class="num">0</td>
+                                        <td class="num">1</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Lufthansa</th>
+                                        <td class="num">0</td>
+                                        <td class="num">1</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Philippine Air Lines</th>
+                                        <td class="num">0</td>
+                                        <td class="num">1</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">SkyWest</th>
+                                        <td class="num">0</td>
+                                        <td class="num">12</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Southwest</th>
+                                        <td class="num">0</td>
+                                        <td class="num">6</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">United</th>
+                                        <td class="num">3</td>
+                                        <td class="num">41</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">ZIPAIR</th>
+                                        <td class="num">0</td>
+                                        <td class="num">1</td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th scope="row">Total</th>
+                                        <td class="num">3</td>
+                                        <td class="num">100</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </details>
+                </div>
+                <p class="small">
+                    A displayed zero means zero reported for that listed airline at this snapshot. Airlines omitted by
+                    the source are unverified. Exact scheduled-flight totals were unavailable, so this guide does not
+                    calculate cancellation rates.
+                    <a href="https://www.flightaware.com/live/cancelled/today/KSFO">Live FlightAware SFO statistics</a>
+                    &middot;
+                    <a href="sfo-flight-snapshot-2026-11-24.json">Download this dated snapshot (JSON)</a>
+                    . The live link rolls to a new flight date each day; this chart stays fixed.
+                </p>
+                <div class="callout">
+                    <strong>What are the chances over the next few days?</strong>
+                    <p>
+                        There is no defensible airline-by-airline percentage in the data reviewed here. The outlook
+                        below shows the weather concerns that could disrupt flights. It is a planning assessment, not a
+                        calibrated cancellation forecast.
+                    </p>
+                    <div class="advance-grid">
+                        <div>
+                            <span class="stamp">Wed Nov 25</span>
+                            <b>0 recorded so far</b>
+                            <span class="small">cancellations, checked about 3:45 PM Tuesday</span>
+                        </div>
+                        <div>
+                            <span class="stamp">Thu Nov 26</span>
+                            <b>0 recorded so far</b>
+                            <span class="small">cancellations, checked about 3:45 PM Tuesday</span>
+                        </div>
+                    </div>
+                    <p class="small">
+                        <strong>Zero already recorded is not a 0% chance of cancellation.</strong>
+                        These are advance reports for
+                        <a href="https://www.flightaware.com/live/cancelled/tomorrow/KSFO">Wednesday</a>
+                        and
+                        <a href="https://www.flightaware.com/live/cancelled/plus2days/KSFO">Thursday</a>
+                        , not predictions. Later dates were not available in the reviewed date controls. The links roll
+                        forward with the calendar.
+                    </p>
+                </div>
+            </section>
+
             <section aria-labelledby="outlook">
-                <h2 id="outlook">The local outlook</h2>
+                <h2 id="outlook">The next five days at SFO</h2>
                 <div class="days">
                     <div class="day warn">
                         <div class="stamp">Wed Nov 25</div>
-                        <h3>Allow for disruption</h3>
-                        <span class="pill">Morning weather; later recovery</span>
+                        <h3>Daytime weather improves</h3>
+                        <span class="pill">Mostly sunny at SFO; check overnight recovery</span>
                         <p>
-                            Rain and wind overnight into morning. Afternoon conditions should improve outside coastal
-                            flood zones. Aircraft, crews and queues can still be out of position.
+                            The airport forecast puts most rain before 4 AM, followed by a mostly sunny Wednesday.
+                            Aircraft or crews delayed overnight can still affect departures. Shoreline flooding remains
+                            a separate concern.
                         </p>
                     </div>
                     <div class="day warn">
                         <div class="stamp">Thu Nov 26 &middot; Thanksgiving</div>
-                        <h3>Drier, with shoreline risk</h3>
+                        <h3>Quieter locally, shoreline risk remains</h3>
                         <span class="pill">Bayshore flood warning until 4 PM</span>
                         <p>
-                            Better local flying weather does not clear every access road. Check the journey to SFO as
-                            carefully as the flight. BART service starts at 8 AM.
+                            Clouds decrease at SFO, but better flying weather does not clear every access road. Check
+                            the whole itinerary. BART service starts at 8 AM.
                         </p>
                     </div>
                     <div class="day">
                         <div class="stamp">Fri Nov 27</div>
-                        <h3>Check the whole itinerary</h3>
-                        <span class="pill">Drier local outlook</span>
+                        <h3>Partly sunny at SFO</h3>
+                        <span class="pill">Check destination weather and connections</span>
                         <p>
-                            Check your destination, connection and inbound aircraft. An improved Bay Area forecast alone
-                            cannot establish whether your flight will leave on time.
+                            Local weather looks quieter. The New York forecast still includes wind and possible showers
+                            after Thursday&rsquo;s storm, so check your destination and inbound aircraft.
+                        </p>
+                    </div>
+                    <div class="day">
+                        <div class="stamp">Sat Nov 28</div>
+                        <h3>A quieter daytime window</h3>
+                        <span class="pill">Partly sunny; rain expected later overnight</span>
+                        <p>
+                            SFO&rsquo;s point forecast is partly sunny Saturday, with rain likely late Saturday night,
+                            mainly after 4 AM Sunday. Check again if your trip runs into the next day.
+                        </p>
+                    </div>
+                    <div class="day warn">
+                        <div class="stamp">Sun Nov 29</div>
+                        <h3>Rain and wind return</h3>
+                        <span class="pill">Recheck the return trip</span>
+                        <p>
+                            The airport forecast calls for rain and windy conditions. This raises weather-related
+                            disruption concerns; it does not tell us how many flights an airline will cancel.
                         </p>
                     </div>
                 </div>
@@ -811,13 +1233,16 @@
             <section aria-labelledby="destination-weather">
                 <h2 id="destination-weather">Check the weather at the other end</h2>
                 <p>
-                    The November 24
+                    The
+                    <a href="https://www.weather.gov/zny/afd">NWS New York discussion</a>
+                    issued November 24 at 3:26 PM Eastern calls for rain and strong to damaging winds on Thanksgiving,
+                    with the main impacts expected that afternoon and evening; wind and possible showers may linger
+                    Friday. A Wednesday red-eye can arrive during Thursday&rsquo;s storm. The reviewed November 24
                     <a href="https://forecast.weather.gov/MapClick.php?lat=39.9533&amp;lon=-75.1383">
                         NWS Philadelphia forecast
                     </a>
-                    calls for a rainy, windy Thanksgiving, with breezy conditions and a chance of rain Friday. That is
-                    one example of why drier weather at SFO does not settle the whole itinerary. Check each destination
-                    and connecting airport for its own forecast, including the arrival date of a Wednesday red-eye.
+                    also calls for a rainy, windy Thanksgiving. These are examples, not a forecast for every eastern
+                    airport. Check the arrival date and local forecast for each destination and connection.
                 </p>
             </section>
 
@@ -979,28 +1404,42 @@
                 <p class="small">
                     This is not an exhaustive list. Check your airline for additional dates, airports or newer waivers.
                     An SFO waiver does not automatically cover a separate ticket or another airport.
+                    <a href="https://www.alaskaair.com/content/advisories/travel-advisories">
+                        Alaska&rsquo;s advisory page
+                    </a>
+                    listed no flexible travel policies when checked this afternoon. Delta&rsquo;s current waiver status
+                    could not be verified in this review; check its
+                    <a href="https://www.delta.com/us/en/advisories/overview">official advisories</a>
+                    and your booking.
                 </p>
                 <div class="callout">
                     <strong>Returning Sunday, November 29?</strong>
                     <p>
-                        The November 24 NWS outlook brings rain back late Saturday or Sunday, with uncertain timing.
-                        Recheck the return leg closer to departure.
+                        The 2:15 PM November 24 SFO forecast calls for rain and windy conditions Sunday, with rain
+                        likely late Saturday night, mainly after 4 AM. Recheck the return leg closer to departure;
+                        today&rsquo;s forecast does not establish a cancellation rate.
                     </p>
                 </div>
             </section>
 
             <section aria-labelledby="uncertainty">
-                <h2 id="uncertainty">Why this guide no longer gives cancellation odds</h2>
+                <h2 id="uncertainty">What the cancellation numbers can tell you</h2>
                 <p>
-                    The first version estimated percentages from a few storm-day reports, an approximate daily flight
-                    count, and judgment calls about routes and departure times. That was not enough evidence to predict
-                    an individual flight. The percentages and the &ldquo;100 flights&rdquo; graphic have been removed.
+                    Today&rsquo;s counts show disruptions already reported. They do not measure the chance that your
+                    flight will be canceled tomorrow. Even a current cancellation rate would need the matching number of
+                    scheduled flights, and those exact denominators were not available in the reviewed airline table. A
+                    larger airline can have more cancellations simply because it operates more flights.
                 </p>
                 <p>
-                    Past airport totals can mix arrivals and departures, use different reporting cutoffs, and miss
-                    airline or route differences. A credible forecast would need consistent flight-level data and
-                    testing on storms it had not already seen. A milder rain forecast alone does not establish lower
-                    cancellation odds.
+                    Forecasting an individual flight would require its route, timing, inbound aircraft, crew
+                    availability, airport restrictions and comparable historical outcomes, with a model tested on unseen
+                    disruptions. Rain probabilities are not flight-cancellation probabilities. The weather cards are
+                    qualitative planning guidance shared across airlines, not airline-specific risk scores.
+                </p>
+                <p class="small">
+                    An earlier version of this guide estimated percentages from sparse storm reports and judgment calls.
+                    Those unsupported odds were removed during review. The new airline chart uses observed counts only;
+                    missing data stays unknown.
                 </p>
                 <p>
                     <a href="https://www.flysfo.com/about/airport-operations/policies-regulations/runway-constraints">
@@ -1024,7 +1463,9 @@
                     <strong>2.64 inches on November 18</strong>
                     , according to the NWS daily record report issued November 19 at 4:42 AM (preliminary data). The
                     2.31-inch figure in the first version was an earlier, partial-day total. The forecast ranges below
-                    come from the November 23 NWS discussion, not a live rain feed. Select a row to explore the volume.
+                    come from the November 24 noon NWS discussion, carried in the 2:31 PM issue. These are regional
+                    totals; SFO&rsquo;s 2:15 PM point forecast separately gives 0.10&ndash;0.25 inches tonight. Select a
+                    row to explore the volume.
                     <a href="#source-rain">Rainfall sources</a>
                     .
                 </p>
@@ -1038,7 +1479,7 @@
                     <div class="key">
                         <span>
                             <i class="k1"></i>
-                            Nov 23 forecast, low end
+                            Nov 24 forecast, low end
                         </span>
                         <span>
                             <i class="k2"></i>
@@ -1049,6 +1490,46 @@
                             reference amounts
                         </span>
                     </div>
+                </div>
+
+                <div class="tw">
+                    <table>
+                        <caption>Rainfall amounts used in the illustration; forecasts are not observations.</caption>
+                        <thead>
+                            <tr>
+                                <th scope="col">Place or reference</th>
+                                <th scope="col">Rainfall (inches)</th>
+                                <th scope="col">Basis</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">Quarter-inch reference</th>
+                                <td>0.25</td>
+                                <td>Chosen illustration</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">San Francisco and bayshore</th>
+                                <td>0.25&ndash;0.50</td>
+                                <td>Nov 24 noon regional storm forecast</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Peninsula to Santa Cruz coastal slopes</th>
+                                <td>0.50&ndash;0.75</td>
+                                <td>Nov 24 noon regional storm forecast</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Marin and Sonoma counties</th>
+                                <td>0.50&ndash;1.50</td>
+                                <td>Nov 24 noon forecast; highest north and over terrain</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Downtown SF, Nov 18</th>
+                                <td>2.64</td>
+                                <td>Preliminary observed daily record</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
 
                 <div class="card">
@@ -1087,7 +1568,7 @@
                             </div>
                             <div class="slider">
                                 <label for="depth" class="small">Or set a depth:</label>
-                                <input type="range" id="depth" min="0.05" max="5" step="0.01" value="0.75" />
+                                <input type="range" id="depth" min="0.05" max="5" step="0.005" value="0.375" />
                                 <span class="num" id="depthV"></span>
                             </div>
                         </div>
@@ -1120,7 +1601,7 @@ Reference depth: 0.25 in (chosen for comparison, not a climate average)</pre>
                 </p>
                 <div class="card">
                     <h3>Forecast high water at the San Francisco gauge</h3>
-                    <p class="small">NWS November 24, 10:25 AM PST issue. Feet above MLLW; surge already included.</p>
+                    <p class="small">NWS November 24, 2:31 PM PST issue. Feet above MLLW; surge already included.</p>
                     <div class="tides" id="tides" aria-hidden="true"></div>
                     <div class="tlabs" id="tlabs" aria-hidden="true"></div>
                     <div class="key" style="margin-top: 12px">
@@ -1135,9 +1616,7 @@ Reference depth: 0.25 in (chosen for comparison, not a climate average)</pre>
                     </div>
                     <div class="tw">
                         <table>
-                            <caption>
-                                Forecasts from that issue, including Tuesday; these are not observed peaks.
-                            </caption>
+                            <caption>Forecasts for Wednesday through Saturday; these are not observed peaks.</caption>
                             <thead>
                                 <tr>
                                     <th scope="col">Date</th>
@@ -1147,12 +1626,6 @@ Reference depth: 0.25 in (chosen for comparison, not a climate average)</pre>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <th scope="row">Tue Nov 24</th>
-                                    <td>10:05 AM</td>
-                                    <td>8.2</td>
-                                    <td>2.4 ft</td>
-                                </tr>
                                 <tr>
                                     <th scope="row">Wed Nov 25</th>
                                     <td>10:49 AM</td>
@@ -1168,6 +1641,12 @@ Reference depth: 0.25 in (chosen for comparison, not a climate average)</pre>
                                 <tr>
                                     <th scope="row">Fri Nov 27</th>
                                     <td>12:31 PM</td>
+                                    <td>7.8</td>
+                                    <td>2.0 ft</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Sat Nov 28</th>
+                                    <td>1:28 PM</td>
                                     <td>7.8</td>
                                     <td>2.0 ft</td>
                                 </tr>
@@ -1355,7 +1834,7 @@ Using about 17,000 m3/s for the Mississippi: about 12 river flows</pre>
                 <p>
                     Initial guide and visualizations:
                     <strong>Claude (Anthropic)</strong>
-                    . Independent review, source checks, methodology corrections and revisions:
+                    . Independent review, source checks, methodology corrections, airline comparison and revisions:
                     <strong>ChatGPT Codex (OpenAI)</strong>
                     . Published by
                     <a href="https://do-not-panic.com/">do-not-panic.com</a>
@@ -1363,31 +1842,39 @@ Using about 17,000 m3/s for the Mississippi: about 12 river flows</pre>
                 </p>
                 <p>
                     The November 24 review removed unsupported flight probabilities, updated rain and tide values,
-                    clarified waiver and refund conditions, and added the Thanksgiving BART schedule.
+                    clarified waiver and refund conditions, and added the Thanksgiving BART schedule. The afternoon
+                    update adds a dated airline comparison and extends the weather outlook through Sunday.
                 </p>
                 <ul>
                     <li id="source-weather">
                         <a
-                            href="https://forecast.weather.gov/product.php?format=txt&amp;glossary=1&amp;issuedby=MTR&amp;product=AFD&amp;site=GRR&amp;version=1"
+                            href="https://forecast.weather.gov/product.php?format=CI&amp;glossary=0&amp;issuedby=MTR&amp;product=AFD&amp;site=MTR&amp;version=1"
                         >
                             NWS Bay Area forecast discussion
                         </a>
-                        : November 24, 10:25 AM PST, product AFDMTR / FXUS66 KMTR 241825.
+                        : November 24, 2:31 PM PST, product AFDMTR / FXUS66 KMTR 242231; regional rain outlook updated
+                        noon. The aviation discussion in this issue was written at 10:24 AM.
+                        <a
+                            href="https://forecast.weather.gov/MapClick.php?FcstType=text&amp;lat=37.6196&amp;lg=en&amp;lon=-122.3656&amp;unit=0"
+                        >
+                            NWS SFO point forecast
+                        </a>
+                        : November 24, 2:15 PM PST, valid from 3 PM; used for the airport&rsquo;s daily outlook.
                         <a href="https://www.weather.gov/wwamap/wwatxtget.php?cwa=mtr&amp;wwa=all">
                             Coastal Hazard Message
                         </a>
-                        : November 23, 1:10 PM PST. These links roll forward to newer issues; the values here stay
+                        : November 24, 1:42 PM PST. These links roll forward to newer issues; the values here stay
                         fixed.
                     </li>
                     <li id="source-rain">
                         <a
-                            href="https://forecast.weather.gov/product.php?format=TXT&amp;glossary=1&amp;issuedby=MTR&amp;product=AFD&amp;site=GRR&amp;version=4"
+                            href="https://forecast.weather.gov/product.php?format=CI&amp;glossary=0&amp;issuedby=MTR&amp;product=AFD&amp;site=MTR&amp;version=1"
                         >
                             NWS rainfall outlook
                         </a>
-                        : November 23, 12:39 PM short-term discussion carried in the 10:08 PM issue (FXUS66 KMTR
-                        240608). Peninsula 0.5&ndash;1 inch; North Bay 0.5&ndash;1.2, with locally higher mountain
-                        totals.
+                        : November 24, noon short-term discussion in the 2:31 PM issue. SF/bayshore 0.25&ndash;0.50
+                        inch; Peninsula&ndash;Santa Cruz coastal slopes 0.50&ndash;0.75; Marin/Sonoma 0.50&ndash;1.50,
+                        highest north and over terrain.
                         <a
                             href="https://forecast.weather.gov/product.php?format=CI&amp;glossary=0&amp;issuedby=MTR&amp;product=RER&amp;site=CRH&amp;version=1"
                         >
@@ -1395,6 +1882,17 @@ Using about 17,000 m3/s for the Mississippi: about 12 river flows</pre>
                         </a>
                         : November 19, 4:42 AM (SXUS76 KMTR 191242), downtown SF 2.64 inches on November 18. These are
                         rolling product links, not permanent archives.
+                    </li>
+                    <li>
+                        <a href="https://www.weather.gov/zny/afd">NWS New York forecast discussion</a>
+                        : November 24, 3:26 PM EST (12:26 PM PST); Thanksgiving wind and rain, lingering wind and
+                        possible Friday showers. Check the latest airport-specific forecast before deciding on an
+                        eastern route.
+                    </li>
+                    <li>
+                        <a href="https://www.fly.faa.gov/fly/flyfaa/flyfaaindex?ARPT=SFO&amp;p=0">FAA SFO status</a>
+                        : source updated November 24 at 23:38 UTC (3:38 PM PST). It reports general airport conditions,
+                        not individual-flight status or future cancellation counts.
                     </li>
                     <li>
                         <a href="https://www.flysfo.com/flight-info/alerts-advisories/sfo-weather-preparation">
@@ -1419,6 +1917,39 @@ Using about 17,000 m3/s for the Mississippi: about 12 river flows</pre>
         </main>
 
         <script>
+            // Keep the source table and initial cancellation bars usable without JavaScript.
+            var airlineButtons = document.querySelectorAll("#airlineMetric button")
+            var airlineRows = document.querySelectorAll("#airlineChart .airline-row")
+            function showAirlineMetric(metric) {
+                var isDelay = metric === "delayed"
+                var maximum = 0
+                airlineRows.forEach(function (row) {
+                    maximum = Math.max(maximum, Number(row.dataset[metric]))
+                })
+                airlineRows.forEach(function (row) {
+                    var count = Number(row.dataset[metric])
+                    row.querySelector(".airline-fill").style.width = (maximum ? (count / maximum) * 100 : 0) + "%"
+                    var value = row.querySelector(".airline-value")
+                    value.textContent = String(count)
+                    var label = document.createElement("span")
+                    label.className = "sr-only"
+                    label.textContent = isDelay ? " delayed" : " canceled"
+                    value.appendChild(label)
+                })
+                document.getElementById("airlineChart").dataset.metric = metric
+                document.getElementById("airlineChartLabel").textContent =
+                    (isDelay ? "Delayed" : "Canceled") + " flights · counts, not percentages · bar scale 0–" + maximum
+                airlineButtons.forEach(function (button) {
+                    button.setAttribute("aria-pressed", String(button.dataset.metric === metric))
+                })
+            }
+            airlineButtons.forEach(function (button) {
+                button.addEventListener("click", function () {
+                    showAirlineMetric(button.dataset.metric)
+                })
+            })
+            document.getElementById("airlineMetric").hidden = false
+
             ;(function () {
                 var NS = "http://www.w3.org/2000/svg"
                 var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches
@@ -1433,6 +1964,8 @@ Using about 17,000 m3/s for the Mississippi: about 12 river flows</pre>
                     ["wed", "Wed Nov 25"],
                     ["thu", "Thu Nov 26"],
                     ["fri", "Fri Nov 27"],
+                    ["sat", "Sat Nov 28"],
+                    ["sun", "Sun Nov 29"],
                 ]
                 var TIMES = [
                     ["early", "Before 9 AM"],
@@ -1472,10 +2005,10 @@ Using about 17,000 m3/s for the Mississippi: about 12 river flows</pre>
                     var tips = []
                     var title = "Check your flight and your journey to SFO."
                     if (sel.day === "wed") {
-                        title =
-                            sel.time === "late"
-                                ? "Check recovery delays before choosing a later flight."
-                                : "Give Wednesday morning extra attention."
+                        title = "Daytime weather improves; check overnight recovery."
+                        tips.push(
+                            "The afternoon SFO forecast puts most rain before 4 AM, then a mostly sunny Wednesday. Overnight disruption can still leave aircraft or crews out of position.",
+                        )
                         tips.push(
                             "Check your inbound aircraft and airline notifications. A delay earlier in the rotation can affect your departure.",
                         )
@@ -1486,6 +2019,9 @@ Using about 17,000 m3/s for the Mississippi: about 12 river flows</pre>
                     if (sel.day === "thu") {
                         title = "Check the holiday train schedule and road conditions."
                         tips.push(
+                            "SFO's local forecast improves through the day, but the bayshore flood warning continues through 4 PM. New York has a separate Thanksgiving wind and rain threat.",
+                        )
+                        tips.push(
                             "BART starts service at 8 AM on Thanksgiving. Check the first train from your station and its arrival time at SFO; early flights may require another option.",
                         )
                     }
@@ -1494,6 +2030,20 @@ Using about 17,000 m3/s for the Mississippi: about 12 river flows</pre>
                         tips.push(
                             "BART has regular weekday hours Friday, 5 AM to midnight. Check the specific train and service alerts.",
                         )
+                    }
+                    if (sel.day === "sat") {
+                        title = "Quieter daytime weather; check any overnight travel."
+                        tips.push(
+                            "SFO is forecast partly sunny Saturday. Rain is likely late Saturday night, mainly after 4 AM Sunday; check the arrival date as well as the departure date.",
+                        )
+                        tips.push("Check the weekend BART timetable for your station and service alerts.")
+                    }
+                    if (sel.day === "sun") {
+                        title = "Rain and wind return; recheck the whole trip."
+                        tips.push(
+                            "SFO's forecast calls for rain and windy conditions Sunday. Recheck flight status, inbound aircraft and ground transport before leaving.",
+                        )
+                        tips.push("Check the Sunday BART timetable for your station and service alerts.")
                     }
                     if (sel.time === "early")
                         tips.push(
@@ -1635,18 +2185,26 @@ Using about 17,000 m3/s for the Mississippi: about 12 river flows</pre>
                     { id: "ref", name: "Quarter-inch reference", sub: "illustration, not a climate average", lo: REF },
                     {
                         id: "sf",
-                        name: "Nov 24–25 storm, San Mateo Peninsula",
-                        sub: "Nov 23 forecast: 0.5 to 1 in",
+                        name: "Nov 24–25 storm, SF and bayshore",
+                        sub: "Nov 24 noon forecast: 0.25 to 0.50 in",
+                        lo: 0.25,
+                        hi: 0.5,
+                        hot: true,
+                    },
+                    {
+                        id: "slopes",
+                        name: "Peninsula–Santa Cruz coastal slopes",
+                        sub: "Nov 24 noon forecast: 0.50 to 0.75 in",
                         lo: 0.5,
-                        hi: 1.0,
+                        hi: 0.75,
                         hot: true,
                     },
                     {
                         id: "nb",
-                        name: "Nov 24–25 storm, North Bay",
-                        sub: "Nov 23 forecast: 0.5 to 1.2 in; mountains locally higher",
+                        name: "Nov 24–25 storm, Marin and Sonoma",
+                        sub: "Nov 24 noon forecast: 0.50 to 1.50 in; highest north and over terrain",
                         lo: 0.5,
-                        hi: 1.2,
+                        hi: 1.5,
                         hot: true,
                     },
                     {
@@ -1658,7 +2216,7 @@ Using about 17,000 m3/s for the Mississippi: about 12 river flows</pre>
                 ]
                 var bars = $("bars")
                 function fmtIn(v) {
-                    return v.toFixed(2).replace(/0$/, "") + " in"
+                    return Number(v.toFixed(3)).toString() + " in"
                 }
                 rows.forEach(function (r) {
                     var b = document.createElement("button")
@@ -1709,15 +2267,15 @@ Using about 17,000 m3/s for the Mississippi: about 12 river flows</pre>
                 function show(depth, title, label) {
                     $("dTitle").textContent = title
                     $("tSel").style.height = Math.min(depth * PX, 212) + "px"
-                    $("tSelV").textContent = depth.toFixed(2) + " in"
+                    $("tSelV").textContent = fmtIn(depth)
                     $("tSelL").textContent = label
                     $("sX").textContent = (depth / REF).toFixed(1) + "×"
                     $("sGal").textContent = big(depth * GAL_PER_IN)
                     $("sPool").textContent = Math.round((depth * GAL_PER_IN) / POOL).toLocaleString("en-US")
                     $("sRoof").textContent = Math.round((depth * 1000 * 144) / 231).toLocaleString("en-US")
                     $("depth").value = depth
-                    $("depth").setAttribute("aria-valuetext", depth.toFixed(2) + " inches of rain")
-                    $("depthV").textContent = depth.toFixed(2) + " in"
+                    $("depth").setAttribute("aria-valuetext", Number(depth.toFixed(3)) + " inches of rain")
+                    $("depthV").textContent = fmtIn(depth)
                 }
                 function select(r) {
                     rows.forEach(function (o) {
@@ -1742,10 +2300,10 @@ Using about 17,000 m3/s for the Mississippi: about 12 river flows</pre>
                 /* ---------- tides: [day, time, total ft MLLW, ft above normal] ---------- */
                 var FT = 24
                 var tides = [
-                    ["Tue 24", "10:05 AM", 8.2, 2.4],
                     ["Wed 25", "10:49 AM", 8.5, 2.7],
                     ["Thu 26", "11:38 AM", 8.0, 2.2],
                     ["Fri 27", "12:31 PM", 7.8, 2.0],
+                    ["Sat 28", "1:28 PM", 7.8, 2.0],
                 ]
                 tides.forEach(function (t) {
                     var col = document.createElement("div")
