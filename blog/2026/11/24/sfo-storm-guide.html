@@ -1,0 +1,1907 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>SFO Thanksgiving Storm Guide</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap"
+            rel="stylesheet"
+        />
+        <style>
+            /* Layout idea: one reading column; traveler answers first, the science underneath. Numbers sit in mono, water blue is the only saturated color, orange marks trouble (cancellations, tide excess). */
+            :root {
+                --paper: #f1f4f5;
+                --card: #ffffff;
+                --ink: #14242f;
+                --muted: #566873;
+                --rule: #d3dbdf;
+                --water: #1b6fae;
+                --water-soft: #a9cde6;
+                --surge: #c2571a;
+                --land: #8b9a8f;
+                --sea: #cfe1ec;
+                --display: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
+                --body: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
+                --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+            }
+            @media (prefers-color-scheme: dark) {
+                :root:not([data-theme="light"]) {
+                    --paper: #0f1a21;
+                    --card: #17252e;
+                    --ink: #e6eef2;
+                    --muted: #9db0ba;
+                    --rule: #2b3c46;
+                    --water: #5aa9e0;
+                    --water-soft: #2f5878;
+                    --surge: #e88a4a;
+                    --land: #4d5f56;
+                    --sea: #1c3442;
+                    color-scheme: dark;
+                }
+            }
+            :root[data-theme="dark"] {
+                --paper: #0f1a21;
+                --card: #17252e;
+                --ink: #e6eef2;
+                --muted: #9db0ba;
+                --rule: #2b3c46;
+                --water: #5aa9e0;
+                --water-soft: #2f5878;
+                --surge: #e88a4a;
+                --land: #4d5f56;
+                --sea: #1c3442;
+                color-scheme: dark;
+            }
+            * {
+                box-sizing: border-box;
+            }
+            html,
+            body {
+                margin: 0;
+            }
+            body {
+                background: var(--paper);
+                color: var(--ink);
+                font-family: var(--body);
+                font-size: 16px;
+                line-height: 1.55;
+            }
+            main {
+                max-width: 860px;
+                margin: 0 auto;
+                padding: 32px 20px 64px;
+                display: flex;
+                flex-direction: column;
+                gap: 44px;
+            }
+            h1,
+            h2,
+            h3 {
+                font-family: var(--display);
+                text-wrap: balance;
+                margin: 0;
+                line-height: 1.1;
+            }
+            h1 {
+                font-size: clamp(2rem, 6vw, 3rem);
+                font-weight: 700;
+                letter-spacing: -0.02em;
+            }
+            h2 {
+                font-size: 1.55rem;
+                font-weight: 700;
+            }
+            h3 {
+                font-size: 1.05rem;
+                font-weight: 500;
+            }
+            p {
+                margin: 0;
+                max-width: 65ch;
+            }
+            a {
+                color: var(--water);
+            }
+            ul {
+                margin: 0;
+                padding-left: 1.2em;
+                display: flex;
+                flex-direction: column;
+                gap: 6px;
+                max-width: 68ch;
+            }
+            .stamp {
+                font-family: var(--mono);
+                font-size: 0.78rem;
+                color: var(--muted);
+                text-transform: uppercase;
+                letter-spacing: 0.06em;
+            }
+            header {
+                display: flex;
+                flex-direction: column;
+                gap: 14px;
+            }
+            .lede {
+                font-size: 1.12rem;
+            }
+            .callout {
+                border-left: 4px solid var(--surge);
+                background: var(--card);
+                padding: 14px 16px;
+                display: flex;
+                flex-direction: column;
+                gap: 6px;
+            }
+            .callout strong {
+                font-family: var(--display);
+                font-size: 1.05rem;
+            }
+            section {
+                display: flex;
+                flex-direction: column;
+                gap: 16px;
+            }
+            .card {
+                background: var(--card);
+                border: 1px solid var(--rule);
+                border-radius: 6px;
+                padding: 18px;
+            }
+            .num {
+                font-family: var(--mono);
+                font-variant-numeric: tabular-nums;
+            }
+            .small {
+                font-size: 0.86rem;
+                color: var(--muted);
+            }
+            .divider {
+                border: 0;
+                border-top: 2px solid var(--ink);
+                margin: 0;
+            }
+            .part {
+                font-family: var(--mono);
+                font-size: 0.78rem;
+                text-transform: uppercase;
+                letter-spacing: 0.08em;
+                color: var(--muted);
+            }
+
+            /* day cards */
+            .days {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+                gap: 12px;
+            }
+            .day {
+                background: var(--card);
+                border: 1px solid var(--rule);
+                border-top: 4px solid var(--water);
+                border-radius: 6px;
+                padding: 14px;
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+            }
+            .day.warn {
+                border-top-color: var(--surge);
+            }
+            .day h3 {
+                font-size: 1.2rem;
+                font-weight: 700;
+            }
+            .pill {
+                align-self: flex-start;
+                font-size: 0.8rem;
+                font-weight: 600;
+                padding: 2px 10px;
+                border-radius: 99px;
+                border: 1.5px solid var(--water);
+                color: var(--ink);
+            }
+            .day.warn .pill {
+                border-color: var(--surge);
+            }
+            .pair {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+            .pair div {
+                display: flex;
+                flex-direction: column;
+            }
+            .pair b {
+                font-family: var(--mono);
+                font-weight: 500;
+                font-size: 1.25rem;
+                font-variant-numeric: tabular-nums;
+            }
+            .pair span {
+                font-size: 0.76rem;
+                color: var(--muted);
+            }
+
+            /* picker */
+            .pick {
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+            }
+            .grp {
+                display: flex;
+                flex-direction: column;
+                gap: 6px;
+            }
+            .grp > span {
+                font-size: 0.8rem;
+                color: var(--muted);
+            }
+            .seg {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 6px;
+            }
+            .seg button {
+                font: inherit;
+                font-size: 0.9rem;
+                color: var(--ink);
+                background: var(--paper);
+                border: 1.5px solid var(--rule);
+                border-radius: 6px;
+                padding: 7px 12px;
+                cursor: pointer;
+            }
+            .seg button:hover {
+                border-color: var(--muted);
+            }
+            .seg button[aria-pressed="true"] {
+                background: var(--ink);
+                color: var(--card);
+                border-color: var(--ink);
+            }
+            .result {
+                display: grid;
+                grid-template-columns: auto 1fr;
+                gap: 24px;
+                align-items: start;
+            }
+            .grid100 {
+                display: grid;
+                grid-template-columns: repeat(10, 16px);
+                gap: 3px;
+            }
+            .grid100 i {
+                width: 16px;
+                height: 16px;
+                border-radius: 3px;
+                background: var(--rule);
+            }
+            .grid100 i.d {
+                background: var(--water);
+            }
+            .grid100 i.c {
+                background: var(--surge);
+            }
+            .verdict {
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+            }
+            .verdict h3 {
+                font-size: 1.3rem;
+                font-weight: 700;
+            }
+            .key {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 16px;
+                font-size: 0.8rem;
+                color: var(--muted);
+            }
+            .key i {
+                display: inline-block;
+                width: 22px;
+                height: 10px;
+                vertical-align: middle;
+                margin-right: 6px;
+                border-radius: 2px;
+            }
+            .k0 {
+                background: var(--rule);
+            }
+            .kd {
+                background: var(--water);
+            }
+            .kc {
+                background: var(--surge);
+            }
+            .k1 {
+                background: var(--water);
+            }
+            .k2 {
+                background: repeating-linear-gradient(135deg, var(--water) 0 3px, transparent 3px 6px);
+                border: 1px solid var(--water);
+            }
+            .k3 {
+                background: var(--water-soft);
+            }
+            .k4 {
+                background: var(--surge);
+            }
+
+            /* tables */
+            .tw {
+                overflow-x: auto;
+            }
+            table {
+                border-collapse: collapse;
+                width: 100%;
+                font-size: 0.9rem;
+            }
+            th,
+            td {
+                text-align: left;
+                padding: 8px 10px;
+                border-bottom: 1px solid var(--rule);
+                vertical-align: top;
+            }
+            th {
+                font-weight: 600;
+                font-size: 0.78rem;
+                color: var(--muted);
+                text-transform: uppercase;
+                letter-spacing: 0.04em;
+            }
+            td.n,
+            th.n {
+                text-align: right;
+                font-family: var(--mono);
+                font-variant-numeric: tabular-nums;
+                white-space: nowrap;
+            }
+            tr.hl td {
+                background: var(--paper);
+                font-weight: 500;
+            }
+            .math {
+                font-family: var(--mono);
+                font-size: 0.84rem;
+                line-height: 1.7;
+                overflow-x: auto;
+                white-space: pre;
+                background: var(--paper);
+                border: 1px solid var(--rule);
+                border-radius: 4px;
+                padding: 12px;
+                margin: 0;
+            }
+            .todo {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+                gap: 12px;
+            }
+            .todo .card {
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+            }
+            .todo ul {
+                font-size: 0.93rem;
+            }
+
+            /* cross-section */
+            .scroller {
+                overflow-x: auto;
+            }
+            #xsec {
+                display: block;
+                width: 100%;
+                min-width: 560px;
+                height: auto;
+            }
+            .sky {
+                fill: var(--card);
+            }
+            .seaFill {
+                fill: var(--sea);
+            }
+            .landFill {
+                fill: var(--land);
+            }
+            .vap {
+                fill: var(--water);
+                opacity: 0.55;
+            }
+            .drop {
+                fill: var(--water);
+            }
+            .mk circle {
+                fill: var(--ink);
+            }
+            .mk text {
+                fill: var(--card);
+                font-family: var(--mono);
+                font-size: 15px;
+                text-anchor: middle;
+                dominant-baseline: central;
+            }
+            .axisT {
+                fill: var(--muted);
+                font-family: var(--mono);
+                font-size: 13px;
+            }
+            .axisL {
+                stroke: var(--rule);
+                stroke-width: 1;
+                stroke-dasharray: 3 4;
+            }
+            ol.steps {
+                margin: 0;
+                padding-left: 1.3em;
+                display: flex;
+                flex-direction: column;
+                gap: 6px;
+                max-width: 68ch;
+            }
+            .facts {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+                gap: 12px;
+            }
+            .fact {
+                border-top: 2px solid var(--ink);
+                padding-top: 8px;
+                display: flex;
+                flex-direction: column;
+                gap: 2px;
+            }
+            .fact b {
+                font-family: var(--mono);
+                font-weight: 500;
+                font-size: 1.3rem;
+            }
+            .scale {
+                display: grid;
+                grid-template-columns: repeat(5, 1fr);
+                gap: 2px;
+            }
+            .scale div {
+                padding: 8px 6px;
+                color: #fff;
+                font-size: 0.78rem;
+                line-height: 1.25;
+            }
+            .scale div b {
+                display: block;
+                font-family: var(--mono);
+                font-weight: 500;
+            }
+            .scale div:nth-child(1) {
+                background: #7fb2d6;
+                color: #0c2233;
+            }
+            .scale div:nth-child(2) {
+                background: #4f93c4;
+                color: #0c2233;
+            }
+            .scale div:nth-child(3) {
+                background: #2a74ab;
+            }
+            .scale div:nth-child(4) {
+                background: #17578a;
+            }
+            .scale div:nth-child(5) {
+                background: #0c3a61;
+            }
+
+            /* rain bars */
+            .bars {
+                display: flex;
+                flex-direction: column;
+                gap: 2px;
+            }
+            .row {
+                display: grid;
+                grid-template-columns: minmax(150px, 220px) 1fr 86px;
+                gap: 12px;
+                align-items: center;
+                width: 100%;
+                text-align: left;
+                background: none;
+                border: 0;
+                border-left: 4px solid transparent;
+                padding: 9px 8px;
+                color: inherit;
+                font: inherit;
+                cursor: pointer;
+                border-radius: 0 4px 4px 0;
+            }
+            .row:hover {
+                background: var(--paper);
+            }
+            .row[aria-pressed="true"] {
+                border-left-color: var(--ink);
+                background: var(--paper);
+            }
+            button:focus-visible,
+            input:focus-visible,
+            a:focus-visible {
+                outline: 2px solid var(--water);
+                outline-offset: 2px;
+            }
+            .row .lab {
+                display: flex;
+                flex-direction: column;
+            }
+            .row .lab span {
+                font-size: 0.78rem;
+                color: var(--muted);
+            }
+            .track {
+                position: relative;
+                height: 18px;
+                border-left: 1px solid var(--muted);
+            }
+            .fill {
+                position: absolute;
+                left: 0;
+                top: 0;
+                bottom: 0;
+                background: var(--water-soft);
+                border-radius: 0 4px 4px 0;
+            }
+            .row.hot .fill {
+                background: var(--water);
+            }
+            .rng {
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                border-radius: 0 4px 4px 0;
+                background: repeating-linear-gradient(135deg, var(--water) 0 3px, transparent 3px 6px);
+                border: 1px solid var(--water);
+                margin-left: 2px;
+            }
+            .row .val {
+                font-family: var(--mono);
+                font-variant-numeric: tabular-nums;
+                font-size: 0.92rem;
+                text-align: right;
+            }
+            .ticks {
+                display: grid;
+                grid-template-columns: minmax(150px, 220px) 1fr 86px;
+                gap: 12px;
+                padding: 0 8px 0 12px;
+            }
+            .ticks div {
+                position: relative;
+                height: 18px;
+            }
+            .ticks span {
+                position: absolute;
+                top: 0;
+                transform: translateX(-50%);
+                font-family: var(--mono);
+                font-size: 0.74rem;
+                color: var(--muted);
+            }
+            .detail {
+                display: grid;
+                grid-template-columns: auto 1fr;
+                gap: 28px;
+                align-items: end;
+            }
+            .tubes {
+                display: flex;
+                gap: 26px;
+                align-items: flex-end;
+            }
+            .tubeWrap {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 6px;
+                width: 92px;
+                text-align: center;
+            }
+            .tube {
+                position: relative;
+                width: 46px;
+                height: 212px;
+                border: 2px solid var(--ink);
+                border-top: 0;
+                border-radius: 0 0 8px 8px;
+                background: repeating-linear-gradient(to top, transparent 0 39px, var(--rule) 39px 40px);
+                overflow: hidden;
+            }
+            .tube .w {
+                position: absolute;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: var(--water);
+                transition: height 0.35s ease;
+            }
+            .tube.ref .w {
+                background: var(--water-soft);
+            }
+            .tubeWrap .small {
+                line-height: 1.25;
+            }
+            .stats {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 14px;
+            }
+            .stat {
+                display: flex;
+                flex-direction: column;
+                gap: 2px;
+                border-top: 2px solid var(--ink);
+                padding-top: 8px;
+            }
+            .stat b {
+                font-family: var(--mono);
+                font-weight: 500;
+                font-size: 1.45rem;
+                font-variant-numeric: tabular-nums;
+            }
+            .slider {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 12px;
+                align-items: center;
+            }
+            .slider input {
+                flex: 1;
+                min-width: 180px;
+                accent-color: var(--water);
+            }
+
+            /* tides */
+            .tides {
+                display: grid;
+                grid-template-columns: repeat(5, 1fr);
+                gap: 10px;
+                align-items: end;
+                border-bottom: 1px solid var(--muted);
+                padding-top: 6px;
+            }
+            .tcol {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 2px;
+            }
+            .tcol .tv {
+                font-family: var(--mono);
+                font-size: 0.86rem;
+                margin-bottom: 4px;
+            }
+            .tcol .ex {
+                width: min(56px, 80%);
+                background: var(--surge);
+                border-radius: 4px 4px 0 0;
+            }
+            .tcol .no {
+                width: min(56px, 80%);
+                background: var(--water-soft);
+            }
+            .tlabs {
+                display: grid;
+                grid-template-columns: repeat(5, 1fr);
+                gap: 10px;
+                text-align: center;
+                font-size: 0.8rem;
+            }
+            .tlabs span {
+                display: block;
+                color: var(--muted);
+                font-family: var(--mono);
+                font-size: 0.74rem;
+            }
+            footer {
+                font-size: 0.84rem;
+                color: var(--muted);
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+                border-top: 1px solid var(--rule);
+                padding-top: 16px;
+            }
+            footer ul {
+                max-width: none;
+            }
+            @media (max-width: 560px) {
+                .row,
+                .ticks {
+                    grid-template-columns: 1fr 64px;
+                }
+                .row .lab {
+                    grid-column: 1 / -1;
+                }
+                .ticks div:first-child {
+                    display: none;
+                }
+                .detail,
+                .result {
+                    grid-template-columns: 1fr;
+                }
+                .scale {
+                    grid-template-columns: 1fr;
+                }
+            }
+            @media (prefers-reduced-motion: reduce) {
+                .tube .w {
+                    transition: none;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <main>
+            <header>
+                <div class="stamp">Updated Tue Nov 24, 2026, noon Pacific</div>
+                <h1>Flying out of SFO on Nov 25, 26 or 27? Here are your odds.</h1>
+                <p class="lede">
+                    Short version: your flight will very probably go. Wednesday morning is the rough patch, and the
+                    likely pain is a late departure, not a cancellation. Thursday and Friday look fine at SFO; the
+                    trouble on those days is a separate storm on the East Coast.
+                </p>
+                <div class="callout">
+                    <strong>Where things stand right now</strong>
+                    <p>
+                        As of noon Tuesday the FAA lists no delay programs at SFO, Oakland or San Jose. This morning's
+                        king tide set a November record at the San Francisco gauge and SFO reported no impact on
+                        flights. The airport no longer expects flooding to cause ground stops this week. Rain and wind
+                        arrive this evening.
+                    </p>
+                </div>
+                <p class="small">
+                    The percentages on this page are my estimates, built from how SFO performed in recent storms and how
+                    this storm compares. They are not official forecasts. No agency or airline publishes cancellation
+                    odds. The working is shown further down.
+                </p>
+            </header>
+
+            <section>
+                <h2>The three days at a glance</h2>
+                <div class="days">
+                    <div class="day warn">
+                        <div class="stamp">Wed Nov 25</div>
+                        <h3>Delays likely, mostly before noon</h3>
+                        <span class="pill">&#9650; Rough morning</span>
+                        <div class="pair">
+                            <div>
+                                <b>1&ndash;3%</b>
+                                <span>chance your flight is canceled</span>
+                            </div>
+                            <div>
+                                <b>30&ndash;45%</b>
+                                <span>chance it leaves late</span>
+                            </div>
+                        </div>
+                        <p class="small">
+                            Rain and 25 to 35 mph gusts overnight, mostly over by late morning. Busiest outbound day of
+                            the week. Afternoon is the better half.
+                        </p>
+                    </div>
+                    <div class="day">
+                        <div class="stamp">Thu Nov 26 &middot; Thanksgiving</div>
+                        <h3>Smooth here, rough back East</h3>
+                        <span class="pill">&#9679; Fine unless you're headed to the Northeast</span>
+                        <div class="pair">
+                            <div>
+                                <b>under 1%</b>
+                                <span>most destinations</span>
+                            </div>
+                            <div>
+                                <b>3&ndash;8%</b>
+                                <span>DC, Philadelphia, New York, Boston</span>
+                            </div>
+                        </div>
+                        <p class="small">
+                            Dry at SFO and the lightest crowds of the week. A coastal storm reaches the Mid-Atlantic and
+                            Northeast.
+                        </p>
+                    </div>
+                    <div class="day">
+                        <div class="stamp">Fri Nov 27</div>
+                        <h3>Close to a normal day</h3>
+                        <span class="pill">&#9679; Near normal</span>
+                        <div class="pair">
+                            <div>
+                                <b>under 1%</b>
+                                <span>most destinations</span>
+                            </div>
+                            <div>
+                                <b>2&ndash;5%</b>
+                                <span>Northeast, morning flights</span>
+                            </div>
+                        </div>
+                        <p class="small">
+                            Dry at SFO. The East Coast storm is on its way out. Tides drop below the level that already
+                            caused no trouble Tuesday.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h2>Check a flight like yours</h2>
+                <div class="card pick">
+                    <div class="grp">
+                        <span id="lDay">Day</span>
+                        <div class="seg" id="segDay" role="group" aria-labelledby="lDay"></div>
+                    </div>
+                    <div class="grp">
+                        <span id="lTime">Departure time</span>
+                        <div class="seg" id="segTime" role="group" aria-labelledby="lTime"></div>
+                    </div>
+                    <div class="grp">
+                        <span id="lDest">Where you're going</span>
+                        <div class="seg" id="segDest" role="group" aria-labelledby="lDest"></div>
+                    </div>
+                    <hr class="divider" />
+                    <div class="result">
+                        <div style="display: flex; flex-direction: column; gap: 8px">
+                            <div class="grid100" id="grid" role="img" aria-label="100 flights like yours"></div>
+                            <span class="small">100 flights like yours</span>
+                        </div>
+                        <div class="verdict">
+                            <h3 id="vTitle"></h3>
+                            <div class="pair">
+                                <div>
+                                    <b id="vC"></b>
+                                    <span>canceled, out of 100</span>
+                                </div>
+                                <div>
+                                    <b id="vD"></b>
+                                    <span>leave 15+ minutes late, out of 100</span>
+                                </div>
+                            </div>
+                            <ul id="vTips"></ul>
+                            <div class="key">
+                                <span>
+                                    <i class="kc"></i>
+                                    canceled
+                                </span>
+                                <span>
+                                    <i class="kd"></i>
+                                    late
+                                </span>
+                                <span>
+                                    <i class="k0"></i>
+                                    on time
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p class="small">
+                    For scale, an ordinary day across US airlines runs roughly 1 flight in 100 canceled and 1 in 5 late.
+                </p>
+            </section>
+
+            <section>
+                <h2>What to do</h2>
+                <div class="todo">
+                    <div class="card">
+                        <h3>Tonight</h3>
+                        <ul>
+                            <li>
+                                Turn on your airline's app notifications. Rebooking in the app beats any line at the
+                                airport.
+                            </li>
+                            <li>
+                                Flying before 9 AM Wednesday? Look up where your plane is coming from. If the inbound
+                                flight lands at SFO tonight, you are in good shape.
+                            </li>
+                            <li>
+                                If your Wednesday flight is flexible, a free move to the afternoon or to Thursday is on
+                                the table (waivers below).
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3>Getting to the airport</h3>
+                        <ul>
+                            <li>
+                                The low stretch of Highway 101 between Candlestick Point and Burlingame, including
+                                ramps, can flood around high tide: 10:49 AM Wednesday, 11:38 AM Thursday.
+                            </li>
+                            <li>BART runs into the International Terminal and stays off 101.</li>
+                            <li>
+                                TSA says arrive 2 hours ahead for domestic, 3 for international. Wednesday is the peak
+                                day before the holiday.
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3>If it goes sideways</h3>
+                        <ul>
+                            <li>
+                                Canceled, or delayed 3+ hours domestic (6+ international), and you decide not to go:
+                                federal rules entitle you to a full refund to your original payment.
+                            </li>
+                            <li>Accepting the rebooked flight gives up that refund.</li>
+                            <li>San Jose is 35 miles south. United's waiver lets you switch to SJC.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3>Free-change waivers for Wednesday Nov 25 SFO flights</h3>
+                <div class="card tw">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Airline</th>
+                                <th>What you get</th>
+                                <th>Limits</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>United</td>
+                                <td>No change fee or fare difference; San Jose allowed as a substitute</td>
+                                <td>Ticket bought by Nov 22; same cities and cabin; new flight by Nov 28</td>
+                            </tr>
+                            <tr>
+                                <td>American</td>
+                                <td>One free rebooking</td>
+                                <td>Same origin and destination; travel between Nov 23 and Nov 28</td>
+                            </tr>
+                            <tr>
+                                <td>Southwest</td>
+                                <td>Free rebooking</td>
+                                <td>Within 14 days of the original date</td>
+                            </tr>
+                            <tr>
+                                <td>Alaska, Delta</td>
+                                <td>No SFO waiver reported as of Tuesday morning</td>
+                                <td>Check the airline's travel-alerts page</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p class="small">
+                    Nothing covers Thursday or Friday yet, and no East Coast waivers had been reported by Tuesday. Those
+                    tend to appear a day ahead, so check again Wednesday if you are headed to the Northeast.
+                </p>
+
+                <div class="callout">
+                    <strong>Coming home Sunday Nov 29?</strong>
+                    <p>
+                        Another storm is forecast from Saturday morning through Monday morning, with an 80% chance of
+                        measurable rain in San Francisco. Sunday is the busiest flying day of the year. That return leg
+                        carries more weather risk than anything on Thursday or Friday.
+                    </p>
+                </div>
+            </section>
+
+            <section>
+                <h2>How I got these numbers</h2>
+                <p>
+                    At SFO, storms mostly turn into delays. The runways are 750 feet apart, so when clouds drop or wind
+                    picks up the FAA spaces arrivals out, from about 45 to 48 an hour in fair weather to about 36.
+                    Flights wait their turn. Few get scrubbed. The recent record backs that up:
+                </p>
+                <div class="card tw">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Day</th>
+                                <th>What hit</th>
+                                <th class="n">Canceled</th>
+                                <th class="n">Delayed</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Dec 24, 2025</td>
+                                <td>Wind and rain, FAA delay program, inbound delays over 2 hours</td>
+                                <td class="n">10 (0.9%)</td>
+                                <td class="n">400+ (36%)</td>
+                            </tr>
+                            <tr>
+                                <td>Nov 16, 2026</td>
+                                <td>Rain, low visibility</td>
+                                <td class="n">not reported</td>
+                                <td class="n">280 (25%)</td>
+                            </tr>
+                            <tr class="hl">
+                                <td>Nov 18, 2026</td>
+                                <td>
+                                    Atmospheric river. Gusts over 50 mph, record rain, ground stop over an hour, delays
+                                    averaging 186 minutes
+                                </td>
+                                <td class="n">27 (2.5%)</td>
+                                <td class="n">432 (39%)</td>
+                            </tr>
+                            <tr>
+                                <td>Nov 19, 2026</td>
+                                <td>Day-after recovery, flooded access roads</td>
+                                <td class="n">8 (0.7%)</td>
+                                <td class="n">595 (54%)</td>
+                            </tr>
+                            <tr>
+                                <td>Nov 13&ndash;15, 2026</td>
+                                <td>Not weather: nationwide FAA ground stop</td>
+                                <td class="n">500+, 304, 116</td>
+                                <td class="n">400+ on day one</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <pre class="math">
+Step 1  How many flights a day?
+        On Nov 16 the airport said 280 delays was about a quarter of flights.
+        280 x 4 = about 1,100 arrivals plus departures per day.
+
+Step 2  Worst recent weather day, Nov 18:
+        27 canceled / 1,100 = 2.5%      432 delayed / 1,100 = 39%
+
+Step 3  Tonight's storm against Nov 18:
+                      Nov 18              Tue night to Wed
+        peak gusts    50+ mph             25-35 mph, up to 45 near the bay
+        rain in SF    2.31 in             0.5 to 1 in
+        timing        all day             mostly overnight, over by late morning
+        Weaker and mostly overnight, when few flights run.
+        Weather alone should land at or under Nov 18: about 1 to 2%.
+
+Step 4  Things that push Wednesday up:
+        + busiest outbound day, full planes, little slack to recover
+        + planes arriving late tonight start Wednesday behind
+        + a second storm hits Atlanta, Charlotte, Miami, Orlando on Wednesday
+        Things that pull it down:
+        - airlines moved people early with waivers
+        - SFO no longer expects tide flooding to stop flights
+        Net for a typical Wednesday flight: 1 to 3% canceled, 30 to 45% late.
+
+Step 5  Thursday and Friday: dry at SFO, tides falling (8.2 ft, then 7.9 ft,
+        both under Tuesday's 8.4 ft forecast peak that caused no disruption).
+        Local risk drops to an ordinary day. What is left is the East Coast
+        storm, so the odds split by destination.</pre>
+                <h3>What would make Wednesday worse than this</h3>
+                <ul>
+                    <li>
+                        <b>The front stalls.</b>
+                        One of the two models the Weather Service is watching slows the front over the Bay Area. Rain
+                        and gusts lingering into the 6 to 10 AM departure push would look more like Nov 18.
+                    </li>
+                    <li>
+                        <b>Thunderstorms.</b>
+                        Forecasters put the chance at 10 to 15% tonight into Wednesday morning. A cell over the airport
+                        stops ramp work and departures until it passes.
+                    </li>
+                    <li>
+                        <b>Water on the airfield at 10:49 AM.</b>
+                        The forecast peak is 8.5 ft, about 2.7 ft above normal, an inch or two above the January
+                        high-water mark at SFO. The airport does not expect a stoppage, and the mayor has said weather
+                        ground stops remain possible.
+                    </li>
+                    <li>
+                        <b>Another system failure.</b>
+                        The Nov 13 FAA outage canceled 500+ SFO flights in a day. Nothing predicts a repeat. It is the
+                        reason the upper tail exists.
+                    </li>
+                </ul>
+                <p>
+                    I put the chance of a bad Wednesday, meaning more than 50 cancellations at SFO, at roughly 1 in 10.
+                    The first place it would show up is the
+                    <a href="https://nasstatus.faa.gov/">FAA's airport status page</a>
+                    : look for a ground delay program or ground stop at SFO.
+                </p>
+                <p class="small">
+                    Estimates for short regional hops and long-haul international flights lean on a general airline
+                    pattern, not SFO data from this month: when arrivals are metered, carriers cut small-jet short
+                    flights first and protect long-hauls.
+                </p>
+            </section>
+
+            <hr class="divider" />
+            <div class="part">Background: the storm itself</div>
+
+            <section>
+                <h2>How much rain is this, against a regular rainy day?</h2>
+                <p>
+                    The atmospheric river already came through on Nov 18 and dropped a record 2.31 inches on downtown SF
+                    in a day. Tonight's storm is a faster, lighter cold front. Inches of rain; pick a row to see it in
+                    gallons.
+                </p>
+                <div class="card">
+                    <div class="bars" id="bars"></div>
+                    <div class="ticks">
+                        <div></div>
+                        <div id="ticks"></div>
+                        <div></div>
+                    </div>
+                    <div class="key">
+                        <span>
+                            <i class="k1"></i>
+                            tonight's storm, low end of forecast
+                        </span>
+                        <span>
+                            <i class="k2"></i>
+                            forecast range
+                        </span>
+                        <span>
+                            <i class="k3"></i>
+                            reference amounts
+                        </span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="detail">
+                        <div class="tubes" aria-hidden="true">
+                            <div class="tubeWrap">
+                                <div class="tube ref"><div class="w" id="tRef"></div></div>
+                                <span class="num" id="tRefV"></span>
+                                <span class="small">average SF rainy day</span>
+                            </div>
+                            <div class="tubeWrap">
+                                <div class="tube"><div class="w" id="tSel"></div></div>
+                                <span class="num" id="tSelV"></span>
+                                <span class="small" id="tSelL"></span>
+                            </div>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 16px">
+                            <h3 id="dTitle"></h3>
+                            <div class="stats">
+                                <div class="stat">
+                                    <b id="sX"></b>
+                                    <span class="small">average rainy days' worth</span>
+                                </div>
+                                <div class="stat">
+                                    <b id="sGal"></b>
+                                    <span class="small">gallons falling on San Francisco's 46.9 sq mi</span>
+                                </div>
+                                <div class="stat">
+                                    <b id="sPool"></b>
+                                    <span class="small">Olympic swimming pools</span>
+                                </div>
+                                <div class="stat">
+                                    <b id="sRoof"></b>
+                                    <span class="small">gallons off a 1,000 sq ft roof</span>
+                                </div>
+                            </div>
+                            <div class="slider">
+                                <label for="depth" class="small">Or set a depth:</label>
+                                <input type="range" id="depth" min="0.05" max="5" step="0.05" value="0.75" />
+                                <span class="num" id="depthV"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>The gallons math</h3>
+                <pre class="math">
+Step 1  1 inch of rain on 1 sq ft = 12 x 12 x 1 = 144 cubic inches
+Step 2  1 gallon = 231 cubic inches, so 144 / 231 = 0.623 gallons
+Step 3  1 sq mi = 5,280 x 5,280 = 27,878,400 sq ft
+Step 4  SF land area: 46.9 x 27,878,400 = 1.31 billion sq ft
+Step 5  1.31 billion x 0.623 = about 815 million gallons per inch of rain
+Step 6  Olympic pool = 2,500 m3 = about 660,000 gallons
+        815,000,000 / 660,000 = about 1,235 pools per inch
+Average rainy day: 22.9 in per year / 71 rainy days = 0.32 in</pre>
+            </section>
+
+            <section>
+                <h2>The tides: why the bay is the real story</h2>
+                <p>
+                    City storm drains empty into the bay. When the bay sits almost three feet above a normal high tide,
+                    outfalls back up and modest rain has nowhere to go. The heaviest rain is forecast overnight, in the
+                    gap between Tuesday's and Wednesday's high tides, which is the lucky version of this setup.
+                </p>
+                <div class="card">
+                    <h3 style="margin-bottom: 10px">
+                        High tides at the San Francisco gauge, feet above low-water datum (MLLW)
+                    </h3>
+                    <div class="tides" id="tides"></div>
+                    <div class="tlabs" id="tlabs"></div>
+                    <div class="key" style="margin-top: 12px">
+                        <span>
+                            <i class="k3"></i>
+                            normal high tide
+                        </span>
+                        <span>
+                            <i class="k4"></i>
+                            extra from king tide plus storm surge
+                        </span>
+                    </div>
+                </div>
+                <p class="small">
+                    Forecast values from the Weather Service; Wednesday was revised down slightly on Monday. Tuesday's
+                    observed peak came at 10:06 AM and set a November record. A Coastal Flood Warning for San Francisco
+                    Bay runs through 4 PM Thursday. Peak time can shift up to 90 minutes around the bay.
+                </p>
+            </section>
+
+            <section>
+                <h2>What an atmospheric river is</h2>
+                <p>
+                    A long, narrow conveyor of water vapor a mile or so above the ocean. When it runs into the
+                    California coast it gets shoved uphill and wrung out.
+                </p>
+                <div class="card scroller">
+                    <svg
+                        id="xsec"
+                        viewBox="0 0 900 350"
+                        role="img"
+                        aria-label="Cross-section: water vapor flows from the Pacific toward the coast about a mile up, is lifted by the coastal mountains, and falls as rain on the windward slopes."
+                    >
+                        <rect class="sky" x="0" y="0" width="900" height="350" />
+                        <line class="axisL" x1="0" y1="225" x2="900" y2="225" />
+                        <text class="axisT" x="6" y="220">~0.6 mi up</text>
+                        <line class="axisL" x1="0" y1="120" x2="900" y2="120" />
+                        <text class="axisT" x="6" y="115">~1.5 mi up</text>
+                        <g id="parts"></g>
+                        <rect class="seaFill" x="0" y="300" width="570" height="50" />
+                        <path id="land" class="landFill" d="" />
+                        <text class="axisT" x="20" y="332">Pacific Ocean</text>
+                        <text class="axisT" x="500" y="332">coast</text>
+                        <text class="axisT" x="800" y="332">inland</text>
+                        <g class="mk">
+                            <circle cx="150" cy="60" r="14" />
+                            <text x="150" y="60">1</text>
+                        </g>
+                        <g class="mk">
+                            <circle cx="560" cy="60" r="14" />
+                            <text x="560" y="60">2</text>
+                        </g>
+                        <g class="mk">
+                            <circle cx="668" cy="60" r="14" />
+                            <text x="668" y="60">3</text>
+                        </g>
+                        <g class="mk">
+                            <circle cx="840" cy="60" r="14" />
+                            <text x="840" y="60">4</text>
+                        </g>
+                    </svg>
+                </div>
+                <ol class="steps">
+                    <li>
+                        <b>The river.</b>
+                        Ahead of a cold front, a fast low-level wind (the low-level jet) carries warm, wet air from the
+                        subtropics. Almost all of the water is invisible vapor in the lowest mile and a half of the
+                        atmosphere.
+                    </li>
+                    <li>
+                        <b>Landfall.</b>
+                        The plume hits the coast. Flat ground gets steady rain from the front itself.
+                    </li>
+                    <li>
+                        <b>The squeeze.</b>
+                        Mountains force the air upward. Rising air expands and cools, cool air holds less vapor, and the
+                        excess condenses and falls. This is why the Santa Cruz Mountains and Mount Tam routinely get two
+                        to four times what downtown SF gets from the same storm.
+                    </li>
+                    <li>
+                        <b>Rain shadow.</b>
+                        The air that makes it over the ridge has lost much of its water and sinks, so the lee side gets
+                        less.
+                    </li>
+                </ol>
+
+                <div class="facts">
+                    <div class="fact">
+                        <b>250&ndash;375 mi</b>
+                        <span class="small">typical width</span>
+                    </div>
+                    <div class="fact">
+                        <b>1,200+ mi</b>
+                        <span class="small">typical length</span>
+                    </div>
+                    <div class="fact">
+                        <b>~12 Mississippis</b>
+                        <span class="small">water moved by a moderate one, as vapor (math below)</span>
+                    </div>
+                </div>
+
+                <h3>Where the "12 Mississippis" comes from</h3>
+                <p>
+                    Forecasters rate these storms by IVT, integrated vapor transport: how many kilograms of water vapor
+                    cross each meter of the river's width every second. It comes from adding up, layer by layer from the
+                    surface to about 5.5 miles up, the moisture content of the air times the wind speed times the mass
+                    of air in that layer.
+                </p>
+                <pre class="math">
+IVT = (1/g) x SUM over layers of ( q x v x dp )
+
+  q   = kg of water vapor per kg of air in the layer
+  v   = wind speed in the layer, m/s
+  dp  = pressure thickness of the layer, pascals
+  dp/g = kg of air sitting over each square meter in that layer
+         (pressure is the weight of the air above, per unit area)
+
+  units: (kg/kg) x (m/s) x (kg/m2) = kg per meter per second
+
+Step 1  moderate river: IVT = 500 kg/m/s
+Step 2  width = 400 km = 400,000 m
+Step 3  500 x 400,000 = 200,000,000 kg of water per second
+Step 4  1 m3 of water = 1,000 kg, so 200,000 m3/s
+Step 5  Mississippi at its mouth averages about 17,000 m3/s
+Step 6  200,000 / 17,000 = about 12 Mississippis</pre>
+                <p class="small">
+                    The storm scale (Ralph et al., 2019) starts from peak IVT, then shifts a category down if the river
+                    lasts under 24 hours and up if it lasts over 48:
+                </p>
+                <div class="scale" aria-label="Atmospheric river scale by peak IVT">
+                    <div>
+                        <b>250&ndash;500</b>
+                        weak
+                    </div>
+                    <div>
+                        <b>500&ndash;750</b>
+                        moderate
+                    </div>
+                    <div>
+                        <b>750&ndash;1000</b>
+                        strong
+                    </div>
+                    <div>
+                        <b>1000&ndash;1250</b>
+                        extreme
+                    </div>
+                    <div>
+                        <b>1250+</b>
+                        exceptional
+                    </div>
+                </div>
+
+                <h3>Who figured this out</h3>
+                <p>
+                    Reginald Newell's group at MIT first described "tropospheric rivers" in 1992 after spotting
+                    filaments of moisture in global weather analyses. Yong Zhu and Newell switched to the name
+                    "atmospheric rivers" in 1994, and in 1998 showed that four or five of these filaments, covering
+                    under a tenth of the globe's circumference at mid-latitudes, carry over 90% of the poleward water
+                    vapor transport. Marty Ralph, Paul Neiman and Gary Wick flew research aircraft through them off
+                    California in the winter of 1997&ndash;98 and published the measurements in 2004, which pinned down
+                    the roughly 400 km width and the low-level jet. Ralph's 2019 paper added the five-step scale above.
+                    "Pineapple Express" is the older folk name for the ones that tap moisture near Hawaii.
+                </p>
+            </section>
+
+            <footer>
+                <span>
+                    Forecasts and airline policies change by the hour this week. Your airline's app is the authority on
+                    your flight.
+                </span>
+                <span>
+                    Built with Claude. Published on
+                    <a href="https://do-not-panic.com/">do-not-panic.com</a>
+                    to help travelers.
+                </span>
+                <ul>
+                    <li>
+                        Live status:
+                        <a href="https://nasstatus.faa.gov/">FAA National Airspace System status</a>
+                        (checked 11:49 AM PT Nov 24)
+                    </li>
+                    <li>
+                        Weather and tides:
+                        <a
+                            href="https://forecast.weather.gov/product.php?site=MTR&issuedby=MTR&product=AFD&format=CI&version=1&glossary=1"
+                        >
+                            NWS Bay Area forecast discussion
+                        </a>
+                        (Nov 23 evening issue);
+                        <a
+                            href="https://abc7news.com/live-updates/live-bay-area-weather-updates-san-francisco-recovers-severe-flooding-more-storms-king-tides-coming-northern-california/20069742/"
+                        >
+                            ABC7 live updates
+                        </a>
+                    </li>
+                    <li>
+                        SFO flood outlook: SF Chronicle,
+                        <a href="https://www.sfchronicle.com/bayarea/article/sfo-flood-ground-stops-22546901.php">
+                            SFO no longer expects flooding to trigger ground stops
+                        </a>
+                        ,
+                        <a
+                            href="https://www.sfchronicle.com/weather/article/live-updates-record-high-tides-bay-area-flooding-22546836.php"
+                        >
+                            king tides live updates
+                        </a>
+                        ,
+                        <a
+                            href="https://www.sfchronicle.com/sf/article/sfo-flood-threat-roads-to-airport-king-tides-22546186.php"
+                        >
+                            roads to the airport
+                        </a>
+                        ;
+                        <a href="https://www.cnn.com/2026/11/24/us/live-news/thanksgiving-travel">
+                            CNN travel live updates
+                        </a>
+                    </li>
+                    <li>
+                        Past storm days:
+                        <a
+                            href="https://abc7news.com/live-updates/live-bay-area-storm-updates-tornado-warning-issued-santa-cruz-county-waterspouts-spotted-san-francisco/20045464/entry/20052128/"
+                        >
+                            ABC7
+                        </a>
+                        (Nov 18),
+                        <a href="https://avi-go.com/news/articles/5e64f9ea6a89a383d9e358a29e815fd0">Avi-Go</a>
+                        (Nov 19),
+                        <a
+                            href="https://www.thesfnews.com/waterspouts-near-sfo-as-storms-delay-hundreds-of-flights/104633"
+                        >
+                            SF News
+                        </a>
+                        (Nov 14&ndash;16),
+                        <a
+                            href="https://www.kqed.org/news/12109878/hundreds-of-bay-area-flights-remain-disrupted-after-faa-ground-stop"
+                        >
+                            KQED
+                        </a>
+                        (Nov 13),
+                        <a
+                            href="https://www.sfchronicle.com/weather/article/california-storm-live-updates-21260216.php"
+                        >
+                            SF Chronicle
+                        </a>
+                        (Dec 24, 2025)
+                    </li>
+                    <li>
+                        Runway capacity:
+                        <a
+                            href="https://www.aviationpros.com/airport-business/airport-infrastructure-operations/news/55405869/a-major-sfo-runway-is-reopening-early-what-travelers-should-know"
+                        >
+                            AviationPros
+                        </a>
+                    </li>
+                    <li>
+                        Waivers and refunds:
+                        <a
+                            href="https://abc7news.com/story/airlines-issue-waivers-san-francisco-travelers-ahead-thanksgiving-storms-how-get-refund-rebook-flights/20075468/"
+                        >
+                            ABC7
+                        </a>
+                        ,
+                        <a href="https://www.sfchronicle.com/travel/article/united-sfo-flight-waiver-22546476.php">
+                            SF Chronicle
+                        </a>
+                        ,
+                        <a
+                            href="https://www.iheart.com/content/2026-11-24-united-allows-for-changing-flights-wednesday-at-sfo/"
+                        >
+                            iHeart
+                        </a>
+                        ,
+                        <a
+                            href="https://www.thetraveler.org/storms-on-both-coasts-threaten-2026-thanksgiving-air-travel/"
+                        >
+                            The Traveler
+                        </a>
+                    </li>
+                    <li>
+                        East Coast storm:
+                        <a
+                            href="https://thepointsguy.com/news/thanksgiving-flight-cancellations-delays-thanksgiving-2026"
+                        >
+                            The Points Guy
+                        </a>
+                        ,
+                        <a
+                            href="https://www.thetraveler.org/thanksgiving-noreaster-poses-major-flight-disruption-risk/"
+                        >
+                            The Traveler
+                        </a>
+                    </li>
+                    <li>
+                        Rain climatology:
+                        <a
+                            href="https://currentresults.com/Weather/California/Places/san-francisco-weather-averages.php"
+                        >
+                            Current Results
+                        </a>
+                        . Literature: Newell et al. 1992 and Zhu &amp; Newell 1994,
+                        <i>Geophys. Res. Lett.</i>
+                        ; Zhu &amp; Newell 1998 and Ralph, Neiman &amp; Wick 2004,
+                        <i>Mon. Wea. Rev.</i>
+                        ; Ralph et al. 2019,
+                        <i>Bull. Amer. Meteor. Soc.</i>
+                    </li>
+                </ul>
+            </footer>
+        </main>
+
+        <script>
+            ;(function () {
+                var NS = "http://www.w3.org/2000/svg"
+                var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches
+                var $ = function (id) {
+                    return document.getElementById(id)
+                }
+
+                /* ---------- flight picker ---------- */
+                var DAYS = [
+                    ["wed", "Wed Nov 25"],
+                    ["thu", "Thu Nov 26"],
+                    ["fri", "Fri Nov 27"],
+                ]
+                var TIMES = [
+                    ["early", "Before 9 AM"],
+                    ["mid", "9 AM to 2 PM"],
+                    ["late", "After 2 PM"],
+                ]
+                var DESTS = [
+                    ["west", "West, Mountain, Midwest, Texas, Hawaii"],
+                    ["reg", "Short hop on a small jet"],
+                    ["se", "Atlanta, Charlotte, Florida"],
+                    ["ne", "DC, Philadelphia, New York, Boston"],
+                    ["intl", "International long-haul"],
+                ]
+                // [cancel lo, cancel hi, late lo, late hi] in percent; estimates, see "How I got these numbers"
+                var ODDS = {
+                    wed: {
+                        west: { early: [1, 3, 35, 50], mid: [1, 3, 30, 45], late: [0.5, 2, 25, 40] },
+                        reg: { early: [3, 7, 40, 55], mid: [2, 6, 35, 50], late: [1, 4, 30, 45] },
+                        se: { early: [2, 5, 40, 55], mid: [2, 5, 40, 55], late: [2, 6, 45, 60] },
+                        ne: { early: [1, 3, 35, 50], mid: [1, 3, 30, 45], late: [2, 5, 35, 50] },
+                        intl: { early: [0.5, 1.5, 30, 45], mid: [0.5, 1.5, 30, 45], late: [0.5, 1.5, 25, 40] },
+                    },
+                    thu: {
+                        west: { all: [0.3, 1, 12, 20] },
+                        reg: { all: [0.5, 1.5, 12, 20] },
+                        se: { all: [1, 3, 20, 35] },
+                        ne: { all: [3, 8, 35, 55] },
+                        intl: { all: [0.3, 1, 12, 20] },
+                    },
+                    fri: {
+                        west: { all: [0.3, 1, 15, 22] },
+                        reg: { all: [0.5, 1.5, 15, 22] },
+                        se: { all: [0.5, 1.5, 15, 25] },
+                        ne: { early: [2, 5, 25, 40], mid: [1, 3, 20, 35], late: [1, 3, 20, 35] },
+                        intl: { all: [0.3, 1, 15, 22] },
+                    },
+                }
+                var sel = { day: "wed", time: "early", dest: "west" }
+                function seg(host, opts, key) {
+                    opts.forEach(function (o) {
+                        var b = document.createElement("button")
+                        b.type = "button"
+                        b.id = "pick-" + key + "-" + o[0]
+                        b.textContent = o[1]
+                        b.setAttribute("aria-pressed", sel[key] === o[0] ? "true" : "false")
+                        b.addEventListener("click", function () {
+                            sel[key] = o[0]
+                            opts.forEach(function (x) {
+                                $("pick-" + key + "-" + x[0]).setAttribute(
+                                    "aria-pressed",
+                                    x[0] === o[0] ? "true" : "false",
+                                )
+                            })
+                            render()
+                        })
+                        host.appendChild(b)
+                    })
+                }
+                seg($("segDay"), DAYS, "day")
+                seg($("segTime"), TIMES, "time")
+                seg($("segDest"), DESTS, "dest")
+                var grid = $("grid")
+                for (var gi = 0; gi < 100; gi++) {
+                    grid.appendChild(document.createElement("i"))
+                }
+                function rng(a, b) {
+                    return a < 1 && b <= 1 ? "under 1" : a + "–" + b
+                }
+                function render() {
+                    var t = ODDS[sel.day][sel.dest],
+                        o = t[sel.time] || t.all
+                    var c = Math.max(1, Math.round((o[0] + o[1]) / 2)),
+                        d = Math.round((o[2] + o[3]) / 2)
+                    var cells = grid.children
+                    for (var i = 0; i < 100; i++) {
+                        cells[i].className = i < c ? "c" : i < c + d ? "d" : ""
+                    }
+                    $("vC").textContent = rng(o[0], o[1])
+                    $("vD").textContent = o[2] + "–" + o[3]
+                    var title =
+                        o[1] >= 6
+                            ? "Higher risk than most. Have a backup."
+                            : o[1] >= 3
+                              ? "Likely to go, with a real chance of a late start."
+                              : o[3] >= 40
+                                ? "Very likely to go. Plan for a delay."
+                                : "Very likely to go, close to on time."
+                    $("vTitle").textContent = title
+                    var tips = []
+                    if (sel.day === "wed") {
+                        if (sel.time === "early")
+                            tips.push(
+                                "Early flights depend on planes that arrive tonight, during the storm. Check tonight whether your inbound aircraft made it to SFO.",
+                            )
+                        if (sel.time === "mid")
+                            tips.push(
+                                "Rain should be ending by late morning. High tide is 10:49 AM; leave extra time on Highway 101 or take BART.",
+                            )
+                        if (sel.time === "late")
+                            tips.push(
+                                "The better half of Wednesday. Weather should be done; leftover delays from the morning are the main risk.",
+                            )
+                        tips.push("United, American and Southwest will move a Wednesday SFO flight for free.")
+                    }
+                    if (sel.day === "thu") tips.push("Dry at SFO and the quietest airport day of the week.")
+                    if (sel.day === "fri") tips.push("Dry at SFO. Any trouble comes from the other end of the route.")
+                    if (sel.dest === "reg")
+                        tips.push(
+                            "When the FAA meters arrivals, airlines cut small-jet short hops first. If driving is realistic, keep it as plan B.",
+                        )
+                    if (sel.dest === "se" && sel.day === "wed")
+                        tips.push(
+                            "A separate storm reaches Atlanta, Charlotte, Miami and Orlando on Wednesday and builds through the day.",
+                        )
+                    if (sel.dest === "se" && sel.day !== "wed")
+                        tips.push("The Southeast storm has moved north by now; expect some leftover schedule mess.")
+                    if (sel.dest === "ne" && sel.day === "wed" && sel.time === "late")
+                        tips.push(
+                            "Evening and red-eye flights land in the Northeast Thursday morning, as the coastal storm arrives there.",
+                        )
+                    if (sel.dest === "ne" && sel.day === "thu")
+                        tips.push(
+                            "The coastal storm hits DC, Philadelphia, New York and Boston on Thanksgiving. No waiver covers this yet; check your airline Wednesday.",
+                        )
+                    if (sel.dest === "ne" && sel.day === "fri")
+                        tips.push("The storm is leaving the Northeast. Morning flights carry the most leftover risk.")
+                    if (sel.dest === "intl")
+                        tips.push("Long-haul flights are the last ones airlines cancel. Expect to go, possibly late.")
+                    $("vTips").innerHTML = tips
+                        .map(function (x) {
+                            return "<li>" + x + "</li>"
+                        })
+                        .join("")
+                    grid.setAttribute(
+                        "aria-label",
+                        "Out of 100 flights like yours: about " +
+                            c +
+                            " canceled, about " +
+                            d +
+                            " late, the rest on time",
+                    )
+                }
+                render()
+
+                /* ---------- cross-section ---------- */
+                function terr(x) {
+                    if (x < 570) return 0
+                    if (x < 700) return (140 * (1 - Math.cos((Math.PI * (x - 570)) / 130))) / 2
+                    if (x < 820) return 140 - (95 * (1 - Math.cos((Math.PI * (x - 700)) / 120))) / 2
+                    return 45
+                }
+                var d = "M570,350 L570,300"
+                for (var x = 570; x <= 900; x += 6) {
+                    d += " L" + x + "," + (300 - terr(x)).toFixed(1)
+                }
+                d += " L900,350 Z"
+                $("land").setAttribute("d", d)
+                function lift(x) {
+                    var t = 0
+                    for (var k = -40; k <= 40; k += 20) {
+                        t += terr(x + 60 + k)
+                    }
+                    return (t / 5) * 0.85
+                }
+                var g = $("parts"),
+                    P = []
+                function spawn(p, anywhere) {
+                    p.x = anywhere ? Math.random() * 900 : -10 - Math.random() * 60
+                    p.y0 = 150 + Math.random() * 120
+                    p.v = 1.1 + Math.random() * 1.1
+                    p.rain = false
+                    p.el.setAttribute("class", "vap")
+                    p.el.setAttribute("r", 3.2)
+                }
+                for (var i = 0; i < 130; i++) {
+                    var c = document.createElementNS(NS, "circle")
+                    g.appendChild(c)
+                    var p = { el: c }
+                    spawn(p, true)
+                    P.push(p)
+                }
+                function place(p) {
+                    p.el.setAttribute("cx", p.x.toFixed(1))
+                    p.el.setAttribute("cy", p.y.toFixed(1))
+                }
+                function step() {
+                    for (var i = 0; i < P.length; i++) {
+                        var p = P[i]
+                        if (p.rain) {
+                            p.y += 5
+                            p.x += 0.9
+                            if (p.y >= 300 - terr(p.x)) spawn(p, false)
+                        } else {
+                            p.x += p.v
+                            p.y = p.y0 - lift(p.x)
+                            var chance =
+                                p.x > 540 && p.x < 600
+                                    ? 0.004
+                                    : p.x >= 600 && p.x < 715
+                                      ? 0.035
+                                      : p.x >= 715 && p.x < 800
+                                        ? 0.004
+                                        : 0
+                            if (Math.random() < chance) {
+                                p.rain = true
+                                p.el.setAttribute("class", "drop")
+                                p.el.setAttribute("r", 1.8)
+                            }
+                            if (p.x > 910) spawn(p, false)
+                        }
+                        place(p)
+                    }
+                    if (!reduce) requestAnimationFrame(step)
+                }
+                if (reduce) {
+                    P.forEach(function (p, i) {
+                        p.y = p.y0 - lift(p.x)
+                        if (p.x > 600 && p.x < 715 && i % 2) {
+                            p.el.setAttribute("class", "drop")
+                            p.el.setAttribute("r", 1.8)
+                            p.y += Math.random() * (300 - terr(p.x) - p.y)
+                        }
+                        place(p)
+                    })
+                } else {
+                    requestAnimationFrame(step)
+                }
+
+                /* ---------- rainfall comparison ---------- */
+                var AVG = 22.9 / 71
+                var GAL_PER_IN = (46.9 * 27878400 * 144) / 231
+                var POOL = 660430
+                var MAX = 3
+                var rows = [
+                    { id: "avg", name: "Average SF rainy day", sub: "22.9 in a year over 71 wet days", lo: AVG },
+                    {
+                        id: "sf",
+                        name: "Tue night–Wed storm, SF and Peninsula",
+                        sub: "forecast 0.5 to 1 in",
+                        lo: 0.5,
+                        hi: 1.0,
+                        hot: true,
+                    },
+                    {
+                        id: "nb",
+                        name: "Tue night–Wed storm, North Bay",
+                        sub: "forecast 0.5 to 1.2 in",
+                        lo: 0.5,
+                        hi: 1.2,
+                        hot: true,
+                    },
+                    {
+                        id: "ar",
+                        name: "Nov 18 atmospheric river",
+                        sub: "downtown SF, one day, record for the date",
+                        lo: 2.31,
+                    },
+                    { id: "nov", name: "A whole normal November", sub: "downtown SF monthly average", lo: 2.6 },
+                ]
+                var bars = $("bars")
+                function fmtIn(v) {
+                    return v.toFixed(2).replace(/0$/, "") + " in"
+                }
+                rows.forEach(function (r) {
+                    var b = document.createElement("button")
+                    b.type = "button"
+                    b.className = "row" + (r.hot ? " hot" : "")
+                    b.id = "row-" + r.id
+                    b.setAttribute("aria-pressed", "false")
+                    var val = r.hi ? r.lo + "–" + r.hi + " in" : fmtIn(r.lo)
+                    b.innerHTML =
+                        '<div class="lab">' +
+                        r.name +
+                        "<span>" +
+                        r.sub +
+                        "</span></div>" +
+                        '<div class="track"><div class="fill" style="width:' +
+                        (r.lo / MAX) * 100 +
+                        '%"></div>' +
+                        (r.hi
+                            ? '<div class="rng" style="left:' +
+                              (r.lo / MAX) * 100 +
+                              "%;width:calc(" +
+                              ((r.hi - r.lo) / MAX) * 100 +
+                              '% - 2px)"></div>'
+                            : "") +
+                        '</div><div class="val">' +
+                        val +
+                        "</div>"
+                    b.addEventListener("click", function () {
+                        select(r)
+                    })
+                    bars.appendChild(b)
+                })
+                var ticks = $("ticks")
+                for (var t = 0; t <= MAX; t++) {
+                    var s = document.createElement("span")
+                    s.style.left = (t / MAX) * 100 + "%"
+                    s.textContent = t + " in"
+                    ticks.appendChild(s)
+                }
+                function big(n) {
+                    if (n >= 1e9) return (n / 1e9).toFixed(2) + " billion"
+                    if (n >= 1e6) return Math.round(n / 1e6) + " million"
+                    return Math.round(n).toLocaleString("en-US")
+                }
+                var PX = 40
+                $("tRef").style.height = AVG * PX + "px"
+                $("tRefV").textContent = AVG.toFixed(2) + " in"
+                function show(depth, title, label) {
+                    $("dTitle").textContent = title
+                    $("tSel").style.height = Math.min(depth * PX, 212) + "px"
+                    $("tSelV").textContent = depth.toFixed(2) + " in"
+                    $("tSelL").textContent = label
+                    $("sX").textContent = (depth / AVG).toFixed(1) + "×"
+                    $("sGal").textContent = big(depth * GAL_PER_IN)
+                    $("sPool").textContent = Math.round((depth * GAL_PER_IN) / POOL).toLocaleString("en-US")
+                    $("sRoof").textContent = Math.round((depth * 1000 * 144) / 231).toLocaleString("en-US")
+                    $("depth").value = depth
+                    $("depthV").textContent = depth.toFixed(2) + " in"
+                }
+                function select(r) {
+                    rows.forEach(function (o) {
+                        $("row-" + o.id).setAttribute("aria-pressed", o === r ? "true" : "false")
+                    })
+                    var mid = r.hi ? (r.lo + r.hi) / 2 : r.lo
+                    show(
+                        mid,
+                        r.name + (r.hi ? ", middle of the forecast range" : ""),
+                        r.hi ? "middle of forecast" : "selected",
+                    )
+                }
+                $("depth").addEventListener("input", function () {
+                    rows.forEach(function (o) {
+                        $("row-" + o.id).setAttribute("aria-pressed", "false")
+                    })
+                    show(parseFloat(this.value), "Custom depth", "your setting")
+                })
+                select(rows[1])
+
+                /* ---------- tides: [day, time, total ft MLLW, ft above normal] ---------- */
+                var FT = 24
+                var tides = [
+                    ["Mon 23", "9:25 AM", 8.0, 2.2],
+                    ["Tue 24", "10:05 AM", 8.4, 2.6],
+                    ["Wed 25", "10:49 AM", 8.5, 2.7],
+                    ["Thu 26", "11:38 AM", 8.2, 2.4],
+                    ["Fri 27", "12:31 PM", 7.9, 1.7],
+                ]
+                tides.forEach(function (t) {
+                    var col = document.createElement("div")
+                    col.className = "tcol"
+                    col.title =
+                        t[0] +
+                        ", " +
+                        t[1] +
+                        ": " +
+                        t[2].toFixed(1) +
+                        " ft, " +
+                        t[3].toFixed(1) +
+                        " ft above a normal high tide"
+                    col.innerHTML =
+                        '<div class="tv">' +
+                        t[2].toFixed(1) +
+                        ' ft</div><div class="ex" style="height:' +
+                        t[3] * FT +
+                        'px"></div><div class="no" style="height:' +
+                        (t[2] - t[3]) * FT +
+                        'px"></div>'
+                    $("tides").appendChild(col)
+                    var l = document.createElement("div")
+                    l.innerHTML = t[0] + "<span>" + t[1] + "</span><span>+" + t[3].toFixed(1) + " ft</span>"
+                    $("tlabs").appendChild(l)
+                })
+            })()
+        </script>
+    </body>
+</html>
