@@ -746,6 +746,8 @@
                     category: "travel",
                     source: "blog",
                     url: "blog/2026/11/24/sfo-storm-guide.html",
+                    image: "images/sfo-storm-turkey.webp",
+                    imageAlt: "Frantic turkey traveler wearing goggles",
                 },
                 {
                     id: 78,
@@ -1724,7 +1726,7 @@
                         ? '<img class="card-img" src="' +
                           post.image +
                           '" alt="' +
-                          post.title.replace(/"/g, "&quot;") +
+                          (post.imageAlt || post.title).replace(/"/g, "&quot;") +
                           '" loading="lazy" />'
                         : '<div class="card-placeholder">' + badge.label.charAt(0) + "</div>"
 
