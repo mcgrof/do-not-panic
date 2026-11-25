@@ -1,0 +1,220 @@
+{
+    "airport": "KSFO",
+    "flight_date": "2026-11-25",
+    "captured_at": "2026-11-25T08:13:55.929536+00:00",
+    "captured_at_pacific": "2026-11-25T00:13:55.929536-08:00",
+    "scope": "Arrivals and departures at SFO, combined. Carrier labels preserved from FlightAware; regional operators are separate.",
+    "source_url": "https://www.flightaware.com/live/cancelled/today/KSFO",
+    "source_table_url": "https://www.flightaware.com/ajax/airport/cancelled_count.rvt?type=airline&timePeriod=today&airportFilter=KSFO",
+    "total_cancelled": 0,
+    "total_delayed": 14,
+    "scheduled_flight_denominators": null,
+    "airlines": [
+        {
+            "airline": "Alaska Airlines",
+            "cancelled": 0,
+            "delayed": 1
+        },
+        {
+            "airline": "JetBlue",
+            "cancelled": 0,
+            "delayed": 1
+        },
+        {
+            "airline": "SkyWest",
+            "cancelled": 0,
+            "delayed": 1
+        },
+        {
+            "airline": "Southwest",
+            "cancelled": 0,
+            "delayed": 4
+        },
+        {
+            "airline": "United",
+            "cancelled": 0,
+            "delayed": 7
+        }
+    ],
+    "advance_reports": [
+        {
+            "flight_date": "2026-11-26",
+            "captured_at": "2026-11-25T08:13:56.204782+00:00",
+            "captured_at_pacific": "2026-11-25T00:13:56.204782-08:00",
+            "cancelled": 0,
+            "delayed": 0,
+            "source_url": "https://www.flightaware.com/live/cancelled/tomorrow/KSFO"
+        },
+        {
+            "flight_date": "2026-11-27",
+            "captured_at": "2026-11-25T08:13:56.047490+00:00",
+            "captured_at_pacific": "2026-11-25T00:13:56.047490-08:00",
+            "cancelled": 0,
+            "delayed": 0,
+            "source_url": "https://www.flightaware.com/live/cancelled/plus2days/KSFO"
+        }
+    ],
+    "limitations": [
+        "Static snapshot, not a live feed. All counts may change.",
+        "Counts do not identify the cause of a cancellation or delay.",
+        "Counts are not a carrier reliability ranking. Exact scheduled-flight denominators are unavailable; rounded source percentages were intentionally omitted.",
+        "An airline absent from the source table has unknown counts, not a verified zero.",
+        "Advance reports count disruptions already recorded for future flight dates. Zero recorded now does not imply zero later.",
+        "No calibrated per-flight or per-airline future cancellation probabilities are available from these snapshots.",
+        "Wednesday has just begun. Smaller new-day totals are not evidence that conditions improved; Tuesday counts are recorded separately."
+    ],
+    "date_scope_evidence": "Clock03:13\u201303:14AM EST Nov25, both UTC andPacific dateNov25; plus2daysnavigationlabelFriday; todayWedNov25,yesterdayTueNov24,tomorrowThuNov26,plus2daysFriNov27. Newdayreset is NOT improvement frompreviousday.",
+    "source_html_sha256": "d800885257c6c4bf25809b3a9a0821200bffecee467a12eaa0e0fad024313adf",
+    "previous_day": {
+        "flight_date": "2026-11-24",
+        "captured_at": "2026-11-25T08:13:56.757884+00:00",
+        "captured_at_pacific": "2026-11-25T00:13:56.757884-08:00",
+        "source_url": "https://www.flightaware.com/live/cancelled/yesterday/KSFO",
+        "source_table_url": "https://www.flightaware.com/ajax/airport/cancelled_count.rvt?type=airline&timePeriod=yesterday&airportFilter=KSFO",
+        "total_cancelled": 5,
+        "total_delayed": 269,
+        "airlines": [
+            {
+                "airline": "United",
+                "cancelled": 3,
+                "delayed": 103
+            },
+            {
+                "airline": "SkyWest",
+                "cancelled": 2,
+                "delayed": 43
+            },
+            {
+                "airline": "Air Canada",
+                "cancelled": 0,
+                "delayed": 5
+            },
+            {
+                "airline": "All Nippon",
+                "cancelled": 0,
+                "delayed": 2
+            },
+            {
+                "airline": "Alaska Airlines",
+                "cancelled": 0,
+                "delayed": 19
+            },
+            {
+                "airline": "China Airlines",
+                "cancelled": 0,
+                "delayed": 1
+            },
+            {
+                "airline": "Copa Airlines",
+                "cancelled": 0,
+                "delayed": 2
+            },
+            {
+                "airline": "China Southern Airlines",
+                "cancelled": 0,
+                "delayed": 1
+            },
+            {
+                "airline": "Delta Air Lines",
+                "cancelled": 0,
+                "delayed": 10
+            },
+            {
+                "airline": "Lufthansa",
+                "cancelled": 0,
+                "delayed": 1
+            },
+            {
+                "airline": "EVA Air",
+                "cancelled": 0,
+                "delayed": 1
+            },
+            {
+                "airline": "French Bee",
+                "cancelled": 0,
+                "delayed": 1
+            },
+            {
+                "airline": "Frontier",
+                "cancelled": 0,
+                "delayed": 13
+            },
+            {
+                "airline": "ITA Airways",
+                "cancelled": 0,
+                "delayed": 1
+            },
+            {
+                "airline": "Japan Airlines",
+                "cancelled": 0,
+                "delayed": 1
+            },
+            {
+                "airline": "JetBlue",
+                "cancelled": 0,
+                "delayed": 8
+            },
+            {
+                "airline": "Jazz (ACA)",
+                "cancelled": 0,
+                "delayed": 1
+            },
+            {
+                "airline": "Korean Air",
+                "cancelled": 0,
+                "delayed": 1
+            },
+            {
+                "airline": "Philippine Air Lines",
+                "cancelled": 0,
+                "delayed": 2
+            },
+            {
+                "airline": "Horizon (ASA)",
+                "cancelled": 0,
+                "delayed": 5
+            },
+            {
+                "airline": "Starlux",
+                "cancelled": 0,
+                "delayed": 1
+            },
+            {
+                "airline": "Southwest",
+                "cancelled": 0,
+                "delayed": 27
+            },
+            {
+                "airline": "Swiss",
+                "cancelled": 0,
+                "delayed": 1
+            },
+            {
+                "airline": "Avianca El Salvador",
+                "cancelled": 0,
+                "delayed": 2
+            },
+            {
+                "airline": "ZIPAIR",
+                "cancelled": 0,
+                "delayed": 1
+            },
+            {
+                "airline": "Emirates",
+                "cancelled": 0,
+                "delayed": 1
+            },
+            {
+                "airline": "American Airlines",
+                "cancelled": 0,
+                "delayed": 14
+            },
+            {
+                "airline": "Asiana",
+                "cancelled": 0,
+                "delayed": 1
+            }
+        ],
+        "source_html_sha256": "ace2d5ce5250a4cfba3f9bc7a6e60f0f0b2eeb57eff2aa042aa63a262ea7352b"
+    }
+}
